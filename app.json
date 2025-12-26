@@ -1,4 +1,8 @@
 {
   "name": "GlamApp",
-  "displayName": "GlamApp"
+  "displayName": "GlamApp",
+  "plugins": [
+    "expo-font",
+    "expo-audio"
+  ]
 }
