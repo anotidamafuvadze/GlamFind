@@ -1,59 +1,78 @@
-import React, { useMemo, useState } from 'react';
-import { ImageBackground, Text, View, StyleSheet } from 'react-native';
-import ProductList from '../ui/results/ProductList';
-import { ProductCard } from '../ui/results/ProductCard';
-import BackButton from '../ui/general/BackButton';
-import SearchBar from '../ui/general/SearchBar';
-import images from '../../constants/images';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+
+// Styles
 import useResultsStyles from '../../styles/resultsScreen';
 
-export type Product = {
-  id: string;
-  image: string;
-  brand: string;
-  name: string;
-  rationale: string;
-};
+// Constants
+import images from '../../constants/images';
+
+// UI Components
+import BackButton from '../ui/general/BackButton';
+import SearchBar from '../ui/general/SearchBar';
+import ProductList from '../ui/results/ProductList';
+
+// Types
+import { Product } from '../../types/products';
+
+// Mock data
+import {
+  MOCK_REFINED_EXPLANATION,
+  MOCK_REFINED_PRODUCTS,
+} from '../../mock/mockData';
+
+type ProductSelection = 'like' | 'dislike' | null;
 
 type ResultsScreenProps = {
   initialQuery: string;
   initialExplanation: string;
   onBack: () => void;
-  onProductClick: (product: Product) => void;
+  onProductClick: (productId: string) => void;
   products: Product[];
+  updateSelections: (productId: string, selection: ProductSelection) => void;
 };
 
 /**
  * ResultsScreen
- * - Displays AI-curated product results with refinement capability
+ * - Displays AI-curated product results
+ * - Allows users to refine results via follow-up search
  */
-
 export function ResultsScreen({
+  initialQuery,
   initialExplanation,
   onBack,
   onProductClick,
   products,
+  updateSelections,
 }: ResultsScreenProps) {
-  const style = useResultsStyles();
-  const [input, setInput] = useState('');
+  const styles = useResultsStyles();
 
-  // TODO: Replace with real explanation from backend
-  const [explanation, setExplanation] = useState(initialExplanation);
-  const listData = useMemo(() => products, [products]);
+  const [baseQuery, setBaseQuery] = useState(initialQuery);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [refinedExplanation, setRefinedExplanation] = useState(initialExplanation);
+  const [refinedProducts, setRefinedProducts] = useState(products);
 
-  const handleSend = () => {
-    const q = input.trim();
-    if (!q) return;
+  const listData = useMemo(() => refinedProducts, [refinedProducts]);
 
-    // TODO: Replace with real explanation from backend
-    setTimeout(() => {
-      setExplanation(
-        "I've refined your results based on your additional preferences. These selections now emphasize enhanced hydration properties and are particularly suited for warm undertones with superior lasting power.",
-      );
-    }, 800);
+  // TODO: Implement refined search handler
+  const handleRefinedSearch = useCallback(
+    async (rawQuery: string) => {
+      const trimmedQuery = rawQuery.trim();
+      if (!trimmedQuery) return;
 
-    setInput('');
-  };
+      // const { products: fetchedProducts, explanation } =
+      //   await fetchRefinedProductsFromBackend(baseQuery, trimmedQuery);
+      // setRefinedProducts(fetchedProducts);
+      // setRefinedExplanation(explanation);
+
+      setRefinedProducts(MOCK_REFINED_PRODUCTS);
+      setRefinedExplanation(MOCK_REFINED_EXPLANATION);
+
+      setBaseQuery(trimmedQuery);
+      setSearchQuery('');
+    },
+    [baseQuery]
+  );
 
   return (
     <ImageBackground
@@ -62,45 +81,30 @@ export function ResultsScreen({
       style={StyleSheet.absoluteFill}
     >
       {/* Header */}
-      <View style={style.header}>
-        <View style={style.headerRow}>
-          <BackButton
-            onPress={onBack}
-            style={style.backBtn}
-            pressedStyle={style.pressed}
-            iconStyle={style.icon}
-          />
-
-          <View style={style.headerTitleWrap}>
-            <Text style={style.headerTitle}>Curated for You</Text>
-          </View>
-        </View>
+      <View style={styles.header.container}>
+        <BackButton onPress={onBack} style={styles.backButton} />
+        <Text style={styles.header.title}>Curated for You</Text>
       </View>
 
-      {/* Products */}
+      {/* Product Results */}
       <ProductList
         products={listData}
-        explanation={explanation}
+        explanation={refinedExplanation}
         onProductPress={onProductClick}
-        style={style}
+        updateSelections={updateSelections}
+        style={styles.products}
+        cardStyle={styles.productCard}
       />
 
-      {/* Input area (fixed bottom) */}
-      <View style={style.inputBar}>
-        <SearchBar
-          value={input}
-          onChangeText={setInput}
-          onSubmit={handleSend}
-          placeholder="Refine your search..."
-          containerStyle={style.inputRow}
-          inputStyle={style.input}
-          buttonStyle={style.sendBtn}
-          buttonIconStyle={[style.sendIcon, { tintColor: '#FFFFFF' }]}
-          pressedStyle={style.pressed}
-          inputProps={{ returnKeyType: 'send' }}
-          iconSource={images.icons.searchIcon}
-        />
-      </View>
+      {/* Search Refinement */}
+      <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        onSubmit={() => handleRefinedSearch(searchQuery)}
+        placeholder="Refine your search..."
+        iconSource={images.icons.search}
+        style={styles.searchBar}
+      />
     </ImageBackground>
   );
 }

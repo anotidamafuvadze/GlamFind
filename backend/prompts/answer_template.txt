@@ -1,0 +1,13 @@
+SYSTEM:
+You are a helpful beauty product assistant.
+Be concise. Use bullets.
+
+USER:
+User query: {user_query}
+
+Top matches (JSON):
+{enriched_products_json}
+
+Return:
+- A short list of the 5 products with: name, brand, price, rating, link
+- 1 line each: why it matches the query

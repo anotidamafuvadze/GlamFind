@@ -1,8 +1,17 @@
 import React from 'react';
-import { FlatList, View, Text } from 'react-native';
-import { ProductCard } from '../results/ProductCard';
+import {
+  FlatList,
+  View,
+  Text,
+  ViewStyle,
+  ImageStyle,
+  TextStyle,
+} from 'react-native';
 
-type Product = {
+// Local imports
+import { ProductCard } from './ProductCard';
+
+export type Product = {
   id: string;
   image: string;
   brand: string;
@@ -10,15 +19,48 @@ type Product = {
   rationale: string;
 };
 
-type Props = {
+type ProductListProps = {
   products: Product[];
-  explanation?: string;
-  onProductPress: (p: Product) => void;
-  style?: any;
+  explanation: string;
+  onProductPress: (productId: string) => void;
+  updateSelections: (
+    productId: string,
+    selection: 'like' | 'dislike' | null,
+  ) => void;
+  style: {
+    listContent: ViewStyle;
+    explanation: {
+      card: ViewStyle;
+      aiBadge: ViewStyle;
+      aiBadgeText: TextStyle;
+      textWrapper: ViewStyle;
+      title: TextStyle;
+      body: TextStyle;
+    };
+    label: TextStyle;
+    row: ViewStyle;
+  };
+  cardStyle: {
+    card: ViewStyle;
+    pressed: ViewStyle;
+    imageWrap: ViewStyle;
+    image: ImageStyle;
+    content: ViewStyle;
+    brand: TextStyle;
+    name: TextStyle;
+    rationale: TextStyle;
+    actionsRow: ViewStyle;
+    actionButton: {
+      button: ViewStyle;
+      selected: ViewStyle;
+      text: TextStyle;
+      selectedText: TextStyle;
+    };
+  };
 };
 
 /**
- * ProductList
+ * ProductList component
  * - Renders an explained list of recommended products using a scrollable list
  */
 
@@ -27,42 +69,49 @@ export default function ProductList({
   explanation,
   onProductPress,
   style,
-}: Props) {
+  cardStyle,
+  updateSelections,
+}: ProductListProps) {
+  const renderHeader = () => (
+    <View>
+      {/* Explanation */}
+      <View style={style.explanation.card}>
+        <View style={style.explanation.aiBadge}>
+          <Text style={style.explanation.aiBadgeText}>✦</Text>
+        </View>
+
+        <View style={style.explanation.textWrapper}>
+          <Text style={style.explanation.title}>Why These Products</Text>
+          <Text style={style.explanation.body}>{explanation}</Text>
+        </View>
+      </View>
+
+      <Text style={style.label}>PRODUCTS</Text>
+    </View>
+  );
+
+  const renderProduct = ({ item }: { item: Product }) => (
+    <View style={style.row}>
+      <ProductCard
+        image={item.image}
+        brand={item.brand}
+        name={item.name}
+        rationale={item.rationale}
+        onPress={onProductPress}
+        style={cardStyle}
+        updateSelections={updateSelections}
+      />
+    </View>
+  );
+
   return (
     <FlatList
       data={products}
       keyExtractor={item => item.id}
-      contentContainerStyle={style.listContent}
       showsVerticalScrollIndicator={false}
-      ListHeaderComponent={
-        <View style={style.topBlock}>
-          <View style={style.explainCard}>
-            <View style={style.explainRow}>
-              <View style={style.aiBadge}>
-                <Text style={style.aiBadgeText}>✦</Text>
-              </View>
-
-              <View style={style.explainTextWrap}>
-                <Text style={style.explainTitle}>Why These Products</Text>
-                <Text style={style.explainBody}>{explanation}</Text>
-              </View>
-            </View>
-          </View>
-
-          <Text style={style.sectionLabel}>PRODUCTS</Text>
-        </View>
-      }
-      renderItem={({ item }) => (
-        <View style={style.productRow}>
-          <ProductCard
-            image={item.image}
-            brand={item.brand}
-            name={item.name}
-            rationale={item.rationale}
-            onPress={() => onProductPress(item)}
-          />
-        </View>
-      )}
+      contentContainerStyle={style.listContent}
+      ListHeaderComponent={renderHeader}
+      renderItem={renderProduct}
       ListFooterComponent={<View style={{ height: 120 }} />}
     />
   );

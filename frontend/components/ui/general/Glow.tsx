@@ -13,7 +13,8 @@ type GlowProps = {
 export default function Glow({ style }: GlowProps) {
   const baseStyle = {
     position: "absolute",
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    opacity: style.opacity,
+    backgroundColor: 'rgb(255, 255, 255)',
     borderRadius: 999,
   };
 

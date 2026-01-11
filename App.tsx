@@ -1,58 +1,34 @@
 /**
  * App
  * - Root entry point that renders onboarding, home, and results screens
+ * - Hosts app-level layout and delegates navigation/data flow to AppContent
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 
+// Screens
 import { HomeScreen } from './frontend/components/screens/HomeScreen';
 import { ResultsScreen } from './frontend/components/screens/ResultsScreen';
-import { OnboardingScreen } from './frontend/components/screens/OnboardingScreen';
+import { WelcomeScreen } from './frontend/components/screens/WelcomeScreen';
 
-type Screen = 'onboarding' | 'home' | 'results';
+// Mock data
+import {
+  MOCK_PRODUCTS,
+  MOCK_RESULTS_EXPLANATION,
+} from './frontend/mock/mockData';
 
-interface Product {
-  id: string;
-  image: string;
-  brand: string;
-  name: string;
-  rationale: string;
-  description?: string;
-  keyAttributes?: string[];
-  reviews?: string[];
-}
+// Types
+import { Product } from './frontend/types/products';
 
-// TODO: Replace mock products with real data from backend
-const mockProducts: Product[] = [
-  {
-    id: '1',
-    image:
-      'https://images.unsplash.com/photo-1706821750093-c32649b934ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBsaXBzdGljayUyMHJvc2UlMjBnb2xkfGVufDF8fHx8MTc2NjU2NTcwNXww&ixlib=rb-4.1.0&q=80&w=1080',
-    brand: 'Charlotte Tilbury',
-    name: 'Hyaluronic Happikiss Lipstick Balm',
-    rationale:
-      'Deeply moisturizing formula with hyaluronic acid, designed specifically for dry lips with warm undertones.',
-  },
-  {
-    id: '2',
-    image:
-      'https://images.unsplash.com/photo-1674672524653-ebfea176496b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBibHVzaCUyMGNvbXBhY3R8ZW58MXx8fHwxNzY2NTY1NzA2fDA&ixlib=rb-4.1.0&q=80&w=1080',
-    brand: 'Dior',
-    name: 'Rouge Dior Forever Liquid',
-    rationale:
-      'Transfer-proof liquid lipstick with 16-hour wear and comfortable, conditioning feel for sensitive lips.',
-  },
-];
-
-const explanationText =
-  "Based on your search for lipstick suitable for dry lips, I've curated these deeply moisturizing formulas with nourishing ingredients like hyaluronic acid and vitamin E.";
+type AppScreen = 'onboarding' | 'home' | 'results';
+type ProductSelection = 'like' | 'dislike' | null;
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <View style={styles.app}>
+    <View style={styles.appContainer}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <AppContent />
     </View>
@@ -61,37 +37,126 @@ export default function App() {
 
 /**
  * AppContent
- * - Simple in-memory screen router (onboarding → home → results)
+ * - Owns navigation state between app screens
+ * - Manages search state and initial product results
+ * - Fetches and caches Home screen popular queries
  */
+
 function AppContent() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('onboarding');
+  // ----------------------- Navigation -----------------------
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>('onboarding');
 
-  const products = useMemo(() => mockProducts, []);
+  const navigateToHome = useCallback(() => setCurrentScreen('home'), []);
+  const navigateToResults = useCallback(() => setCurrentScreen('results'), []);
 
-  const goHome = useCallback(() => setCurrentScreen('home'), []);
-  const goResults = useCallback(() => setCurrentScreen('results'), []);
+  // TODO: Implement navigation handlers
+  const navigateToLikes = useCallback(() => {}, []);
+  const navigateToSettings = useCallback(() => {}, []);
+  const navigateToSignIn = useCallback(() => {}, []);
 
+  // ----------------------- Data -----------------------
+  const [popularQueries, setPopularQueries] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [explanation, setExplanation] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // ----------------------- Search -----------------------
+  // TODO: Implement actual search handler
+  const handleSearch = useCallback(
+    async (rawQuery: string) => {
+      const trimmed = rawQuery.trim();
+      if (!trimmed) return;
+
+      setSearchQuery(trimmed);
+
+      // Replace with actual backend search
+      // const { products: fetchedProducts, explanation: fetchedExplanation } =
+      //   await fetchProductsFromBackend(trimmed);
+      // setProducts(fetchedProducts);
+      // setExplanation(fetchedExplanation);
+
+      setProducts(MOCK_PRODUCTS);
+      setExplanation(MOCK_RESULTS_EXPLANATION);
+
+      navigateToResults();
+    },
+    [navigateToResults],
+  );
+
+  // ----------------------- Product interactions -----------------------
+  // TODO: Implement product selection handler
+  const handleProductSelection = useCallback(
+    (productId: string, selection: ProductSelection) => {
+      void productId;
+      void selection;
+      // Update product selection state / persist to backend
+    },
+    [],
+  );
+
+  // TODO: Implement product click handler
+  const handleProductClick = useCallback((productId: string) => {
+    void productId;
+    // Open product detail / website / modal
+  }, []);
+
+  // ----------------------- Popular queries -----------------------
+  const fetchPopularQueries = useCallback(async (): Promise<string[]> => {
+    // Backend should refresh queries weekly and enforce character limits
+    return [
+      'Lipstick for dry lips',
+      'Moisturizer for sensitive skin',
+      'Long-lasting foundation',
+    ];
+  }, []);
+
+  useEffect(() => {
+    if (currentScreen !== 'home') return;
+    let cancelled = false;
+
+    const loadPopularQueries = async () => {
+      const queries = await fetchPopularQueries();
+      if (!cancelled) setPopularQueries(queries);
+    };
+
+    loadPopularQueries();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentScreen, fetchPopularQueries]);
+
+  // ----------------------- Screen routing -----------------------
   if (currentScreen === 'home') {
-    return <HomeScreen onSearch={goResults} />;
-  }
-
-  if (currentScreen === 'results') {
     return (
-      <ResultsScreen
-        initialQuery=""
-        initialExplanation={explanationText}
-        products={products}
-        onBack={goHome}
-        onProductClick={() => {}}
+      <HomeScreen
+        onSearch={handleSearch}
+        onLikesPress={navigateToLikes}
+        onSettingsPress={navigateToSettings}
+        onSignInPress={navigateToSignIn}
+        popularQueries={popularQueries}
       />
     );
   }
 
-  return <OnboardingScreen onGetStarted={goHome} />;
+  // TODO: Convert to react navigation stack
+  if (currentScreen === 'results') {
+    return (
+      <ResultsScreen
+        initialQuery={searchQuery}
+        initialExplanation={explanation}
+        products={products}
+        onBack={navigateToHome}
+        onProductClick={handleProductClick}
+        updateSelections={handleProductSelection}
+      />
+    );
+  }
+
+  return <WelcomeScreen onGetStarted={navigateToHome} />;
 }
 
 const styles = StyleSheet.create({
-  app: {
+  appContainer: {
     flex: 1,
   },
 });

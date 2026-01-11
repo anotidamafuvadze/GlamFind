@@ -1,38 +1,41 @@
 import React from 'react';
-import { Pressable, Image } from 'react-native';
+import { 
+  Pressable, 
+  Image, 
+  ImageStyle, 
+  ViewStyle } from 'react-native';
+
+// Constants
 import images from '../../../constants/images';
 
 type BackButtonProps = {
   onPress: () => void;
-  style?: any;
-  pressedStyle?: any;
-  iconStyle?: any;
-  accessibilityLabel?: string;
+  style: {
+    button: ViewStyle;
+    pressed: ViewStyle;
+    icon: ImageStyle;
+  };    
 };
 
 /**
- * BackButton
+ * BackButton component
  * - Reusable navigation button for returning to the previous screen
  */
-
 export function BackButton({
   onPress,
   style,
-  pressedStyle,
-  iconStyle,
-  accessibilityLabel = 'Go back',
 }: BackButtonProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [style, pressed && pressedStyle]}
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
+      accessibilityLabel={'Go back'}
+      style={({ pressed }) => [style.button, pressed && style.pressed]}
     >
       <Image
-        source={images.icons.backIcon}
-        style={iconStyle}
+        source={images.icons.back}
         resizeMode="contain"
+        style={style.icon}
       />
     </Pressable>
   );

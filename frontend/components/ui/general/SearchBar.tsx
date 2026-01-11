@@ -1,21 +1,29 @@
 import React from 'react';
-import { View, TextInput, Pressable, Image } from 'react-native';
-import images from '../../../constants/images';
+import { 
+  View, 
+  TextInput, 
+  Pressable, 
+  Image, 
+  ViewStyle, 
+  TextStyle, 
+  ImageStyle, 
+  TextInputProps 
+} from 'react-native';
 
 type SearchBarProps = {
   value: string;
   onChangeText: (text: string) => void;
   onSubmit: () => void;
-  placeholder?: string;
-  placeholderTextColor?: string;
-  containerStyle?: any;
-  inputStyle?: any;
-  buttonStyle?: any;
-  buttonIconStyle?: any;
-  pressedStyle?: any;
-  inputProps?: any;
-  iconSource?: any;
-  accessibilityLabel?: string;
+  placeholder: string;
+  style: {
+    container: ViewStyle;
+    input: TextStyle;
+    inputProps: TextInputProps;
+    button: ViewStyle;
+    pressed: ViewStyle;
+    icon: ImageStyle;
+  };
+  iconSource: number;
 };
 
 /**
@@ -28,36 +36,30 @@ export default function SearchBar({
   onChangeText,
   onSubmit,
   placeholder,
-  containerStyle,
-  inputStyle,
-  buttonStyle,
-  buttonIconStyle,
-  pressedStyle,
-  inputProps,
+  style,
   iconSource,
-  accessibilityLabel = 'Search',
 }: SearchBarProps) {
   return (
-    <View style={containerStyle}>
+    <View style={style.container}>
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={'grey'}
-        style={inputStyle}
+        style={style.input}
         onSubmitEditing={onSubmit}
-        {...inputProps}
+        {...style.inputProps}
       />
 
       <Pressable
         onPress={onSubmit}
-        style={({ pressed }) => [buttonStyle, pressed && pressedStyle]}
+        style={({ pressed }) => [style.button, pressed && style.pressed]}
         accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel}
+        accessibilityLabel={'Search'}
       >
         <Image
-          source={iconSource ?? images.icons.searchIcon}
-          style={buttonIconStyle}
+          source={iconSource}
+          style={style.icon}
           resizeMode="contain"
         />
       </Pressable>

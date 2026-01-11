@@ -1,222 +1,338 @@
-import { useMemo } from "react";
-import { Platform, TextStyle, ViewStyle, ImageStyle } from "react-native";
 
+import { useMemo } from "react";
+import {
+  ImageStyle,
+  Platform,
+  TextInputProps,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
+
+// Constants
 import colors from "../constants/colors";
 import useFonts from "../constants/fonts";
 import useLayouts from "../constants/layouts";
+
+/**
+ * useResultsStyles hook
+ * - Defines Results screen styles
+ */
 
 export default function useResultsStyles() {
   const layouts = useLayouts();
   const fonts = useFonts();
 
-  // TODO replace with constants
   const styles = useMemo(
     () => ({
+      // ======================= FLEX LAYOUTS =======================
       flex: {
-        flex: 1,
+        flex: layouts.ONE,
       } as ViewStyle,
 
       safe: {
-        flex: 1,
+        flex: layouts.ONE,
       } as ViewStyle,
 
+      // ======================= BACKGROUND =======================
       background: {
         position: "absolute",
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
+        top: layouts.ZERO,
+        right: layouts.ZERO,
+        bottom: layouts.ZERO,
+        left: layouts.ZERO,
       } as ViewStyle,
 
-      // Header
+      // ======================= HEADER =======================
       header: {
-        paddingHorizontal: 24,
-        paddingVertical: 46,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.RESULTS.HEADER_BORDER,
-        backgroundColor: colors.RESULTS.HEADER_BG,
-      } as ViewStyle,
+        container: {
+          flexDirection: "row",
+          alignItems: "center",
+          gap: layouts.RESULTS.GAP_SMALL,
+          paddingHorizontal: layouts.RESULTS.HEADER_PADDING_HORIZONTAL,
+          paddingVertical: layouts.RESULTS.HEADER_PADDING_VERTICAL,
+          backgroundColor: colors.RESULTS.HEADER_BG,
+          borderBottomWidth: layouts.BORDER_WIDTH,
+          borderBottomColor: colors.RESULTS.HEADER_BORDER,
+        } as ViewStyle,
 
-      headerRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-      } as ViewStyle,
+        title: {
+          flex: layouts.ONE,
+          top: layouts.RESULTS.HEADER_TITLE_TOP,
+          color: colors.RESULTS.TITLE,
+          fontFamily: fonts.family.primary,
+          fontSize: fonts.size.results.title,
+          fontWeight: fonts.weight.normal,
+        } as TextStyle,
 
-      backBtn: {
-        width: 40,
-        height: 40,
-        borderRadius: 999,
-        backgroundColor: colors.RESULTS.BACK_BTN_BG,
-        alignItems: "center",
-        justifyContent: "center",
-        borderWidth: 0.7,
-        borderColor: colors.RESULTS.BACK_BTN_BORDER,
-        top: 20,
-      } as ViewStyle,
+        subtitle: {
+          marginTop: layouts.RESULTS.SUBTITLE_MARGIN_TOP,
+          color: colors.RESULTS.TITLE,
+          fontFamily: fonts.family.secondary,
+          fontSize: fonts.size.results.subtitle,
+          letterSpacing: layouts.RESULTS.SUBTITLE_LETTER_SPACING,
+          textTransform: "uppercase",
+        } as TextStyle,
+      },
 
-      headerTitleWrap: {
-        flex: 1,
-      } as ViewStyle,
+      // ======================= HEADER BUTTONS =======================
+      backButton: {
+        button: {
+          top: layouts.RESULTS.BACK_BUTTON_TOP,
+          width: layouts.RESULTS.BACK_BUTTON_SIZE,
+          height: layouts.RESULTS.BACK_BUTTON_SIZE,
+          borderRadius: layouts.RESULTS.BACK_BUTTON_BORDER_RADIUS,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: colors.RESULTS.BACK_BTN_BG,
+          borderWidth: layouts.RESULTS.BACK_BUTTON_BORDER_WIDTH,
+          borderColor: colors.RESULTS.BACK_BTN_BORDER,
+        } as ViewStyle,
 
-      headerTitle: {
-        color: colors.RESULTS.TITLE,
-        fontSize: 28,
-        fontWeight: "400",
-        fontFamily: fonts.family.primary,
-        top: 23,
-      } as TextStyle,
+        pressed: {
+          opacity: layouts.RESULTS.BACK_BUTTON_PRESSED_OPACITY,
+        } as ViewStyle,
 
-      headerSubtitle: {
-        marginTop: 2,
-        color: colors.RESULTS.TITLE,
-        fontSize: 12,
-        letterSpacing: 1.2,
-        textTransform: "uppercase",
-        fontFamily: fonts.family.secondary,
-      } as TextStyle,
+        icon: {
+          width: layouts.RESULTS.BACK_BUTTON_SIZE,
+          height: layouts.RESULTS.BACK_BUTTON_SIZE,
+        } as ImageStyle,
+      },
 
-      // List
-      listContent: {
-        paddingHorizontal: 24,
-        paddingTop: 20,
-        paddingBottom: 0,
-      } as ViewStyle,
+      // ======================= PRODUCTS LIST =======================
+      products: {
+        listContent: {
+          paddingHorizontal: layouts.RESULTS.LIST_PADDING_HORIZONTAL,
+          paddingTop: layouts.RESULTS.LIST_PADDING_TOP,
+          paddingBottom: layouts.ZERO,
+        } as ViewStyle,
 
-      topBlock: {
-        paddingBottom: 10,
-      } as ViewStyle,
+        label: {
+          color: colors.RESULTS.TITLE,
+          fontFamily: fonts.family.secondary,
+          fontSize: fonts.size.results.rationale,
+          letterSpacing: layouts.LETTER_SPACING_CAPS,
+          marginBottom: layouts.RESULTS.LABEL_MARGIN_BOTTOM,
+          textTransform: "uppercase",
+        } as TextStyle,
 
-      // Explanation card
-      explainCard: {
-        backgroundColor: colors.RESULTS.CARD_BG,
-        borderRadius: 24,
-        padding: 18,
-        borderWidth: 1,
-        borderColor: colors.RESULTS.CARD_BORDER,
-        shadowColor: colors.BLACK,
-        shadowOpacity: 0.06,
-        shadowRadius: 16,
-        shadowOffset: { width: 0, height: 10 },
-        elevation: 3,
-        marginBottom: 16,
-      } as ViewStyle,
+        row: {
+          marginBottom: layouts.RESULTS.ROW_MARGIN_BOTTOM,
+        } as ViewStyle,
 
-      explainRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: 12,
-      } as ViewStyle,
+        explanation: {
+          card: {
+            flex: layouts.ONE,
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: layouts.RESULTS.GAP_SMALL,
+            marginBottom: layouts.RESULTS.EXPLANATION_CARD_MARGIN_BOTTOM,
+            padding: layouts.RESULTS.EXPLANATION_CARD_PADDING,
+            paddingBottom: layouts.RESULTS.EXPLANATION_CARD_PADDING_BOTTOM,
+            backgroundColor: colors.RESULTS.CARD_BG,
+            borderRadius: layouts.RESULTS.EXPLANATION_CARD_BORDER_RADIUS,
+            borderWidth: layouts.RESULTS.CARD_BORDER_WIDTH,
+            borderColor: colors.RESULTS.CARD_BORDER,
+            shadowColor: colors.BLACK,
+            shadowOffset: { width: layouts.ZERO, height: layouts.RESULTS.EXPLANATION_CARD_SHADOW_OFFSET_HEIGHT },
+            shadowOpacity: layouts.RESULTS.EXPLANATION_CARD_SHADOW_OPACITY,
+            shadowRadius: layouts.RESULTS.EXPLANATION_CARD_SHADOW_RADIUS,
+            elevation: layouts.RESULTS.EXPLANATION_CARD_ELEVATION,
+          } as ViewStyle,
 
-      aiBadge: {
-        width: 32,
-        height: 32,
-        borderRadius: 999,
-        backgroundColor: colors.DUSTY_ROSE,
-        alignItems: "center",
-        justifyContent: "center",
-      } as ViewStyle,
+          aiBadge: {
+            width: layouts.RESULTS.AI_BADGE_SIZE,
+            height: layouts.RESULTS.AI_BADGE_SIZE,
+            borderRadius: layouts.ROUNDED_MAX,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: colors.DUSTY_ROSE,
+          } as ViewStyle,
 
-      aiBadgeText: {
-        color: colors.WHITE,
-        fontSize: 18,
-        fontWeight: "700",
-        letterSpacing: 0.6,
-      } as TextStyle,
+          aiBadgeText: {
+            color: colors.WHITE,
+            fontSize: fonts.size.results.aiBadgeText,
+            fontWeight: fonts.weight.bold,
+            letterSpacing: layouts.RESULTS.AI_BADGE_LETTER_SPACING,
+          } as TextStyle,
 
-      explainTextWrap: {
-        flex: 1,
-      } as ViewStyle,
+          textWrapper: {
+            flex: layouts.ONE,
+          } as ViewStyle,
 
-      explainTitle: {
-        color: colors.RESULTS.TITLE,
-        fontSize: 18,
-        fontWeight: "600",
-        marginBottom: 6,
-        fontFamily: fonts.family.secondary,
-      } as TextStyle,
+          title: {
+            marginBottom: layouts.RESULTS.EXPLANATION_TITLE_MARGIN_BOTTOM,
+            color: colors.RESULTS.TITLE,
+            fontFamily: fonts.family.secondary,
+            fontSize: fonts.size.results.explanationTitle,
+            fontWeight: fonts.weight.semiBold,
+          } as TextStyle,
 
-      explainBody: {
-        color: colors.SOFT_GREY,
-        fontSize: 14,
-        lineHeight: 20,
-        fontFamily: fonts.family.secondary,
-      } as TextStyle,
+          body: {
+            color: colors.SOFT_GREY,
+            fontFamily: fonts.family.secondary,
+            fontSize: fonts.size.results.explanationBody,
+            lineHeight: layouts.RESULTS.EXPLANATION_BODY_LINE_HEIGHT,
+          } as TextStyle,
+        },
+      },
 
-      sectionLabel: {
-        color: colors.RESULTS.TITLE,
-        fontSize: 13,
-        letterSpacing: 2,
-        marginBottom: 10,
-        textTransform: "uppercase",
-        fontFamily: fonts.family.secondary,
-      } as TextStyle,
+      // ======================= PRODUCT CARD =======================
+      productCard: {
+        card: {
+          backgroundColor: colors.WHITE,
+          borderRadius: layouts.RESULTS.CARD_BORDER_RADIUS,
+          overflow: "hidden",
+          borderWidth: layouts.RESULTS.CARD_BORDER_WIDTH,
+          borderColor: colors.RESULTS_EXTRA.CARD_BORDER_LIGHT,
+          shadowColor: colors.BLACK,
+          shadowOffset: { width: layouts.ZERO, height: layouts.RESULTS.CARD_SHADOW_OFFSET_HEIGHT },
+          shadowOpacity: layouts.RESULTS.CARD_SHADOW_OPACITY,
+          shadowRadius: layouts.RESULTS.CARD_SHADOW_RADIUS,
+          elevation: layouts.RESULTS.CARD_ELEVATION,
+        } as ViewStyle,
 
-      productRow: {
-        marginBottom: 14,
-      } as ViewStyle,
+        pressed: {
+          transform: [{ scale: layouts.RESULTS.CARD_PRESSED_SCALE }],
+          opacity: layouts.RESULTS.CARD_PRESSED_OPACITY,
+        } as ViewStyle,
 
-      // Input bar
-      inputBar: {
-        paddingHorizontal: 24,
-        paddingTop: 12,
-        paddingBottom: Platform.OS === "ios" ? 18 : 12,
-        borderTopWidth: 1,
-        borderTopColor: colors.RESULTS.FOOTER_BORDER,
-        backgroundColor: colors.RESULTS.HEADER_BG,
-      } as ViewStyle,
+        imageWrap: {
+          width: "100%",
+          aspectRatio: layouts.RESULTS.IMAGE_WRAP_ASPECT_RATIO,
+          backgroundColor: colors.RESULTS_EXTRA.IMAGE_BG,
+        } as ViewStyle,
 
-      inputRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-      } as ViewStyle,
+        image: {
+          width: "100%",
+          height: "100%",
+        } as ImageStyle,
 
-      input: {
-        flex: 1,
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 999,
-        backgroundColor: colors.RESULTS.INPUT_BG,
-        borderWidth: 1,
-        borderColor: colors.RESULTS.INPUT_BORDER,
-        color: colors.RESULTS.TITLE,
-        fontSize: 18,
-        fontFamily: fonts.family.secondary,
-      } as TextStyle,
+        content: {
+          paddingHorizontal: layouts.RESULTS.CONTENT_PADDING_HORIZONTAL,
+          paddingVertical: layouts.RESULTS.CONTENT_PADDING_VERTICAL,
+        } as ViewStyle,
 
-      sendBtn: {
-        width: 44,
-        height: 44,
-        borderRadius: 999,
-        backgroundColor: colors.DUSTY_ROSE,
-        alignItems: "center",
-        justifyContent: "center",
-        shadowColor: colors.DUSTY_ROSE,
-        shadowOpacity: 0.22,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 6 },
-        elevation: 3,
-      } as ViewStyle,
+        brand: {
+          marginBottom: layouts.RESULTS.BRAND_MARGIN_BOTTOM,
+          color: colors.SOFT_GREY,
+          fontSize: fonts.size.results.brand,
+          letterSpacing: layouts.LETTER_SPACING_CAPS,
+          textTransform: "uppercase",
+        } as TextStyle,
 
-      // Icons
-      icon: {
-        width: 40,
-        height: 40,
-      } as ImageStyle,
+        name: {
+          marginBottom: layouts.RESULTS.NAME_MARGIN_BOTTOM,
+          color: colors.LUXURY_BLACK,
+          fontSize: fonts.size.results.name,
+          fontWeight: fonts.weight.semiBold,
+        } as TextStyle,
 
-      sendIcon: {
-        width: 45,
-        height: 45,
-        top: 2,
-        left: 1,
-      } as ImageStyle,
+        rationale: {
+          color: colors.SOFT_GREY,
+          fontSize: fonts.size.results.rationale,
+          lineHeight: layouts.RESULTS.RATIONALE_LINE_HEIGHT,
+        } as TextStyle,
 
-      pressed: {
-        transform: [{ scale: 0.98 }],
-        opacity: 0.95,
-      } as ViewStyle,
+        actionsRow: {
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: layouts.RESULTS.ACTIONS_ROW_MARGIN_TOP,
+        } as ViewStyle,
 
+        actionButton: {
+          button: {
+            width: layouts.RESULTS.ACTION_BUTTON_SIZE,
+            height: layouts.RESULTS.ACTION_BUTTON_SIZE,
+            borderRadius: layouts.RESULTS.ACTION_BUTTON_BORDER_RADIUS,
+            alignItems: "center",
+            justifyContent: "center",
+            marginRight: layouts.RESULTS.ACTION_BUTTON_MARGIN_RIGHT,
+            backgroundColor: colors.RESULTS_EXTRA.ACTION_BUTTON_BG,
+            borderWidth: layouts.RESULTS.ACTION_BUTTON_BORDER_WIDTH,
+            borderColor: colors.RESULTS_EXTRA.ACTION_BUTTON_BORDER,
+          } as ViewStyle,
+
+          selected: {
+            opacity: layouts.RESULTS.ACTION_BUTTON_SELECTED_OPACITY,
+            backgroundColor: colors.DUSTY_ROSE,
+            borderColor: colors.RESULTS_EXTRA.ACTION_BUTTON_BORDER_SELECTED,
+          } as ViewStyle,
+
+          text: {
+            color: colors.LUXURY_BLACK,
+          } as TextStyle,
+
+          selectedText: {
+            color: colors.WHITE,
+          } as TextStyle,
+        },
+      },
+
+      // ======================= FOOTER SEARCH BAR =======================
+      searchBar: {
+        container: {
+          flexDirection: "row",
+          alignItems: "center",
+          gap: layouts.RESULTS.GAP_TINY,
+          paddingHorizontal: layouts.RESULTS.SEARCHBAR_PADDING_HORIZONTAL,
+          paddingTop: layouts.RESULTS.SEARCHBAR_PADDING_TOP,
+          paddingBottom:
+            Platform.OS === "ios"
+              ? layouts.RESULTS.SEARCHBAR_PADDING_BOTTOM_IOS
+              : layouts.RESULTS.SEARCHBAR_PADDING_BOTTOM_ANDROID,
+          backgroundColor: colors.RESULTS.HEADER_BG,
+          borderTopWidth: layouts.BORDER_WIDTH,
+          borderTopColor: colors.RESULTS.FOOTER_BORDER,
+        } as ViewStyle,
+
+        input: {
+          flex: layouts.ONE,
+          paddingVertical: layouts.RESULTS.INPUT_PADDING_VERTICAL,
+          paddingHorizontal: layouts.RESULTS.INPUT_PADDING_HORIZONTAL,
+          borderRadius: layouts.RESULTS.INPUT_BORDER_RADIUS,
+          backgroundColor: colors.RESULTS.INPUT_BG,
+          borderWidth: layouts.BORDER_WIDTH,
+          borderColor: colors.RESULTS.INPUT_BORDER,
+          color: colors.RESULTS.TITLE,
+          fontFamily: fonts.family.secondary,
+          fontSize: fonts.size.results.searchInput,
+        } as TextStyle,
+
+        inputProps: {
+          autoCapitalize: "none",
+          autoCorrect: false,
+          returnKeyType: "search",
+          scrollEnabled: true,
+          textAlignVertical: "top",
+        } as TextInputProps,
+
+        button: {
+          width: layouts.RESULTS.SEARCH_BUTTON_SIZE,
+          height: layouts.RESULTS.SEARCH_BUTTON_SIZE,
+          borderRadius: layouts.RESULTS.ACTION_BUTTON_BORDER_RADIUS,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: colors.DUSTY_ROSE,
+          shadowColor: colors.DUSTY_ROSE,
+          shadowOffset: { width: layouts.ZERO, height: layouts.RESULTS.SEARCH_BUTTON_SHADOW_OFFSET_HEIGHT },
+          shadowOpacity: layouts.RESULTS.SEARCH_BUTTON_SHADOW_OPACITY,
+          shadowRadius: layouts.RESULTS.SEARCH_BUTTON_SHADOW_RADIUS,
+          elevation: layouts.RESULTS.SEARCH_BUTTON_ELEVATION,
+        } as ViewStyle,
+
+        icon: {
+          width: layouts.RESULTS.SEARCH_BUTTON_ICON_SIZE,
+          height: layouts.RESULTS.SEARCH_BUTTON_ICON_SIZE,
+          top: layouts.RESULTS.SEARCH_BUTTON_ICON_TOP,
+          left: layouts.RESULTS.SEARCH_BUTTON_ICON_LEFT,
+          tintColor: colors.WHITE,
+        } as ImageStyle,
+
+        pressed: {
+          transform: [{ scale: layouts.RESULTS.PRESSED_SCALE }],
+          opacity: layouts.RESULTS.PRESSED_OPACITY,
+        } as ViewStyle,
+      },
     }),
     [layouts, fonts]
   );

@@ -1,15 +1,24 @@
 import React from 'react';
-import { TouchableOpacity, Text, GestureResponderEvent } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  GestureResponderEvent,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 
 type ButtonProps = {
   title?: string;
   children?: React.ReactNode;
   onPress?: (event?: GestureResponderEvent) => void;
-  containerStyle?: any;
-  textStyle?: any;
+  containerStyle?: ViewStyle;
+  textStyle?: TextStyle;
   activeOpacity?: number;
   accessibilityLabel?: string;
-  style?: { button?: any; text?: any };
+  style?: {
+    button?: ViewStyle;
+    text?: TextStyle;
+  };
 };
 
 /**
@@ -27,7 +36,8 @@ export default function Button({
   accessibilityLabel = 'Button',
   style,
 }: ButtonProps) {
-  const label = title ?? children;
+  const label = title ?? (typeof children === 'string' ? children : undefined);
+
   const container = containerStyle ?? style?.button;
   const text = textStyle ?? style?.text;
 
@@ -39,7 +49,11 @@ export default function Button({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
     >
-      <Text style={text}>{label}</Text>
+      {children && typeof children !== 'string' ? (
+        children
+      ) : (
+        <Text style={text}>{label}</Text>
+      )}
     </TouchableOpacity>
   );
 }

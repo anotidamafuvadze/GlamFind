@@ -1,86 +1,88 @@
 import React, { useState } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
+
+// Styles
+import useHomeStyles from '../../styles/homeScreen';
+
+// Constants
+import images from '../../constants/images';
+
+// UI Components
 import SearchBar from '../ui/general/SearchBar';
 import AutoplayCarousel from '../ui/carousel/AutoplayCarousel';
-import images from '../../constants/images';
-import { useSound } from '../../context/SoundContext';
-import useHomeStyles from '../../styles/homeScreen';
 import PopularQueries from '../ui/home/PopularQueries';
-import Glow from '../ui/general/Glow';
+import SettingsButton from '../ui/home/SettingsButton';
+import LikesButton from '../ui/home/LikesButton';
+import SignInButton from '../ui/home/SignInButton';
 
 type HomeScreenProps = {
   onSearch: (query: string) => void;
+  onLikesPress: () => void;
+  onSettingsPress: () => void;
+  onSignInPress: () => void;
+  popularQueries: string[];
 };
 
 /**
- * HomeScreen
+ * HomeScreen component
  * - Main search screen and discovery entry point
  */
-
-// TODO: Add a sign in button and a your likes button on the top right corner
-export function HomeScreen({ onSearch }: HomeScreenProps) {
-  const style = useHomeStyles();
-  const { playClickSound } = useSound();
+export function HomeScreen({
+  onSearch,
+  onLikesPress,
+  onSettingsPress,
+  onSignInPress,
+  popularQueries,
+}: HomeScreenProps) {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const submit = () => {
-    const q = searchQuery.trim();
-    if (q) {
-      playClickSound();
-      onSearch(q);
-    }
-  };
-
-  const handleExampleQueryPress = (query: string) => {
-    playClickSound();
-    onSearch(query);
-  };
+  const styles = useHomeStyles();
 
   return (
     <ImageBackground
       source={images.backgrounds.homeScreen}
       resizeMode="cover"
-      style={style.background}
+      style={styles.background}
     >
-      {/* Glow elements */}
-      <Glow style={[style.glowTopLeft]} />
-      <Glow style={[style.glowBottomRight]} />
+      {/* Header Buttons */}
+      <SettingsButton
+        iconSource={images.icons.settings}
+        onPress={onSettingsPress}
+        style={styles.settingsButton}
+      />
 
-      <View style={style.content}>
-        {/* Header */}
-        <View style={style.header}>
-          <Text style={style.title}>What are you{'\n'}looking for?</Text>
-        </View>
+      <View style={styles.headerActions}>
+        <LikesButton
+          iconSource={images.icons.likes}
+          onPress={onLikesPress}
+          style={styles.likesButton}
+        />
+        <SignInButton
+          iconSource={images.icons.profile}
+          onPress={onSignInPress}
+          style={styles.signInButton}
+        />
+      </View>
 
-        {/* Search Bar */}
-        <View style={style.searchSection}>
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmit={submit}
-            placeholder="Find the perfect lipstick for dry skin and warm undertones"
-            containerStyle={style.searchRow}
-            inputStyle={style.input}
-            buttonStyle={style.searchButton}
-            buttonIconStyle={style.searchIcon}
-            pressedStyle={style.pressed}
-            inputProps={{
-              textAlignVertical: 'top',
-              scrollEnabled: true,
-              autoCorrect: false,
-              autoCapitalize: 'none',
-              returnKeyType: 'search',
-            }}
-          />
-        </View>
+      {/* Main Content */}
+      <View style={styles.content}>
+        <Text style={styles.title}>What are you{'\n'}looking for?</Text>
 
-        {/* Popular Queries */}
-        <PopularQueries onSelect={handleExampleQueryPress} style={style} />
+        <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmit={() => onSearch(searchQuery)}
+          placeholder="Find the perfect lipstick for dry skin and warm undertones"
+          iconSource={images.icons.search}
+          style={styles.searchBar}
+        />
 
-        {/* Autoplay carousel at the bottom */}
-        <View style={style.carouselWrap}>
-          <AutoplayCarousel style={style.carousel} />
-        </View>
+        <PopularQueries
+          popularQueries={popularQueries}
+          onSelect={(query) => onSearch(query)}
+          style={styles.popularQueries}
+        />
+
+        <AutoplayCarousel style={styles.carousel} />
       </View>
     </ImageBackground>
   );
