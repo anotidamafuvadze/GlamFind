@@ -76,3 +76,4 @@ yarn-error.log
 .venv/
 __pycache__/
 .DS_Store
+.venv/
