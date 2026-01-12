@@ -26,7 +26,15 @@ type HomeScreenProps = {
 /**
  * HomeScreen component
  * - Main search screen and discovery entry point
+ * 
+ * @param onSearch - Callback function triggered when user performs a search
+ * @param onLikesPress - Callback function triggered when likes button is pressed
+ * @param onSettingsPress - Callback function triggered when settings button is pressed
+ * @param onSignInPress - Callback function triggered when sign in button is pressed
+ * @param popularQueries - Array of popular search queries to display
+ * @returns React component for the home screen
  */
+
 export function HomeScreen({
   onSearch,
   onLikesPress,

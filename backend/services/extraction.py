@@ -1,18 +1,39 @@
 import json
 import re
-from typing import Any, Optional
+from typing import Any, Optional, Dict
+
 from importlib.resources import files
 from langchain_openai import ChatOpenAI
 
-
+LLM_MODEL = "gpt-3.5-turbo-0125"
 JSON_PATTERN = re.compile(r"\{.*\}", re.DOTALL)
+
+# Load once (faster + avoids repeated filesystem reads)
+PROMPT_TEMPLATE = None
+
+ALLOWED_ENRICHMENT_KEYS = {
+    "product_url",
+    "image_url",
+    "price",
+    "rating",
+    "rating_count",
+    "source_name",
+}
+
 
 def _load_prompt_template(filename: str) -> str:
     path = files("backend.prompts").joinpath(filename)
     return path.read_text(encoding="utf-8")
 
 
-def _extract_json(text: str) -> Optional[dict[str, Any]]:
+def _get_prompt_template() -> str:
+    global PROMPT_TEMPLATE
+    if PROMPT_TEMPLATE is None:
+        PROMPT_TEMPLATE = _load_prompt_template("extract_product_fields.txt")
+    return PROMPT_TEMPLATE
+
+
+def _extract_json(text: str) -> Optional[Dict[str, Any]]:
     if not text:
         return None
 
@@ -29,15 +50,42 @@ def _extract_json(text: str) -> Optional[dict[str, Any]]:
 
     # First pass parse
     try:
-        return json.loads(json_str)
+        parsed = json.loads(json_str)
     except json.JSONDecodeError:
         repaired = json_str
         repaired = re.sub(r",\s*}", "}", repaired)
         repaired = re.sub(r",\s*]", "]", repaired)
         try:
-            return json.loads(repaired)
+            parsed = json.loads(repaired)
         except json.JSONDecodeError:
             return None
+
+    return parsed if isinstance(parsed, dict) else None
+
+
+def _normalize_enrichment(enhancements: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Keep the output lean and consistent for your dict-based enrichment pipeline + caching.
+    This does NOT enforce rating bounds; your enrichment file already does that.
+    """
+    clean: Dict[str, Any] = {k: enhancements.get(k) for k in ALLOWED_ENRICHMENT_KEYS if k in enhancements}
+
+    # Optional small normalizations (safe):
+    # - rating_count should be int if possible
+    if "rating_count" in clean and clean["rating_count"] is not None:
+        try:
+            clean["rating_count"] = int(clean["rating_count"])
+        except (TypeError, ValueError):
+            clean.pop("rating_count", None)
+
+    # - rating should be float if possible
+    if "rating" in clean and clean["rating"] is not None:
+        try:
+            clean["rating"] = float(clean["rating"])
+        except (TypeError, ValueError):
+            clean.pop("rating", None)
+
+    return clean
 
 
 def extract_enrichments(
@@ -45,11 +93,18 @@ def extract_enrichments(
     product_name: str,
     product_type: str,
     search_results: list[dict[str, Any]],
-) -> dict[str, Any]:
-    
+) -> Dict[str, Any]:
+    """
+    Returns a plain dict (JSON-like) with keys like:
+      product_url, image_url, price, rating, rating_count, source_name
+
+    This is compatible with:
+      extracted = extract_enrichments(brand, name, product_type, candidates)
+    in your enrichment file.
+    """
     if not brand or not product_name or not product_type:
         raise ValueError("brand, product_name, and product_type are required")
-
+    
     lean_results = [
         {
             "title": r.get("title", ""),
@@ -63,8 +118,8 @@ def extract_enrichments(
 
     search_results_json = json.dumps(lean_results, ensure_ascii=False, indent=2)
 
-    PROMPT_TEMPLATE = _load_prompt_template("extract_product_fields.txt")
-    prompt = PROMPT_TEMPLATE.format(
+    prompt_template = _get_prompt_template()
+    prompt = prompt_template.format(
         brand=brand,
         product_name=product_name,
         product_type=product_type,
@@ -72,7 +127,7 @@ def extract_enrichments(
     )
 
     llm = ChatOpenAI(
-        model="gpt-3.5-turbo-0125",
+        model=LLM_MODEL,
         temperature=0,
         max_tokens=1000,
     )
@@ -81,18 +136,7 @@ def extract_enrichments(
     text = getattr(resp, "content", "") or str(resp)
 
     enhancements = _extract_json(text)
-    if not enhancements or not isinstance(enhancements, dict):
+    if not enhancements:
         raise ValueError("Failed to extract a valid JSON object from the LLM response.")
 
-    return enhancements
-
-    # Example output:
-    # {
-    #   "product_url": "https://www.sephora.com/product/soft-pinch-liquid-blush-P979897",
-    #   "image_url": "https://www.sephora.com/productimages/sku/s2474568-main-zoom.jpg",
-    #   "price": "$25.00",
-    #   "rating": 4.6,
-    #   "rating_count": 12000,
-    #   "source_name": "sephora.com"
-    # }
-
+    return _normalize_enrichment(enhancements)

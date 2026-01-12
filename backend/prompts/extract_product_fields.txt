@@ -8,4 +8,23 @@ PRODUCT TO ENRICH:
 SEARCH RESULTS:
 {search_results_json}
 
-Return ONLY a single valid JSON object with the enhancements. No markdown, no commentary.
+EXTRACTION REQUIREMENTS:
+Extract the following fields from the search results:
+- product_url: The direct URL to purchase or view the product (string)
+- image_url: The URL to the product image if available (string)
+- price: The product price (string with currency notation)
+- rating: The product rating on a scale of 0-5 (number, e.g., 4.5)
+- rating_count: The number of ratings/reviews (integer)
+- source_name: The domain/website name where the information was found (string)
+- explanation: A brief explanation of why this product matches the search (string, 1-2 sentences)
+
+Return ONLY a single valid JSON object containing these fields. No markdown, no commentary. Example format:
+{
+  "product_url": "https://example.com/product",
+  "image_url": "https://example.com/image.jpg",
+  "price": "$49.99",
+  "rating": 4.5,
+  "rating_count": 1250,
+  "source_name": "example.com",
+  "explanation": "This product matches your search criteria and offers excellent value."
+}

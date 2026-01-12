@@ -1,113 +1,111 @@
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, TypedDict
 from langchain_core.documents import Document
-from pydantic import BaseModel, Field, validator
 
 from services.web_search import web_search
 from services.extraction import extract_enrichments
 from data.cache.sqlite_enrichment_cache import SQLiteEnrichmentCache
 
 
-class ProductEnrichment(BaseModel):
-    product_url: Optional[str] = None
-    image_url: Optional[str] = None
-    price: Optional[str] = None
-    rating: Optional[float] = Field(None, ge=0, le=5)
-    rating_count: Optional[int] = Field(None, ge=0)
-    source_name: Optional[str] = None
+def _validate_enrichment(enrichment: Any) -> Optional[Dict[str, Any]]:
+    """
+    Ensures enrichment is either None or a dict with sane fields.
+    Keeps this lightweight (no Pydantic).
+    """
 
-    @validator("rating")
-    def validate_rating(cls, v):
-        if v is not None and (v < 0 or v > 5):
-            raise ValueError("Rating must be between 0 and 5")
-        return v
+    if enrichment is None:
+        return None
+    if not isinstance(enrichment, dict):
+        return None
+
+    # Copy only known keys
+    allowed_keys = {
+        "product_url",
+        "image_url",
+        "price",
+        "rating",
+        "rating_count",
+        "source_name",
+        "explanation",
+    }
+
+    clean: Dict[str, Any] = {k: enrichment.get(k) for k in allowed_keys if k in enrichment}
+
+    # Validate rating (0..5)
+    rating = clean.get("rating")
+    if rating is not None:
+        try:
+            rating_float = float(rating)
+        except (TypeError, ValueError):
+            clean.pop("rating", None)
+        else:
+            if 0.0 <= rating_float <= 5.0:
+                clean["rating"] = rating_float
+            else:
+                clean.pop("rating", None)
+
+    # Validate rating_count (>=0)
+    rating_count = clean.get("rating_count")
+    if rating_count is not None:
+        try:
+            rc_int = int(rating_count)
+        except (TypeError, ValueError):
+            clean.pop("rating_count", None)
+        else:
+            if rc_int >= 0:
+                clean["rating_count"] = rc_int
+            else:
+                clean.pop("rating_count", None)
+
+    return clean
 
 
-class EnrichedProduct(BaseModel):
-    id: str
-    brand: str
-    name: str
-    product_type: str
-    product_description: Optional[str] = None
-    metadata: Dict[str, Any]
-    enrichment: Optional[ProductEnrichment]
-
-
-def _to_dict(model: BaseModel) -> Dict[str, Any]:
-    """Supports both Pydantic v1 (.dict) and v2 (.model_dump)."""
-    if hasattr(model, "model_dump"):
-        return model.model_dump()
-    return model.dict()
-
-
-def get_enriched_products(products: List[Document]) -> List[EnrichedProduct]:
-    enriched_results: List[EnrichedProduct] = []
+def get_enriched_products(products: List[Document]) -> List[Dict[str, Any]]:
+    enriched_results: List[Dict[str, Any]] = []
     cache = SQLiteEnrichmentCache()
 
     for product in products:
         metadata = product.metadata or {}
         pid = metadata.get("id") or cache.generate_key(metadata)
-        
+
         cached = cache.get(pid)
 
-        # Check cache first
-        if cached:
-            try:
-                enriched_results.append(EnrichedProduct(**cached))
-                continue
-            except Exception:
-                pass
+        # Check cache hit
+        if isinstance(cached, dict) and cached.get("id"):
+            enriched_results.append(cached)
+            continue
 
-        # Required fields for enrichment
-        brand = metadata.get("brand", "")
-        name = metadata.get("name", "")
-        product_type = metadata.get("product_type", "")
-        product_description = metadata.get("description", "")
+        brand = metadata.get("brand", "") or ""
+        name = metadata.get("name", "") or ""
+        product_type = metadata.get("product_type", "") or ""
+        product_description = metadata.get("description", "") or ""
+
+        base_obj: Dict[str, Any] = {
+            "id": pid,
+            "brand": brand,
+            "name": name,
+            "product_type": product_type,
+            "product_description": product_description,
+            "enrichment": None,
+        }
 
         # If missing required fields, return minimal object
         if not all([brand, name, product_type, product_description]):
-            enriched_results.append(
-                EnrichedProduct(
-                    id=pid,
-                    brand=brand,
-                    name=name,
-                    product_type=product_type,
-                    product_description=product_description,
-                    metadata=metadata,
-                    enrichment=None,
-                )
-            )
+            enriched_results.append(base_obj)
+            cache.set(pid, base_obj)
             continue
 
         try:
             candidates = web_search(brand, name, product_type, k=6)
             extracted = extract_enrichments(brand, name, product_type, candidates)
 
-            enriched_product = EnrichedProduct(
-                id=pid,
-                brand=brand,
-                name=name,
-                product_type=product_type,
-                product_description=product_description,
-                metadata=metadata,
-                enrichment=extracted,
-            )
+            base_obj["enrichment"] = _validate_enrichment(extracted)
 
-            # Save to cache as plain dict
-            cache.set(pid, _to_dict(enriched_product))
-            enriched_results.append(enriched_product)
+            cache.set(pid, base_obj)
+            enriched_results.append(base_obj)
 
         except Exception as e:
             print(f"Error enriching product {pid}: {e}")
-            enriched_results.append(
-                EnrichedProduct(
-                    id=pid,
-                    brand=brand,
-                    name=name,
-                    product_type=product_type,
-                    product_description=product_description,
-                    metadata=metadata,
-                    enrichment=None,
-                )
-            )
+            cache.set(pid, base_obj)
+            enriched_results.append(base_obj)
 
     return enriched_results

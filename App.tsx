@@ -1,25 +1,25 @@
-/**
- * App
- * - Root entry point that renders onboarding, home, and results screens
- * - Hosts app-level layout and delegates navigation/data flow to AppContent
- */
-
 import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+
+// API
+import { fetchRecommendations } from './frontend/api/recommendations';
+
+// Types
+import { Product } from './frontend/types/products';
+type APIResponse = {
+  query: string;
+  products: Product[];
+};
+// Mock data
+// import {
+//   MOCK_PRODUCTS,
+//   MOCK_RESULTS_EXPLANATION,
+// } from './frontend/mock/mockData';
 
 // Screens
 import { HomeScreen } from './frontend/components/screens/HomeScreen';
 import { ResultsScreen } from './frontend/components/screens/ResultsScreen';
 import { WelcomeScreen } from './frontend/components/screens/WelcomeScreen';
-
-// Mock data
-import {
-  MOCK_PRODUCTS,
-  MOCK_RESULTS_EXPLANATION,
-} from './frontend/mock/mockData';
-
-// Types
-import { Product } from './frontend/types/products';
 
 type AppScreen = 'onboarding' | 'home' | 'results';
 type ProductSelection = 'like' | 'dislike' | null;
@@ -36,10 +36,12 @@ export default function App() {
 }
 
 /**
- * AppContent
- * - Owns navigation state between app screens
- * - Manages search state and initial product results
- * - Fetches and caches Home screen popular queries
+ * Main App component
+ * - Root component for the GlamFind application
+ * - Manages overall app state and screen navigation
+ * - Coordinates data flow between screens and API
+ *
+ * @returns React component serving as the application entry point
  */
 
 function AppContent() {
@@ -57,28 +59,23 @@ function AppContent() {
   // ----------------------- Data -----------------------
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [explanation, setExplanation] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
 
   // ----------------------- Search -----------------------
-  // TODO: Implement actual search handler
   const handleSearch = useCallback(
     async (rawQuery: string) => {
       const trimmed = rawQuery.trim();
       if (!trimmed) return;
 
-      setSearchQuery(trimmed);
-
-      // Replace with actual backend search
-      // const { products: fetchedProducts, explanation: fetchedExplanation } =
-      //   await fetchProductsFromBackend(trimmed);
-      // setProducts(fetchedProducts);
-      // setExplanation(fetchedExplanation);
-
-      setProducts(MOCK_PRODUCTS);
-      setExplanation(MOCK_RESULTS_EXPLANATION);
-
-      navigateToResults();
+      try {
+        setSearchQuery(trimmed);
+        const response: APIResponse = await fetchRecommendations(trimmed);
+        setProducts(response.products ?? []);
+        navigateToResults();
+      } catch (e) {
+        console.error('Search failed:', e);
+        // TODO: Show user-friendly error message
+      }
     },
     [navigateToResults],
   );
@@ -143,7 +140,6 @@ function AppContent() {
     return (
       <ResultsScreen
         initialQuery={searchQuery}
-        initialExplanation={explanation}
         products={products}
         onBack={navigateToHome}
         onProductClick={handleProductClick}

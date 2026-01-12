@@ -16,9 +16,13 @@ type WelcomeScreenProps = {
 };
 
 /**
- * WelcomScreen component
+ * WelcomeScreen component
  * - Welcome screen with app introduction
+ * 
+ * @param onGetStarted - Callback function triggered when user taps "Get Started"
+ * @returns React component for the welcome screen
  */
+
 export function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
   const styles = useWelcomeStyles();
 

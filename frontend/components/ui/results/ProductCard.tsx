@@ -13,10 +13,16 @@ import { LikeButton } from './LikeButton';
 import { DislikeButton } from './DislikeButton';
 
 type ProductCardProps = {
-  image: string;
+  id: string;
+  image_url: string;
   brand: string;
   name: string;
-  rationale: string;
+  product_url: string;
+  price: string;
+  rating: number;
+  rating_count: number;
+  source_name: string;
+  explanation: string;
   onPress: (productId: string) => void;
   updateSelections: (
     productId: string,
@@ -47,39 +53,80 @@ type ProductCardProps = {
  */
 
 export function ProductCard({
-  image,
+  id,
+  image_url,
   brand,
   name,
-  rationale,
+  product_url,
+  price,
+  rating,
+  rating_count,
+  source_name,
+  explanation,
   onPress,
   style,
   updateSelections,
 }: ProductCardProps) {
   const [selection, setSelection] = useState<'like' | 'dislike' | null>(null);
-  const productId = `${brand}-${name}`;
 
   const handleSelection = (next: 'like' | 'dislike') => {
     const newSelection = selection === next ? null : next;
     setSelection(newSelection);
-    updateSelections(productId, newSelection);
+    updateSelections(id, newSelection);
   };
 
   return (
     <Pressable
-      onPress={() => onPress && onPress(productId)}
+      onPress={() => onPress && onPress(id)}
       style={({ pressed }) => [style.card, pressed && style.pressed]}
       accessibilityRole="button"
     >
       {/* Product image */}
       <View style={style.imageWrap}>
-        <Image source={{ uri: image }} style={style.image} resizeMode="cover" />
+        <Image
+          source={{ uri: image_url }}
+          style={style.image}
+          resizeMode="cover"
+        />
       </View>
 
       {/* Product details */}
       <View style={style.content}>
         <Text style={style.brand}>{brand}</Text>
         <Text style={style.name}>{name}</Text>
-        <Text style={style.rationale}>{rationale}</Text>
+        <Text style={style.rationale}>{explanation}</Text>
+
+        {/* Price and Rating */}
+        <View
+          style={{ flexDirection: 'row', marginTop: 8, alignItems: 'center' }}
+        >
+          {price && <Text style={style.brand}>{price}</Text>}
+          {rating > 0 && (
+            <Text style={[style.brand, { marginLeft: 12 }]}>
+              ⭐ {rating.toFixed(1)} ({rating_count})
+            </Text>
+          )}
+        </View>
+
+        {/* Source */}
+        {source_name && (
+          <Text style={[style.rationale, { fontSize: 11, marginTop: 4 }]}>
+            From {source_name}
+          </Text>
+        )}
+
+        {/* Web link - hidden but accessible via onPress */}
+        {product_url && (
+          <Text
+            style={[
+              style.rationale,
+              { fontSize: 10, marginTop: 2, opacity: 0.7 },
+            ]}
+            numberOfLines={1}
+          >
+            {product_url}
+          </Text>
+        )}
 
         {/* Like / Dislike actions */}
         <View style={style.actionsRow}>

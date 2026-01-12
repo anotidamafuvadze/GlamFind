@@ -12,20 +12,18 @@ import BackButton from '../ui/general/BackButton';
 import SearchBar from '../ui/general/SearchBar';
 import ProductList from '../ui/results/ProductList';
 
-// Types
-import { Product } from '../../types/products';
-
 // Mock data
 import {
   MOCK_REFINED_EXPLANATION,
   MOCK_REFINED_PRODUCTS,
 } from '../../mock/mockData';
 
+// Types
+import { Product } from '../../types/products';
 type ProductSelection = 'like' | 'dislike' | null;
 
 type ResultsScreenProps = {
   initialQuery: string;
-  initialExplanation: string;
   onBack: () => void;
   onProductClick: (productId: string) => void;
   products: Product[];
@@ -33,13 +31,20 @@ type ResultsScreenProps = {
 };
 
 /**
- * ResultsScreen
+ * ResultsScreen component
  * - Displays AI-curated product results
  * - Allows users to refine results via follow-up search
+ * 
+ * @param initialQuery - The original search query that triggered these results
+ * @param onBack - Callback function triggered when back button is pressed
+ * @param onProductClick - Callback function triggered when a product is clicked
+ * @param products - Array of product data to display
+ * @param updateSelections - Function to update user's like/dislike selections
+ * @returns React component for the results screen
  */
+
 export function ResultsScreen({
   initialQuery,
-  initialExplanation,
   onBack,
   onProductClick,
   products,
@@ -49,7 +54,6 @@ export function ResultsScreen({
 
   const [baseQuery, setBaseQuery] = useState(initialQuery);
   const [searchQuery, setSearchQuery] = useState('');
-  const [refinedExplanation, setRefinedExplanation] = useState(initialExplanation);
   const [refinedProducts, setRefinedProducts] = useState(products);
 
   const listData = useMemo(() => refinedProducts, [refinedProducts]);
@@ -65,8 +69,7 @@ export function ResultsScreen({
       // setRefinedProducts(fetchedProducts);
       // setRefinedExplanation(explanation);
 
-      setRefinedProducts(MOCK_REFINED_PRODUCTS);
-      setRefinedExplanation(MOCK_REFINED_EXPLANATION);
+      // setRefinedProducts(MOCK_REFINED_PRODUCTS);
 
       setBaseQuery(trimmedQuery);
       setSearchQuery('');
@@ -89,7 +92,6 @@ export function ResultsScreen({
       {/* Product Results */}
       <ProductList
         products={listData}
-        explanation={refinedExplanation}
         onProductPress={onProductClick}
         updateSelections={updateSelections}
         style={styles.products}

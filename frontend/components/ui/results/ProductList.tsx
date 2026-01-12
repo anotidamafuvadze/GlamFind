@@ -13,15 +13,19 @@ import { ProductCard } from './ProductCard';
 
 export type Product = {
   id: string;
-  image: string;
-  brand: string;
   name: string;
-  rationale: string;
+  brand: string;
+  product_url: string;
+  image_url: string;
+  price: string;
+  rating: number;
+  rating_count: number;
+  source_name: string;
+  explanation: string;
 };
 
 type ProductListProps = {
   products: Product[];
-  explanation: string;
   onProductPress: (productId: string) => void;
   updateSelections: (
     productId: string,
@@ -66,7 +70,6 @@ type ProductListProps = {
 
 export default function ProductList({
   products,
-  explanation,
   onProductPress,
   style,
   cardStyle,
@@ -74,44 +77,43 @@ export default function ProductList({
 }: ProductListProps) {
   const renderHeader = () => (
     <View>
-      {/* Explanation */}
-      <View style={style.explanation.card}>
-        <View style={style.explanation.aiBadge}>
-          <Text style={style.explanation.aiBadgeText}>✦</Text>
-        </View>
-
-        <View style={style.explanation.textWrapper}>
-          <Text style={style.explanation.title}>Why These Products</Text>
-          <Text style={style.explanation.body}>{explanation}</Text>
-        </View>
-      </View>
-
       <Text style={style.label}>PRODUCTS</Text>
     </View>
   );
-
   const renderProduct = ({ item }: { item: Product }) => (
     <View style={style.row}>
       <ProductCard
-        image={item.image}
+        id={item.id}
+        image_url={item.image_url}
         brand={item.brand}
         name={item.name}
-        rationale={item.rationale}
+        product_url={item.product_url}
+        price={item.price}
+        rating={item.rating}
+        rating_count={item.rating_count}
+        source_name={item.source_name}
+        explanation={item.explanation}
         onPress={onProductPress}
         style={cardStyle}
         updateSelections={updateSelections}
       />
-    </View>
+  </View>
   );
 
   return (
     <FlatList
       data={products}
-      keyExtractor={item => item.id}
+      keyExtractor={(item, index) => {
+        const stableId =
+          item.id?.trim() ||
+          item.product_url?.trim() ||
+          `${item.brand}|${item.name}`;
+        return `${stableId}-${index}`;
+      }}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={style.listContent}
-      ListHeaderComponent={renderHeader}
       renderItem={renderProduct}
+      ListHeaderComponent={renderHeader}
       ListFooterComponent={<View style={{ height: 120 }} />}
     />
   );

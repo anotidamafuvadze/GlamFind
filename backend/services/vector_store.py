@@ -3,7 +3,7 @@ import pandas as pd
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from csv_loader import get_documents
+from services.csv_loader import get_documents
 
 
 def get_vector_store(
