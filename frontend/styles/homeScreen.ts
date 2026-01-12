@@ -105,7 +105,7 @@ export default function useHomeStyles() {
         text: {
           color: colors.BLACK,
           fontSize: fonts.size.home.likesButtonText,
-          fontWeight: fonts.weight.light,
+          fontWeight: fonts.weight.regular,
           marginTop: layouts.HOME.LIKES_BUTTON_TEXT_MARGIN_TOP,
         } as TextStyle,
 
@@ -134,7 +134,7 @@ export default function useHomeStyles() {
         text: {
           color: colors.BLACK,
           fontSize: fonts.size.home.signInButtonText,
-          fontWeight: fonts.weight.light,
+          fontWeight: fonts.weight.regular,
           marginTop: layouts.HOME.SIGNIN_BUTTON_TEXT_MARGIN_TOP,
         } as TextStyle,
 

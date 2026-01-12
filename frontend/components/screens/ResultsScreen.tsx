@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 // Styles
@@ -34,7 +34,7 @@ type ResultsScreenProps = {
  * ResultsScreen component
  * - Displays AI-curated product results
  * - Allows users to refine results via follow-up search
- * 
+ *
  * @param initialQuery - The original search query that triggered these results
  * @param onBack - Callback function triggered when back button is pressed
  * @param onProductClick - Callback function triggered when a product is clicked
@@ -56,6 +56,10 @@ export function ResultsScreen({
   const [searchQuery, setSearchQuery] = useState('');
   const [refinedProducts, setRefinedProducts] = useState(products);
 
+  useEffect(() => {
+    setRefinedProducts(products);
+  }, [products]);
+
   const listData = useMemo(() => refinedProducts, [refinedProducts]);
 
   // TODO: Implement refined search handler
@@ -74,7 +78,7 @@ export function ResultsScreen({
       setBaseQuery(trimmedQuery);
       setSearchQuery('');
     },
-    [baseQuery]
+    [baseQuery],
   );
 
   return (

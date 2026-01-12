@@ -1,14 +1,15 @@
 import React from 'react';
-import { 
-  View, 
-  TextInput, 
-  Pressable, 
-  Image, 
-  ViewStyle, 
-  TextStyle, 
-  ImageStyle, 
-  TextInputProps 
+import {
+  View,
+  TextInput,
+  Pressable,
+  Image,
+  ViewStyle,
+  TextStyle,
+  ImageStyle,
+  TextInputProps,
 } from 'react-native';
+import { LoadingSpinner } from './Loader';
 
 type SearchBarProps = {
   value: string;
@@ -24,6 +25,7 @@ type SearchBarProps = {
     icon: ImageStyle;
   };
   iconSource: number;
+  isLoading?: boolean;
 };
 
 /**
@@ -38,6 +40,7 @@ export default function SearchBar({
   placeholder,
   style,
   iconSource,
+  isLoading = false,
 }: SearchBarProps) {
   return (
     <View style={style.container}>
@@ -48,20 +51,23 @@ export default function SearchBar({
         placeholderTextColor={'grey'}
         style={style.input}
         onSubmitEditing={onSubmit}
+        editable={!isLoading}
         {...style.inputProps}
+        selectionColor="#565656ff"
       />
 
       <Pressable
         onPress={onSubmit}
+        disabled={isLoading}
         style={({ pressed }) => [style.button, pressed && style.pressed]}
         accessibilityRole="button"
         accessibilityLabel={'Search'}
       >
-        <Image
-          source={iconSource}
-          style={style.icon}
-          resizeMode="contain"
-        />
+        {isLoading ? (
+          <LoadingSpinner style={style.icon} />
+        ) : (
+          <Image source={iconSource} style={style.icon} resizeMode="contain" />
+        )}
       </Pressable>
     </View>
   );

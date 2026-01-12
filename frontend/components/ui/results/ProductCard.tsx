@@ -103,7 +103,7 @@ export function ProductCard({
           {price && <Text style={style.brand}>{price}</Text>}
           {rating > 0 && (
             <Text style={[style.brand, { marginLeft: 12 }]}>
-              ⭐ {rating.toFixed(1)} ({rating_count})
+               ★ {rating.toFixed(1)} ({rating_count})
             </Text>
           )}
         </View>

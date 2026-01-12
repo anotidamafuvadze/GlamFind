@@ -8,18 +8,22 @@ PRODUCT TO ENRICH:
 SEARCH RESULTS:
 {search_results_json}
 
-EXTRACTION REQUIREMENTS:
-Extract the following fields from the search results:
-- product_url: The direct URL to purchase or view the product (string)
-- image_url: The URL to the product image if available (string)
-- price: The product price (string with currency notation)
-- rating: The product rating on a scale of 0-5 (number, e.g., 4.5)
-- rating_count: The number of ratings/reviews (integer)
-- source_name: The domain/website name where the information was found (string)
-- explanation: A brief explanation of why this product matches the search (string, 1-2 sentences)
+EXTRACTION REQUIREMENTS (fill every field, use empty string/null only when truly unavailable):
+- product_url: Direct product page or best purchase page URL (string, https preferred, no trackers). If multiple, pick the most authoritative retail/product page.
+- image_url: Extract from raw_content where possible: prefer og:image or the first valid https image URL (.jpg/.jpeg/.png/.webp). If nothing usable is present, return an empty string—not the product_url.
+- price: Price string with currency (e.g., "$49.99"). If absent, use empty string.
+- rating: Numeric rating 0-5 if present; else null.
+- rating_count: Integer review count if present; else null.
+- source_name: Domain name of the chosen product_url (e.g., sephora.com).
+explanation: 1–2 concise sentences explaining why this product satisfies the user’s intent in {query}, referencing key attributes supported by the search results.
 
-Return ONLY a single valid JSON object containing these fields. No markdown, no commentary. Example format:
-{
+STRICT OUTPUT:
+- Return only one JSON object, no markdown, no code fences.
+- Do not invent data; use empty string/null when not found.
+- Keep fields exactly as specified above.
+
+Example format:
+{{
   "product_url": "https://example.com/product",
   "image_url": "https://example.com/image.jpg",
   "price": "$49.99",
@@ -27,4 +31,5 @@ Return ONLY a single valid JSON object containing these fields. No markdown, no 
   "rating_count": 1250,
   "source_name": "example.com",
   "explanation": "This product matches your search criteria and offers excellent value."
-}
+}}
+

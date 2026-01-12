@@ -60,6 +60,7 @@ function AppContent() {
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   // ----------------------- Search -----------------------
   const handleSearch = useCallback(
@@ -68,13 +69,28 @@ function AppContent() {
       if (!trimmed) return;
 
       try {
+        setIsSearchLoading(true);
         setSearchQuery(trimmed);
         const response: APIResponse = await fetchRecommendations(trimmed);
+
+        // console.log('=== API RESPONSE ===');
+        // console.log('Full response:', JSON.stringify(response, null, 2));
+        // console.log('Number of products:', response.products?.length || 0);
+        // if (response.products && response.products.length > 0) {
+        //   console.log(
+        //     'First product sample:',
+        //     JSON.stringify(response.products[0], null, 2),
+        //   );
+        // }
+        // console.log('===================');
+
         setProducts(response.products ?? []);
         navigateToResults();
       } catch (e) {
         console.error('Search failed:', e);
         // TODO: Show user-friendly error message
+      } finally {
+        setIsSearchLoading(false);
       }
     },
     [navigateToResults],
@@ -131,6 +147,7 @@ function AppContent() {
         onSettingsPress={navigateToSettings}
         onSignInPress={navigateToSignIn}
         popularQueries={popularQueries}
+        isSearchLoading={isSearchLoading}
       />
     );
   }

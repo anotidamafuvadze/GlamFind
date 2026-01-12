@@ -1,43 +1,8 @@
-Day 1: Project setup
+TODO:
 
-Create repo + folder structure (pipelines/, services/, prompts/, schemas/)
-
-Set up .env (OpenAI key), logging, basic config
-
-Decide your product_id strategy (hash brand+name)
-
-Step One: CSV → Documents (csv_loader and embedding)
-
-- Load CSV rows (brand, product_name, product_type, description)
-
-- Build canonical embedding_text function
-
-- Create Document objects w/ metadata
-
-!!!!!
-
-- Add simple cleaning/normalization (strip whitespace, normalize casing)
-
-Step Two: Vector store build (vector_store)
-
-- Create Chroma collection + persistence
-
-- Embed + upsert in batches
-
-- Add a simple CLI command: python pipelines/build_index.py
-
-- Quick sanity checks: count in store, sample metadata, basic similarity search
-
-1111
-
-
-Step 3: Query path (retrieval )
-
-- Implement: user query → similarity_search(k=5)
-
-- Print top 5 results (brand/name/type + a snippet of description)
-
-Step 4: Enrichrich products with image, price rating and web link (enrichment -> extraction)
-
-Step 5 return anser with answer templete along with enriched products to front end
-
+1. FIGURE OUT HOW TO ADD IMAGES
+2. Watch video on fastapi
+4. TRY TO MAKE QUERY FASTER
+6. Implement user accounts and authentication
+7. REMOVE PRINT LOGS
+8. Make ure carousel pics are perfect

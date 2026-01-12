@@ -45,14 +45,14 @@ export default function useFonts() {
         home: {
           title: 50 * scale,
           lineHeight: 55 * scale,
+          likesButtonText: 12 * scale,
+          signInButtonText: 12 * scale,
           searchInput: 20 * scale,
           searchIcon: 45 * scale,
           exampleLabel: 14 * scale,
           exampleText: 18 * scale,
           button: 27 * scale,
           bottomText: 11 * scale,
-          likesButtonText: 12 * scale,
-          signInButtonText: 12 * scale,
         },
 
         // ----------------------- RESULTS -----------------------
