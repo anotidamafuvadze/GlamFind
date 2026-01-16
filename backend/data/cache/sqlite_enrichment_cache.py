@@ -36,7 +36,7 @@ class SQLiteEnrichmentCache:
                 "CREATE INDEX IF NOT EXISTS idx_retrieved_at ON enrichment_cache(retrieved_at)"
             )
 
-    def get(self, key: str, max_age_days: int = 7) -> Optional[Dict[str, Any]]:
+    def get(self, key: str, max_age_days: int = 365) -> Optional[Dict[str, Any]]:
         """Return cached value if present and not older than max_age_days."""
         cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
 

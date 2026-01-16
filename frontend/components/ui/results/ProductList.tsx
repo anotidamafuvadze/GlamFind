@@ -1,87 +1,41 @@
-import React from 'react';
-import {
-  FlatList,
-  View,
-  Text,
-  ViewStyle,
-  ImageStyle,
-  TextStyle,
-} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { FlatList, ListRenderItem, View, ViewStyle } from 'react-native';
 
-// Local imports
 import { ProductCard } from './ProductCard';
+import { Product } from '../../../types/products';
 
-export type Product = {
-  id: string;
-  name: string;
-  brand: string;
-  product_url: string;
-  image_url: string;
-  price: string;
-  rating: number;
-  rating_count: number;
-  source_name: string;
-  explanation: string;
-};
+type ProductSelection = 'like' | 'dislike' | null;
 
 type ProductListProps = {
   products: Product[];
   onProductPress: (productId: string) => void;
-  updateSelections: (
-    productId: string,
-    selection: 'like' | 'dislike' | null,
-  ) => void;
+  updateSelections: (productId: string, selection: ProductSelection) => void;
   style: {
     listContent: ViewStyle;
-    explanation: {
-      card: ViewStyle;
-      aiBadge: ViewStyle;
-      aiBadgeText: TextStyle;
-      textWrapper: ViewStyle;
-      title: TextStyle;
-      body: TextStyle;
-    };
-    label: TextStyle;
-    row: ViewStyle;
   };
-  cardStyle: {
-    card: ViewStyle;
-    pressed: ViewStyle;
-    imageWrap: ViewStyle;
-    image: ImageStyle;
-    content: ViewStyle;
-    brand: TextStyle;
-    name: TextStyle;
-    rationale: TextStyle;
-    actionsRow: ViewStyle;
-    actionButton: {
-      button: ViewStyle;
-      selected: ViewStyle;
-      text: TextStyle;
-      selectedText: TextStyle;
-    };
-  };
+  cardStyle: React.ComponentProps<typeof ProductCard>['style'];
 };
 
-/**
- * ProductList component
- * - Renders an explained list of recommended products using a scrollable list
- */
+const FOOTER_HEIGHT = 120;
+const CARD_SPACING = 40;
+
+// Fix A throttling props (this is the one that reduces concurrent image downloads)
+const INITIAL_NUM_TO_RENDER = 4;
+const MAX_TO_RENDER_PER_BATCH = 4;
+const UPDATE_CELLS_BATCHING_PERIOD = 50;
+const WINDOW_SIZE = 6;
 
 export default function ProductList({
   products,
   onProductPress,
+  updateSelections,
   style,
   cardStyle,
-  updateSelections,
 }: ProductListProps) {
-  const renderHeader = () => (
-    <View>
-      <Text style={style.label}>PRODUCTS</Text>
-    </View>
-  );
-  const renderProduct = ({ item }: { item: Product }) => (
-    <View style={style.row}>
+  const keyExtractor = useCallback((item: Product) => item.id, []);
+
+  const renderItem = useCallback<ListRenderItem<Product>>(
+    ({ item }) => (
       <ProductCard
         id={item.id}
         image_url={item.image_url}
@@ -94,27 +48,32 @@ export default function ProductList({
         source_name={item.source_name}
         explanation={item.explanation}
         onPress={onProductPress}
-        style={cardStyle}
         updateSelections={updateSelections}
+        style={cardStyle}
       />
-  </View>
+    ),
+    [onProductPress, updateSelections, cardStyle],
+  );
+
+  const listFooter = useMemo(
+    () => <View style={{ height: FOOTER_HEIGHT }} />,
+    [],
   );
 
   return (
     <FlatList
       data={products}
-      keyExtractor={(item, index) => {
-        const stableId =
-          item.id?.trim() ||
-          item.product_url?.trim() ||
-          `${item.brand}|${item.name}`;
-        return `${stableId}-${index}`;
-      }}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={style.listContent}
-      renderItem={renderProduct}
-      ListHeaderComponent={renderHeader}
-      ListFooterComponent={<View style={{ height: 120 }} />}
+      ListFooterComponent={listFooter}
+      initialNumToRender={INITIAL_NUM_TO_RENDER}
+      maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+      updateCellsBatchingPeriod={UPDATE_CELLS_BATCHING_PERIOD}
+      windowSize={WINDOW_SIZE}
+      ItemSeparatorComponent={() => <View style={{ height: CARD_SPACING }} />}
+      removeClippedSubviews
     />
   );
 }

@@ -145,7 +145,7 @@ export default function useLayouts() {
         SEARCH_ICON_MARGIN_LEFT: 3 * scaleWidth,
 
         // Example queries
-        EXAMPLES_MAX_WIDTH: 280 * scaleWidth,
+        EXAMPLES_MAX_WIDTH: 290 * scaleWidth,
         EXAMPLES_LABEL_MARGIN_BOTTOM: 20 * scaleHeight,
         EXAMPLES_GAP: 12 * scaleHeight,
         EXAMPLE_CARD_PADDING_VERTICAL: 16 * scaleHeight,

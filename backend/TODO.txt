@@ -1,8 +1,14 @@
 TODO:
 
 1. FIGURE OUT HOW TO ADD IMAGES
+2. Implement refined searching
 2. Watch video on fastapi
 4. TRY TO MAKE QUERY FASTER
 6. Implement user accounts and authentication
-7. REMOVE PRINT LOGS
-8. Make ure carousel pics are perfect
+7. REMOVE PRINT LOGS and console logs
+8. Make sure carousel pics are perfect
+9. Add tracking to see how many searches are being made a month so you dont go over 250
+10. Have the user query show up at the top of the curated for you screen
+11. Polish product api so that it just uses amazon search api not google shopping
+12. Make Amazon link actually clickable
+13. PREVENT APP FROM ROTATING

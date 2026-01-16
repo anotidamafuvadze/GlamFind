@@ -1,4 +1,4 @@
-def retrieve_top_products(vector_store, query: str,limit: int = 8):
+def retrieve_top_products(vector_store, query: str,limit: int = 5):
     """
     Retrieve the top-matching product documents from the vector store
     based on semantic similarity to the user's query.

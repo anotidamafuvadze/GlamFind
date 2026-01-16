@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-  Image,
   ImageStyle,
   Pressable,
   Text,
@@ -8,6 +7,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import FastImage from '@d11/react-native-fast-image';
 
 import { LikeButton } from './LikeButton';
 import { DislikeButton } from './DislikeButton';
@@ -50,6 +50,12 @@ type ProductCardProps = {
 /**
  * ProductCard component
  * - Displays a product image, details, and AI-generated rationale
+ * - Fix 2: Use react-native-fast-image for better caching + more reliable remote loading
+ * - Keeps diagnostic logs for image load success / failure
+ *
+ * Install (npm):
+ *   npm install react-native-fast-image
+ *   cd ios && pod install && cd ..
  */
 
 export function ProductCard({
@@ -69,6 +75,20 @@ export function ProductCard({
 }: ProductCardProps) {
   const [selection, setSelection] = useState<'like' | 'dislike' | null>(null);
 
+  const normalizedImageUrl = useMemo(
+    () => (image_url || '').trim(),
+    [image_url],
+  );
+
+  // ---- IMAGE DIAGNOSTICS ----
+  const hasImageUrl = !!normalizedImageUrl;
+  console.log(
+    'ProductCard image_url:',
+    normalizedImageUrl,
+    'exists?',
+    hasImageUrl,
+  );
+
   const handleSelection = (next: 'like' | 'dislike') => {
     const newSelection = selection === next ? null : next;
     setSelection(newSelection);
@@ -81,16 +101,37 @@ export function ProductCard({
       style={({ pressed }) => [style.card, pressed && style.pressed]}
       accessibilityRole="button"
     >
-      {/* Product image */}
-      <View style={style.imageWrap}>
-        <Image
-          source={{ uri: image_url }}
-          style={style.image}
-          resizeMode="cover"
-        />
-      </View>
+      {/* ===================== */}
+      {/* PRODUCT IMAGE HEADER */}
+      {/* ===================== */}
+      {hasImageUrl && (
+        <View style={style.imageWrap}>
+          <FastImage
+            style={[style.image as any]}
+            source={{
+              uri: normalizedImageUrl,
+              // Helps when you have many images in a list
+              priority: FastImage.priority.normal,
+              // Good default for CDN URLs that don't change often
+              cache: FastImage.cacheControl.immutable,
+            }}
+            resizeMode={FastImage.resizeMode.contain} // Changed from "cover" to "contain"
+            onLoad={() =>
+              console.log('Image loaded successfully:', normalizedImageUrl)
+            }
+            onError={e => {
+              console.log('FastImage error:', {
+                url: normalizedImageUrl,
+                nativeEvent: e?.nativeEvent,
+              });
+            }}
+          />
+        </View>
+      )}
 
-      {/* Product details */}
+      {/* ================= */}
+      {/* PRODUCT DETAILS */}
+      {/* ================= */}
       <View style={style.content}>
         <Text style={style.brand}>{brand}</Text>
         <Text style={style.name}>{name}</Text>
@@ -103,7 +144,7 @@ export function ProductCard({
           {price && <Text style={style.brand}>{price}</Text>}
           {rating > 0 && (
             <Text style={[style.brand, { marginLeft: 12 }]}>
-               ★ {rating.toFixed(1)} ({rating_count})
+              ★ {rating.toFixed(1)} ({rating_count})
             </Text>
           )}
         </View>

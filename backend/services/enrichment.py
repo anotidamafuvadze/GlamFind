@@ -1,10 +1,9 @@
 from typing import Any, Dict, List, Optional
 from langchain_core.documents import Document
-from services.web_search import web_search
-from services.extraction import extract_enrichments
+from services.product_api import get_product_from_apis
 from data.cache.sqlite_enrichment_cache import SQLiteEnrichmentCache
 
-
+# TODO: Reset cache
 def get_enriched_products(products: List[Document], user_query: str = "") -> List[Dict[str, Any]]:
     """Enrich product documents with external data and caching.
     
@@ -54,12 +53,8 @@ def get_enriched_products(products: List[Document], user_query: str = "") -> Lis
             continue
 
         try:
-            # Search for and extract enrichment data
-            search_results = web_search(brand, name, product_type, k=6)
-            raw_enrichment = extract_enrichments(brand, name, product_type, search_results, user_query)
-            
-            print(f"Extracted enrichment for product {product_id}: {raw_enrichment}")
-            print(f"Enrichment type: {type(raw_enrichment)}, is dict: {isinstance(raw_enrichment, dict)}")
+            # Fetch enrichment data from product APIs
+            raw_enrichment = get_product_from_apis(brand, name, product_type, max_results=3)
             
             # Clean and validate enrichment data
             validated = _validate_enrichment_data(raw_enrichment)
@@ -119,7 +114,6 @@ def _validate_enrichment_data(enrichment_data: Any) -> Optional[Dict[str, Any]]:
     if not cleaned_data:
         return None
 
-    # Validate and clean individual fields
     # Validate rating range (0.0 to 5.0)
     rating = cleaned_data.get("rating")
     if rating is not None:

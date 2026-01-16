@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 
 // Styles
-import useHomeStyles from '../../styles/homeScreen';
+import useHomeStyles from '../../styles/homeScreenStyles';
 
 // Constants
 import images from '../../constants/images';
@@ -82,7 +82,7 @@ export function HomeScreen({
           value={searchQuery}
           onChangeText={setSearchQuery}
           onSubmit={() => onSearch(searchQuery)}
-          placeholder="A lightweight concealer that doesn’t crease"
+          placeholder="Find me a lightweight concealer that doesn’t crease"
           iconSource={images.icons.search}
           style={styles.searchBar}
           isLoading={isSearchLoading}

@@ -38,7 +38,7 @@ def recommend_products(user_query: str = Body(..., embed=False)):
         vector_store = app.state.vector_store
 
         # Step 1: Retrieve relevant products
-        retrieved_products = retrieve_top_products(vector_store, user_query, 8)
+        retrieved_products = retrieve_top_products(vector_store, user_query, 5)
         print(f"Retrieved {len(retrieved_products)} candidate products")
         
         if retrieved_products:

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 // Styles
-import useResultsStyles from '../../styles/resultsScreen';
+import useResultsStyles from '../../styles/resultsScreenStyles';
 
 // Constants
 import images from '../../constants/images';
@@ -30,6 +30,7 @@ type ResultsScreenProps = {
   updateSelections: (productId: string, selection: ProductSelection) => void;
 };
 
+// TODO: get rid of explanation param for product card
 /**
  * ResultsScreen component
  * - Displays AI-curated product results

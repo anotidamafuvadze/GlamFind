@@ -26,13 +26,31 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<!-- App Transport Security -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<!-- TEMPORARY: allow all loads to confirm ATS is not causing image timeouts -->
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
+		<true/>
+
+		<!-- Keep local dev networking -->
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
+
+		<!-- Explicit exception for Amazon CDN -->
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>m.media-amazon.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<false/>
+			</dict>
+		</dict>
 	</dict>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>RCTNewArchEnabled</key>

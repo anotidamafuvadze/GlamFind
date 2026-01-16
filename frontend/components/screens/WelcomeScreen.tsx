@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 
 // Styles
-import useWelcomeStyles from '../../styles/welcomeScreen';
+import useWelcomeStyles from '../../styles/welcomeScreenStyles';
 
 // Constants
 import images from '../../constants/images';
