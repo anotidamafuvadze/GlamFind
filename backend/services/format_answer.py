@@ -154,8 +154,10 @@ def format_recommendation_response(query: str, enriched_products: List[Dict[str,
             )
             image_url = ""
 
+        # Prefer the UUID id if present, else fallback to external_id
+        id_val = product.get("id") or product.get("external_id") or ""
         formatted = {
-            "id": str(product.get("id", "") or ""),
+            "id": str(id_val),
             "name": _pick_str(product.get("name"), enrichment.get("name")),
             "brand": _pick_str(product.get("brand"), enrichment.get("brand")),
 

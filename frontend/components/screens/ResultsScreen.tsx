@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 // Styles
@@ -21,6 +21,13 @@ import {
 // Types
 import { Product } from '../../types/products';
 type ProductSelection = 'like' | 'dislike' | null;
+type APIResponse = {
+  query: string;
+  products: Product[];
+};
+
+// API
+import { fetchRefinedRecommendations } from '../../api/recommendations';
 
 type ResultsScreenProps = {
   initialQuery: string;
@@ -55,29 +62,38 @@ export function ResultsScreen({
 
   const [baseQuery, setBaseQuery] = useState(initialQuery);
   const [searchQuery, setSearchQuery] = useState('');
-  const [refinedProducts, setRefinedProducts] = useState(products);
-
-  useEffect(() => {
-    setRefinedProducts(products);
-  }, [products]);
+  const [refinedProducts, setRefinedProducts] = useState<Product[]>(() => {
+    console.log('[FRONTEND] Initial products:', products);
+    return products;
+  });
+  React.useEffect(() => {
+    console.log('[FRONTEND] ResultsScreen initial products:', products);
+    console.log('[FRONTEND] ResultsScreen refinedProducts:', refinedProducts);
+  }, [products, refinedProducts]);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   const listData = useMemo(() => refinedProducts, [refinedProducts]);
 
-  // TODO: Implement refined search handler
   const handleRefinedSearch = useCallback(
     async (rawQuery: string) => {
       const trimmedQuery = rawQuery.trim();
       if (!trimmedQuery) return;
+      setIsSearchLoading(true);
 
-      // const { products: fetchedProducts, explanation } =
-      //   await fetchRefinedProductsFromBackend(baseQuery, trimmedQuery);
-      // setRefinedProducts(fetchedProducts);
-      // setRefinedExplanation(explanation);
-
-      // setRefinedProducts(MOCK_REFINED_PRODUCTS);
-
-      setBaseQuery(trimmedQuery);
-      setSearchQuery('');
+      try {
+        const response: APIResponse = await fetchRefinedRecommendations(
+          trimmedQuery,
+          baseQuery,
+        );
+        setRefinedProducts(response.products ?? []);
+        setBaseQuery(response.query);
+        setSearchQuery('');
+      } catch (e) {
+        console.error('Search failed:', e);
+        // TODO: Show user-friendly error message
+      } finally {
+        setIsSearchLoading(false);
+      }
     },
     [baseQuery],
   );
@@ -111,6 +127,7 @@ export function ResultsScreen({
         placeholder="Refine your search..."
         iconSource={images.icons.search}
         style={styles.searchBar}
+        isLoading={isSearchLoading}
       />
     </ImageBackground>
   );

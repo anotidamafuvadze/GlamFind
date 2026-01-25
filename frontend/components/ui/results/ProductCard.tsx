@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
+  Image,
   ImageStyle,
   Pressable,
   Text,
@@ -7,7 +8,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import FastImage from '@d11/react-native-fast-image';
 
 import { LikeButton } from './LikeButton';
 import { DislikeButton } from './DislikeButton';
@@ -23,11 +23,13 @@ type ProductCardProps = {
   rating_count: number;
   source_name: string;
   explanation: string;
+
   onPress: (productId: string) => void;
   updateSelections: (
     productId: string,
     selection: 'like' | 'dislike' | null,
   ) => void;
+
   style: {
     card: ViewStyle;
     pressed: ViewStyle;
@@ -47,17 +49,6 @@ type ProductCardProps = {
   };
 };
 
-/**
- * ProductCard component
- * - Displays a product image, details, and AI-generated rationale
- * - Fix 2: Use react-native-fast-image for better caching + more reliable remote loading
- * - Keeps diagnostic logs for image load success / failure
- *
- * Install (npm):
- *   npm install react-native-fast-image
- *   cd ios && pod install && cd ..
- */
-
 export function ProductCard({
   id,
   image_url,
@@ -70,24 +61,14 @@ export function ProductCard({
   source_name,
   explanation,
   onPress,
-  style,
   updateSelections,
+  style,
 }: ProductCardProps) {
   const [selection, setSelection] = useState<'like' | 'dislike' | null>(null);
 
-  const normalizedImageUrl = useMemo(
-    () => (image_url || '').trim(),
-    [image_url],
-  );
-
-  // ---- IMAGE DIAGNOSTICS ----
-  const hasImageUrl = !!normalizedImageUrl;
-  console.log(
-    'ProductCard image_url:',
-    normalizedImageUrl,
-    'exists?',
-    hasImageUrl,
-  );
+  const normalizedImageUrl = useMemo(() => {
+    return (image_url || '').trim();
+  }, [image_url]);
 
   const handleSelection = (next: 'like' | 'dislike') => {
     const newSelection = selection === next ? null : next;
@@ -97,50 +78,29 @@ export function ProductCard({
 
   return (
     <Pressable
-      onPress={() => onPress && onPress(id)}
+      onPress={() => onPress(id)}
       style={({ pressed }) => [style.card, pressed && style.pressed]}
       accessibilityRole="button"
     >
-      {/* ===================== */}
-      {/* PRODUCT IMAGE HEADER */}
-      {/* ===================== */}
-      {hasImageUrl && (
+      {/* IMAGE */}
+      {normalizedImageUrl && (
         <View style={style.imageWrap}>
-          <FastImage
-            style={[style.image as any]}
-            source={{
-              uri: normalizedImageUrl,
-              // Helps when you have many images in a list
-              priority: FastImage.priority.normal,
-              // Good default for CDN URLs that don't change often
-              cache: FastImage.cacheControl.immutable,
-            }}
-            resizeMode={FastImage.resizeMode.contain} // Changed from "cover" to "contain"
-            onLoad={() =>
-              console.log('Image loaded successfully:', normalizedImageUrl)
-            }
-            onError={e => {
-              console.log('FastImage error:', {
-                url: normalizedImageUrl,
-                nativeEvent: e?.nativeEvent,
-              });
-            }}
+          <Image
+            style={style.image}
+            source={{ uri: normalizedImageUrl }}
+            resizeMode="contain"
           />
         </View>
       )}
 
-      {/* ================= */}
-      {/* PRODUCT DETAILS */}
-      {/* ================= */}
+      {/* CONTENT */}
       <View style={style.content}>
         <Text style={style.brand}>{brand}</Text>
         <Text style={style.name}>{name}</Text>
         <Text style={style.rationale}>{explanation}</Text>
 
-        {/* Price and Rating */}
-        <View
-          style={{ flexDirection: 'row', marginTop: 8, alignItems: 'center' }}
-        >
+        {/* PRICE + RATING */}
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
           {price && <Text style={style.brand}>{price}</Text>}
           {rating > 0 && (
             <Text style={[style.brand, { marginLeft: 12 }]}>
@@ -149,14 +109,14 @@ export function ProductCard({
           )}
         </View>
 
-        {/* Source */}
+        {/* SOURCE */}
         {source_name && (
           <Text style={[style.rationale, { fontSize: 11, marginTop: 4 }]}>
             From {source_name}
           </Text>
         )}
 
-        {/* Web link - hidden but accessible via onPress */}
+        {/* LINK */}
         {product_url && (
           <Text
             style={[
@@ -169,14 +129,13 @@ export function ProductCard({
           </Text>
         )}
 
-        {/* Like / Dislike actions */}
+        {/* ACTIONS */}
         <View style={style.actionsRow}>
           <LikeButton
             selected={selection === 'like'}
             onPress={() => handleSelection('like')}
             style={style.actionButton}
           />
-
           <DislikeButton
             selected={selection === 'dislike'}
             onPress={() => handleSelection('dislike')}

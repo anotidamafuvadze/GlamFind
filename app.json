@@ -2,7 +2,22 @@
   "name": "GlamApp",
   "displayName": "GlamApp",
   "plugins": [
+    "expo-router",
     "expo-font",
     "expo-audio"
-  ]
+  ],
+  "android": {
+    "permissions": [
+      "android.permission.RECORD_AUDIO",
+      "android.permission.MODIFY_AUDIO_SETTINGS"
+    ],
+    "package": "com.anotidamafuvadze.glamapp"
+  },
+  "ios": {
+    "bundleIdentifier": "com.anotidamafuvadze.glamapp"
+  },
+  "extra": {
+    "SUPABASE_URL": "https://nkjzomhbisbgqajvdaiu.supabase.co",
+    "SUPABASE_KEY": "sb_secret_2cAkbdcnp3MIGvIOHh979A_7M3XP78H"
+  }
 }

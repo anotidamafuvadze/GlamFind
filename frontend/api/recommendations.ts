@@ -16,9 +16,27 @@ const API_BASE_URL = Platform.select({
   default: "http://localhost:8000",
 });
 
+export async function fetchRefinedRecommendations(new_query: string, original_query: string) {
+  console.log('Sending query:', new_query);
+  
+  const res = await fetch(`${API_BASE_URL}/api/refinedrecommendations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ new_query, original_query })
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Failed: ${res.status} ${res.statusText} ${text}`);
+  }
+
+  const data = await res.json();
+  return data;
+
+}
+
 export async function fetchRecommendations(query: string) {
   console.log('Sending query:', query);
-  
   const res = await fetch(`${API_BASE_URL}/api/recommendations`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -31,6 +49,6 @@ export async function fetchRecommendations(query: string) {
   }
 
   const data = await res.json();
-  // console.log("Parsed API data:", JSON.stringify(data, null, 2));
+  console.log("[FRONTEND] API /api/recommendations response:", data);
   return data;
 }

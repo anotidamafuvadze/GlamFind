@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { FlatList, ListRenderItem, View, ViewStyle } from 'react-native';
+import { FlatList, ListRenderItem, View, ViewStyle, Text } from 'react-native';
 
 import { ProductCard } from './ProductCard';
 import { Product } from '../../../types/products';
@@ -32,6 +32,8 @@ export default function ProductList({
   style,
   cardStyle,
 }: ProductListProps) {
+  console.log('[FRONTEND] ProductList received products:', products);
+  console.log('Retrieved Products: ', products.length);
   const keyExtractor = useCallback((item: Product) => item.id, []);
 
   const renderItem = useCallback<ListRenderItem<Product>>(
@@ -59,6 +61,14 @@ export default function ProductList({
     () => <View style={{ height: FOOTER_HEIGHT }} />,
     [],
   );
+
+  if (products.length === 0) {
+    return (
+      <View style={{ padding: 16 }}>
+        <Text>No products found. Try refining your search.</Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList

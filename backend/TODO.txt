@@ -1,9 +1,12 @@
 TODO:
 
-1. FIGURE OUT HOW TO ADD IMAGES
-2. Implement refined searching
-2. Watch video on fastapi
-4. TRY TO MAKE QUERY FASTER
+1. Go through image_proxy file and understand it and write it then polish 
+Polish files you changed
+2. Look through and understAND EACH ENRICHMENT FILE
+2. Create a likes screen that shows all the products a user has liked
+2. Test that signing in actually works
+2. Replace SQL product caching with product table in supbabase
+2. Watch video on fastapi sqlite and postgresSQL
 6. Implement user accounts and authentication
 7. REMOVE PRINT LOGS and console logs
 8. Make sure carousel pics are perfect
@@ -12,3 +15,5 @@ TODO:
 11. Polish product api so that it just uses amazon search api not google shopping
 12. Make Amazon link actually clickable
 13. PREVENT APP FROM ROTATING
+14. Put semantic search services in a folder called semantic search or just search
+15. Adjust so that if it doesnt return anything from the search API search it just shows products without
