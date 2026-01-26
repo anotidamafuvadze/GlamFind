@@ -37,7 +37,7 @@ export default function useFonts() {
         welcome: {
           title: 65 * scale + (isTablet ? 6 : 0),
           tagline: 20 * scale,
-          button: 25 * scale,
+          button: 23 * scale,
           bottomText: 13 * scale,
         },
 
@@ -45,8 +45,8 @@ export default function useFonts() {
         home: {
           title: 50 * scale,
           lineHeight: 55 * scale,
-          likesButtonText: 12 * scale,
-          signInButtonText: 12 * scale,
+          likesButtonText: 14 * scale,
+          signInButtonText: 14 * scale,
           searchInput: 20 * scale,
           searchIcon: 45 * scale,
           exampleLabel: 14 * scale,
@@ -69,6 +69,32 @@ export default function useFonts() {
           actionButtonText: 14 * scale,
           iconSize: 45 * scale,
           small: 12 * scale,
+        },
+
+        // ----------------------- SIGN IN -----------------------
+        signIn: {
+          title: 52 * scale,
+          subtitle: 20 * scale,
+          cardTitle: 24 * scale,
+          buttonText: 18 * scale,
+        },
+
+        // ----------------------- REGISTER -----------------------
+        register: {
+          title: 48 * scale,
+          subtitle: 18 * scale,
+          cardTitle: 24 * scale,
+          buttonText: 20 * scale,
+        },
+
+        // ----------------------- LIKES SCREEN -----------------------
+        likesScreen: {
+          title: 28 * scale,
+          subtitle: 16 * scale,
+          brand: 10 * scale,
+          name: 16 * scale,
+          rationale: 13 * scale,
+          actionButtonText: 14 * scale,
         },
       },
 

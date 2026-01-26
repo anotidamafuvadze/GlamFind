@@ -238,7 +238,6 @@ def resolve_best_image(product_url: str, candidate_thumbnail: str) -> str:
 def _fetch_serpapi_shopping(query: str, max_results: int) -> Optional[Dict[str, Any]]:
     """Fetch product data from SerpAPI's Google Shopping API."""
     if not SERPAPI_KEY:
-        print("[PRODUCT_API] SerpAPI: Missing API key")
         return None
 
     url = "https://serpapi.com/search"
@@ -275,7 +274,6 @@ def _fetch_serpapi_shopping(query: str, max_results: int) -> Optional[Dict[str, 
 def _fetch_serpapi_amazon(query: str, max_results: int) -> Optional[Dict[str, Any]]:
     """Fetch product data from SerpAPI's Amazon API."""
     if not SERPAPI_KEY:
-        print("[PRODUCT_API] SerpAPI: Missing API key")
         return None
 
     url = "https://serpapi.com/search"
@@ -312,7 +310,6 @@ def _fetch_serpapi_amazon(query: str, max_results: int) -> Optional[Dict[str, An
 def _fetch_serpapi_ebay(query: str, max_results: int) -> Optional[Dict[str, Any]]:
     """Fetch product data from SerpAPI's eBay API."""
     if not SERPAPI_KEY:
-        print("[PRODUCT_API] SerpAPI: Missing API key")
         return None
 
     url = "https://serpapi.com/search"
@@ -349,7 +346,6 @@ def _fetch_serpapi_ebay(query: str, max_results: int) -> Optional[Dict[str, Any]
 def _fetch_serpapi_walmart(query: str, max_results: int) -> Optional[Dict[str, Any]]:
     """Fetch product data from SerpAPI's Walmart API."""
     if not SERPAPI_KEY:
-        print("[PRODUCT_API] SerpAPI: Missing API key")
         return None
 
     url = "https://serpapi.com/search"
@@ -414,14 +410,14 @@ def get_product_from_apis(
     - DO NOT “download to validate” images (prevents throttling/timeouts)
     """
     search_query = f"{brand} {product_name} {product_type}".strip()
-    print(f"[DEBUG] get_product_from_apis: search_query='{search_query}'")
+    # print(f"[DEBUG] get_product_from_apis: search_query='{search_query}'")
 
     for engine_config in SEARCH_ENGINES:
         try:
-            print(f"[DEBUG] Trying search engine: {engine_config['name']}")
+            # print(f"[DEBUG] Trying search engine: {engine_config['name']}")
             fetch_func = engine_config["fetch_func"]
             result = fetch_func(search_query, max_results)
-            print(f"[DEBUG] Result from {engine_config['name']}: {result}")
+            # print(f"[DEBUG] Result from {engine_config['name']}: {result}")
             if not result:
                 continue
 
@@ -430,12 +426,12 @@ def get_product_from_apis(
 
             # Require a product_url (click-through UX + og:image extraction)
             if not product_url:
-                print(f"[DEBUG] Skipping result from {engine_config['name']} due to missing product_url")
+                # print(f"[DEBUG] Skipping result from {engine_config['name']} due to missing product_url")
                 continue
 
             best_image = resolve_best_image(product_url, thumb)
             result["image_url"] = best_image
-            print(f"[DEBUG] Final enrichment result: {result}")
+            # print(f"[DEBUG] Final enrichment result: {result}")
 
             # Allow image-less results if none are available (client can show placeholder)
             # If you want to REQUIRE images, change this to:
@@ -443,10 +439,10 @@ def get_product_from_apis(
             return result
 
         except Exception as e:
-            print(f"[PRODUCT_API] {engine_config['name']} search failed: {e}")
+            # print(f"[PRODUCT_API] {engine_config['name']} search failed: {e}")
             continue
 
-    print("[DEBUG] No enrichment found from any search engine.")
+    # print("[DEBUG] No enrichment found from any search engine.")
     return None
 
 

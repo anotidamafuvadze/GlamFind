@@ -16,11 +16,15 @@ export function useRegister() {
     setLoading(true);
 
     try {
+      console.log('Attempting to sign up with:', { email, password, name });
+
       const { data: signUpData, error: signUpError } =
         await supabase.auth.signUp({
           email,
           password,
         });
+
+      console.log('Sign-up response:', { signUpData, signUpError });
 
       if (signUpError) {
         if (signUpError.message.includes('duplicate key value')) {
@@ -31,24 +35,30 @@ export function useRegister() {
           setError('Password is too weak. Please use at least 6 characters.');
         } else {
           setError('An unexpected error occurred. Please try again.');
+          console.log('Sign-up error details:', signUpError);
         }
         return;
       }
 
       const user = signUpData?.user;
+      console.log('User created:', user);
+
       if (user) {
         const { error: profileError } = await supabase
           .from('profiles')
-          .insert([{ id: user.id, name }]);
+          .update({ full_name: name })
+          .eq('id', user.id);
 
         if (profileError) {
-          setError('Failed to save user profile. Please try again.');
+          console.error('Error updating profile:', profileError);
+          setError('Failed to update profile. Please try again.');
           return;
         }
 
         router.push('/home');
       }
     } catch (err) {
+      console.error('Failed to register:', err);
       setError('Failed to register. Please try again.');
     } finally {
       setLoading(false);

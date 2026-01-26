@@ -81,20 +81,13 @@ export default function useLayouts() {
 
         // Header actions
         HEADER_ACTIONS_TOP: 65 * scaleHeight,
-        HEADER_ACTIONS_RIGHT: 25 * scaleWidth,
-
-        // Settings button
-        SETTINGS_BUTTON_TOP: 45 * scaleHeight,
-        SETTINGS_BUTTON_LEFT: -5 * scaleWidth,
-        SETTINGS_BUTTON_IMAGE_WIDTH: 130 * scaleWidth,
-        SETTINGS_BUTTON_IMAGE_HEIGHT: 130 * scaleHeight,
-        SETTINGS_BUTTON_PRESSED_OPACITY: 0.6,
+        HEADER_ACTIONS_RIGHT: -2 * scaleWidth,
 
         // Likes & sign-in buttons
         LIKES_BUTTON_ACTIVE_OPACITY: 0.8,
-        LIKES_BUTTON_MARGIN_RIGHT: -18 * scaleWidth,
-        LIKES_BUTTON_WIDTH: 80 * scaleWidth,
-        LIKES_BUTTON_HEIGHT: 80 * scaleHeight,
+        LIKES_BUTTON_MARGIN_RIGHT: -10 * scaleWidth,
+        LIKES_BUTTON_WIDTH: 90 * scaleWidth,
+        LIKES_BUTTON_HEIGHT: 90 * scaleHeight,
         LIKES_BUTTON_ZINDEX: 2,
         LIKES_BUTTON_GLOW_TOP: 8 * scaleHeight,
         LIKES_BUTTON_GLOW_RIGHT: -72 * scaleWidth,
@@ -105,8 +98,8 @@ export default function useLayouts() {
         LIKES_BUTTON_TEXT_MARGIN_TOP: -15 * scaleHeight,
 
         SIGNIN_BUTTON_ACTIVE_OPACITY: 0.8,
-        SIGNIN_BUTTON_WIDTH: 80 * scaleWidth,
-        SIGNIN_BUTTON_HEIGHT: 80 * scaleHeight,
+        SIGNIN_BUTTON_WIDTH: 90 * scaleWidth,
+        SIGNIN_BUTTON_HEIGHT: 90 * scaleHeight,
         SIGNIN_BUTTON_ZINDEX: 2,
         SIGNIN_BUTTON_TEXT_MARGIN_TOP: -15 * scaleHeight,
 
@@ -281,6 +274,118 @@ export default function useLayouts() {
         // Pressed state
         PRESSED_SCALE: 0.98,
         PRESSED_OPACITY: 0.95,
+      },
+
+      // ======================= SIGN IN SCREEN =======================
+      SIGNIN: {
+        APP_NAME_MARGIN_BOTTOM: 10 * scaleHeight,
+        CONTENT_PADDING_HORIZONTAL: 24 * scaleWidth,
+        BACK_BUTTON_SIZE: 60 * scaleWidth,
+        BACK_BUTTON_TOP: 100 * scaleHeight,
+        BACK_BUTTON_RADIUS: 999 * scaleWidth,
+        BACK_BUTTON_PADDING: 30 * scaleWidth,
+        BACK_BUTTON_ZINDEX: 10,
+        BACK_BUTTON_MARGIN_LEFT: 20 * scaleWidth,
+        BACK_ICON_WIDTH: 50 * scaleWidth,
+        BACK_ICON_HEIGHT: 50 * scaleHeight,
+        BACK_BUTTON_PRESSED_OPACITY: 0.6,
+        HEADER_MARGIN_BOTTOM: 24 * scaleHeight,
+        CARD_WIDTH: "100%",
+        CARD_MAX_WIDTH: 420 * scaleWidth,
+        CARD_RADIUS: 25 * scaleWidth,
+        CARD_PADDING: 20 * scaleWidth,
+        SPACER_HEIGHT: 12 * scaleHeight,
+        INPUT_HEIGHT: 48 * scaleHeight,
+        INPUT_RADIUS: 20 * scaleWidth,
+        INPUT_PADDING_HORIZONTAL: 14 * scaleWidth,
+        INPUT_MARGIN_TOP: 12 * scaleHeight,
+        ERROR_MARGIN_TOP: 12 * scaleHeight,
+        ERROR_PADDING: 10 * scaleWidth,
+        ERROR_RADIUS: 8 * scaleWidth,
+        BUTTON_MARGIN_TOP: 25 * scaleHeight,
+        BUTTON_PADDING_HORIZONTAL: 70 * scaleWidth,
+        BUTTON_PADDING_VERTICAL: 14 * scaleHeight,
+        BUTTON_RADIUS: 30 * scaleWidth,
+        BUTTON_MAX_WIDTH: 500 * scaleWidth,
+        FOOTER_MARGIN_TOP: 25 * scaleHeight,
+      },
+
+      // ======================= REGISTER SCREEN =======================
+      REGISTER: {
+        BUTTON_PADDING_HORIZONTAL: 70 * scaleWidth,
+        BUTTON_PADDING_VERTICAL: 14 * scaleHeight,
+        BUTTON_MAX_WIDTH: 500 * scaleWidth,
+        APP_NAME_MARGIN_BOTTOM: 10 * scaleHeight,
+        BACK_BUTTON_BORDER_WIDTH: 1,
+        CONTENT_PADDING_HORIZONTAL: 24 * scaleWidth,
+        BACK_BUTTON_SIZE: 60 * scaleWidth,
+        BACK_BUTTON_TOP: 100 * scaleHeight,
+        BACK_BUTTON_RADIUS: 999 * scaleWidth,
+        BACK_BUTTON_PADDING: 30 * scaleWidth,
+        BACK_BUTTON_ZINDEX: 10,
+        BACK_BUTTON_MARGIN_LEFT: 20 * scaleWidth,
+        BACK_ICON_WIDTH: 50 * scaleWidth,
+        BACK_ICON_HEIGHT: 50 * scaleHeight,
+        BACK_BUTTON_PRESSED_OPACITY: 0.6,
+        HEADER_MARGIN_BOTTOM: 24 * scaleHeight, // Match SIGNIN
+        TITLE_SHADOW_OFFSET: { width: 0, height: 2 }, // Keep as is
+        TITLE_SHADOW_RADIUS: 6, // Keep as is
+        SUBTITLE_MARGIN_TOP: 8 * scaleHeight, // Keep as is
+        SUBTITLE_SHADOW_OFFSET: { width: 0, height: 1 }, // Keep as is
+        SUBTITLE_SHADOW_RADIUS: 3, // Keep as is
+        CARD_WIDTH: "100%", // Match SIGNIN
+        CARD_MAX_WIDTH: 420 * scaleWidth, // Match SIGNIN
+        CARD_RADIUS: 25 * scaleWidth, // Match SIGNIN
+        CARD_PADDING: 20 * scaleWidth, // Match SIGNIN
+        SPACER_HEIGHT: 12 * scaleHeight, // Match SIGNIN
+        INPUT_HEIGHT: 48 * scaleHeight, // Match SIGNIN
+        INPUT_RADIUS: 20 * scaleWidth, // Match SIGNIN
+        INPUT_PADDING_HORIZONTAL: 14 * scaleWidth, // Match SIGNIN
+        INPUT_MARGIN_TOP: 12 * scaleHeight, // Match SIGNIN
+        ERROR_MARGIN_TOP: 12 * scaleHeight, // Match SIGNIN
+        ERROR_PADDING: 10 * scaleWidth, // Match SIGNIN
+        ERROR_RADIUS: 8 * scaleWidth, // Match SIGNIN
+        BUTTON_MARGIN_TOP: 25 * scaleHeight, // Match SIGNIN
+        BUTTON_RADIUS: 30 * scaleWidth, // Match SIGNIN
+        FOOTER_MARGIN_TOP: 25 * scaleHeight, // Match SIGNIN
+        MARGIN_RIGHT_LEFT: 10 * scaleWidth,
+      },
+
+      // ======================= LIKES SCREEN =======================
+      likesScreen: {
+        paddingHorizontal: 16 * scaleWidth,
+        headerPaddingVertical: 46 * scaleWidth,
+        headerTitleTop: 23 * scaleWidth,
+        backButtonLeft: 16 * scaleWidth,
+        backButtonSize: 48 * scaleWidth,
+        backButtonRadius: 25 * scaleWidth,
+        backButtonBorderWidth: 0.7 * scaleWidth,
+        backButtonMarginTop: 42 * scaleWidth,
+        backButtonIconSize: 35 * scaleWidth,
+        listPaddingHorizontal: 24 * scaleWidth,
+        listPaddingTop: 20 * scaleWidth,
+        listPaddingBottom: 0,
+        cardBorderRadius: 24 * scaleWidth,
+        cardBorderWidth: 1 * scaleWidth,
+        cardShadowOffset: { width: 0, height: 10 * scaleWidth },
+        cardShadowOpacity: 0.08,
+        cardShadowRadius: 18 * scaleWidth,
+        cardElevation: 4,
+        cardPressedScale: 0.99,
+        cardPressedOpacity: 0.96,
+        imageAspectRatio: 1,
+        contentPaddingHorizontal: 20 * scaleWidth,
+        contentPaddingVertical: 18 * scaleWidth,
+        brandMarginBottom: 8 * scaleWidth,
+        brandLetterSpacing: 2 * scaleWidth,
+        nameMarginBottom: 10 * scaleWidth,
+        rationaleLineHeight: 18 * scaleWidth,
+        actionsRowMarginTop: 12 * scaleWidth,
+        actionButtonSize: 44 * scaleWidth,
+        actionButtonRadius: 22 * scaleWidth,
+        actionButtonMarginRight: 12 * scaleWidth,
+        actionButtonBorderWidth: 1 * scaleWidth,
+        actionButtonPressedOpacity: 0.7,
       },
     }),
     [scaleWidth, scaleHeight, isTablet, isPortrait]

@@ -71,12 +71,7 @@ export default function AutoplayCarousel({ style }: AutoplayCarouselProps) {
       }
       lastTimestampRef.current = null;
     };
-  }, [
-    style.card.width,
-    style.card.marginRight,
-    RESET_THRESHOLD,
-    style.speed,
-  ]);
+  }, [style.card.width, style.card.marginRight, RESET_THRESHOLD, style.speed]);
 
   return (
     <View style={style.container}>

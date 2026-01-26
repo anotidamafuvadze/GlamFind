@@ -27,18 +27,13 @@ export function DislikeButton({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
-        style.button,
-        selected && style.selected,
-      ]}
+      style={({ pressed }) => [style.button, selected && style.selected]}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ selected }}
       hitSlop={10}
     >
-      <Text style={[style.text, selected && style.selectedText]}>
-        ✕
-      </Text>
+      <Text style={[style.text, selected && style.selectedText]}>✕</Text>
     </Pressable>
   );
 }

@@ -36,8 +36,6 @@ type SearchBarProps = {
 export default function SearchBar({
   value,
   onChangeText,
-  onSubmit,
-  placeholder,
   style,
   iconSource,
   isLoading = false,

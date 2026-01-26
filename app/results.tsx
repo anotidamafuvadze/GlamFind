@@ -15,6 +15,7 @@ export default function ResultsRoute() {
   }>();
 
   const initialQuery = (q ?? '').toString();
+
   const parsedProducts: Product[] = useMemo(() => {
     try {
       const raw = products ?? '[]';
@@ -22,6 +23,7 @@ export default function ResultsRoute() {
         typeof raw === 'string'
           ? raw.replace(/[\u0000-\u001F]/g, '')
           : String(raw);
+
       const arr = JSON.parse(sanitized) as Product[];
       console.log('[FRONTEND] Parsed products for ResultsScreen:', arr);
       return arr;
@@ -31,7 +33,6 @@ export default function ResultsRoute() {
     }
   }, [products]);
 
-  // TODO: Fix this
   const handleProductSelection = useCallback(
     async (productId: string, selection: 'like' | 'dislike' | null) => {
       try {
@@ -40,20 +41,23 @@ export default function ResultsRoute() {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession();
+
         if (sessionError || !session?.user) {
           console.error('User not authenticated', sessionError);
           return;
         }
+
         const userId = session.user.id;
 
         if (selection === 'like') {
-          // Add to favorites (ignore duplicate error)
           const { error: insertError } = await supabase
             .from('user_favorites')
-            .insert([{ user_id: userId, product_id: productId }], {
-              upsert: false,
-            });
-          if (insertError && !insertError.message.includes('duplicate')) {
+            .insert([{ user_id: userId, product_id: productId }]);
+
+          if (
+            insertError &&
+            !insertError.message.toLowerCase().includes('duplicate')
+          ) {
             console.error('Error adding favorite:', insertError);
           }
         } else if (selection === 'dislike') {
@@ -63,6 +67,7 @@ export default function ResultsRoute() {
             .delete()
             .eq('user_id', userId)
             .eq('product_id', productId);
+
           if (deleteError) {
             console.error('Error removing favorite:', deleteError);
           }

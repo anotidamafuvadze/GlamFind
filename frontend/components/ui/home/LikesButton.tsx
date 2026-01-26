@@ -15,7 +15,6 @@ type LikesButtonProps = {
   style: {
     container: ViewStyle;
     button: ViewStyle;
-    glow: ViewStyle;
     text: TextStyle;
     image: ImageStyle;
     activeOpacity: number;
@@ -35,8 +34,6 @@ export default function LikesButton({
 }: LikesButtonProps) {
   return (
     <View style={style.container}>
-      <Glow style={style.glow} />
-
       <Button
         onPress={onPress}
         accessibilityLabel="Likes"

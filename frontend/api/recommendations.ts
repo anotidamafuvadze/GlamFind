@@ -17,7 +17,6 @@ const API_BASE_URL = Platform.select({
 });
 
 export async function fetchRefinedRecommendations(new_query: string, original_query: string) {
-  console.log('Sending query:', new_query);
   
   const res = await fetch(`${API_BASE_URL}/api/refinedrecommendations`, {
     method: "POST",
@@ -36,7 +35,6 @@ export async function fetchRefinedRecommendations(new_query: string, original_qu
 }
 
 export async function fetchRecommendations(query: string) {
-  console.log('Sending query:', query);
   const res = await fetch(`${API_BASE_URL}/api/recommendations`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -49,6 +47,5 @@ export async function fetchRecommendations(query: string) {
   }
 
   const data = await res.json();
-  console.log("[FRONTEND] API /api/recommendations response:", data);
   return data;
 }

@@ -43,8 +43,7 @@ class SupabaseEnrichmentCache:
                 },
             }
             return product
-        except Exception as e:
-            print(f"[SupabaseEnrichmentCache] get error: {e}")
+        except Exception:
             return None
 
     def set(self, external_id: str, product_data: Dict[str, Any]) -> None:
@@ -64,5 +63,5 @@ class SupabaseEnrichmentCache:
                 "explanation": enrichment.get("explanation"),
             }
             self.client.table(self.table).upsert(db_row, on_conflict="external_id").execute()
-        except Exception as e:
-            print(f"[SupabaseEnrichmentCache] set error: {e}")
+        except Exception:
+            pass

@@ -41,10 +41,9 @@ Create a refined search query:"""
         )
         
         refined_query = response.choices[0].message.content.strip()
-        print(f"Query refined: '{original_query}' + '{new_query}' -> '{refined_query}'")
         return refined_query
         
     except Exception as e:
-        print(f"Error refining query with OpenAI: {e}")
+        # print(f"Error refining query with OpenAI: {e}")
         # Fallback to simple concatenation if API fails
         return f"{original_query} {new_query}"

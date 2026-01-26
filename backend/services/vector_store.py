@@ -27,7 +27,6 @@ def get_vector_store(
     # Load existing index unless rebuild is requested
     index_exists = os.path.exists(faiss_dir)
     if index_exists and not rebuild_index:
-        print(f"Loading existing FAISS index from: {faiss_dir}")
         return FAISS.load_local(
             folder_path=faiss_dir,
             embeddings=embeddings,
@@ -36,7 +35,6 @@ def get_vector_store(
     
     # Build new index from CSV data
     documents = get_documents(csv_path)
-    print(f"Loaded {len(documents)} product documents")
     
     # Create and save vector store
     vector_store = FAISS.from_documents(
@@ -46,6 +44,5 @@ def get_vector_store(
     
     os.makedirs(faiss_dir, exist_ok=True)
     vector_store.save_local(folder_path=faiss_dir)
-    print(f"FAISS index saved to: {faiss_dir}")
     
     return vector_store

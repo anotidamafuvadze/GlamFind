@@ -48,28 +48,22 @@ def refined_recommend_products(new_query: str = Body(..., embed=False), original
         vector_store = app.state.vector_store
 
         retrieved_products = retrieve_top_products(vector_store, user_query, 5)
-        print(f"Retrieved {len(retrieved_products)} candidate products for refinement")
 
         if retrieved_products:
-            print(f"Sample metadata: {retrieved_products[0].metadata}")
+            pass
 
         enriched_products = get_enriched_products(retrieved_products, user_query)
-        print(f"Enriched {len(enriched_products)} products for refinement")
 
         if enriched_products:
-            print(f"Sample enriched product: {enriched_products[0]}")
+            pass
 
 
         recommendations = format_recommendation_response(user_query, enriched_products)
         recommended_count = len(recommendations.get("products", []))
-        print(f"Returning {recommended_count} refined recommended products")
-        print(f"[DEBUG] Final recommendations returned to frontend: {recommendations}")
-        print(f"{'=' * 80}\n")
 
         return recommendations
 
     except Exception as error:
-        print(f"Refined recommendation error: {error}")
         raise HTTPException(status_code=500, detail=str(error))
     
 @app.post("/api/recommendations")
@@ -79,26 +73,20 @@ def recommend_products(user_query: str = Body(..., embed=False)):
         vector_store = app.state.vector_store
 
         retrieved_products = retrieve_top_products(vector_store, user_query, 5)
-        print(f"Retrieved {len(retrieved_products)} candidate products")
 
         if retrieved_products:
-            print(f"Sample metadata: {retrieved_products[0].metadata}")
+            pass
 
         enriched_products = get_enriched_products(retrieved_products, user_query)
-        print(f"Enriched {len(enriched_products)} products")
 
         if enriched_products:
-            print(f"Sample enriched product: {enriched_products[0]}")
+            pass
 
 
         recommendations = format_recommendation_response(user_query, enriched_products)
         recommended_count = len(recommendations.get("products", []))
-        print(f"Returning {recommended_count} recommended products")
-        print(f"[DEBUG] Final recommendations returned to frontend: {recommendations}")
-        print(f"{'=' * 80}\n")
 
         return recommendations
 
     except Exception as error:
-        print(f"Recommendation error: {error}")
         raise HTTPException(status_code=500, detail=str(error))

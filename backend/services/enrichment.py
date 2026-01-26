@@ -6,19 +6,16 @@ from services.supabase_enrichment_cache import SupabaseEnrichmentCache
 # TODO: Reset cache
 def get_enriched_products(products: List[Document], user_query: str = "") -> List[Dict[str, Any]]:
     """Enrich product documents with external data and caching using Supabase products table."""
-    print(f"[DEBUG] get_enriched_products: Received {len(products)} products for query '{user_query}'")
     enriched_products: List[Dict[str, Any]] = []
     cache = SupabaseEnrichmentCache()
 
     for idx, product in enumerate(products):
         metadata = product.metadata or {}
-        print(f"[DEBUG] Product {idx} metadata: {metadata}")
         product_external_id = metadata.get("id") or cache.generate_key(metadata)
 
         # Check Supabase cache first
         cached_product = cache.get(product_external_id)
         if isinstance(cached_product, dict) and cached_product.get("id"):
-            print(f"[DEBUG] Product {product_external_id} found in cache: {cached_product}")
             enriched_products.append(cached_product)
             continue
 
@@ -39,28 +36,22 @@ def get_enriched_products(products: List[Document], user_query: str = "") -> Lis
 
         has_required_fields = all([brand, name, product_type, description])
         if not has_required_fields:
-            print(f"[DEBUG] Skipping enrichment for product {product_external_id}: missing required fields (brand={brand}, name={name}, type={product_type}, desc={description})")
             cache.set(product_external_id, product_data)
             enriched_products.append(product_data)
             continue
 
         try:
-            print(f"[DEBUG] Enriching product {product_external_id} with brand={brand}, name={name}, type={product_type}")
             raw_enrichment = get_product_from_apis(brand, name, product_type, max_results=3)
-            print(f"[DEBUG] Raw enrichment for {product_external_id}: {raw_enrichment}")
             validated = _validate_enrichment_data(raw_enrichment)
-            print(f"[DEBUG] Validated enrichment for product {product_external_id}: {validated}")
             product_data["enrichment"] = validated
             cache.set(product_external_id, product_data)
             enriched_products.append(product_data)
         except Exception as error:
-            print(f"[DEBUG] Enrichment error for product {product_external_id}: {error}")
             import traceback
             traceback.print_exc()
             cache.set(product_external_id, product_data)
             enriched_products.append(product_data)
 
-    print(f"[DEBUG] Returning {len(enriched_products)} enriched products")
     return enriched_products
 
 def _validate_enrichment_data(enrichment_data: Any) -> Optional[Dict[str, Any]]:

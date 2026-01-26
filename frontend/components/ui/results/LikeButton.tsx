@@ -27,8 +27,6 @@ export function LikeButton({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
-        style.button,
         selected && style.selected,
       ]}
       accessibilityRole="button"

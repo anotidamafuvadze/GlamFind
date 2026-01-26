@@ -32,8 +32,6 @@ export default function ProductList({
   style,
   cardStyle,
 }: ProductListProps) {
-  console.log('[FRONTEND] ProductList received products:', products);
-  console.log('Retrieved Products: ', products.length);
   const keyExtractor = useCallback((item: Product) => item.id, []);
 
   const renderItem = useCallback<ListRenderItem<Product>>(

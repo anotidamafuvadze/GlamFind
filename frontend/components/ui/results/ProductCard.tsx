@@ -1,12 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-  Image,
-  ImageStyle,
   Pressable,
   Text,
   TextStyle,
   View,
   ViewStyle,
+  ImageStyle,
+  Image,
+  Linking,
 } from 'react-native';
 
 import { LikeButton } from './LikeButton';
@@ -21,14 +22,12 @@ type ProductCardProps = {
   price: string;
   rating: number;
   rating_count: number;
-  source_name: string;
+          return proxied;
   explanation: string;
 
   onPress: (productId: string) => void;
   updateSelections: (
-    productId: string,
-    selection: 'like' | 'dislike' | null,
-  ) => void;
+            return;
 
   style: {
     card: ViewStyle;
@@ -36,7 +35,6 @@ type ProductCardProps = {
     imageWrap: ViewStyle;
     image: ImageStyle;
     content: ViewStyle;
-    brand: TextStyle;
     name: TextStyle;
     rationale: TextStyle;
     actionsRow: ViewStyle;
@@ -44,15 +42,24 @@ type ProductCardProps = {
       button: ViewStyle;
       selected: ViewStyle;
       text: TextStyle;
-      selectedText: TextStyle;
     };
   };
 };
 
+const IMAGE_PROXY_BASE_URL = 'http://localhost:8000';
+
+function toProxiedImageUrl(upstreamUrl: string): string {
+  const trimmed = (upstreamUrl || '').trim();
+  if (!trimmed) return '';
+
+  // If it's already proxied, don't double-wrap it
+  if (
+    trimmed.includes('/api/image-proxy?url=') ||
+    trimmed.includes('/image-proxy?url=')
+  // ✅ FIX 2: your FastAPI mounts the router under /api
+  return `${IMAGE_PROXY_BASE_URL}/api/image-proxy?url=${encodeURIComponent(
+
 export function ProductCard({
-  id,
-  image_url,
-  brand,
   name,
   product_url,
   price,
@@ -65,31 +72,76 @@ export function ProductCard({
   style,
 }: ProductCardProps) {
   const [selection, setSelection] = useState<'like' | 'dislike' | null>(null);
+  const [imageError, setImageError] = useState(false);
 
-  const normalizedImageUrl = useMemo(() => {
-    return (image_url || '').trim();
-  }, [image_url]);
+  const proxiedImageUrl = useMemo(() => {
+    const proxied = toProxiedImageUrl(image_url);
+    console.debug(`Proxied image URL for product ${id}: ${proxied}`);
+    return proxied;
+  }, [image_url, id]);
+
+  useEffect(() => {
+    if (imageError) {
+      console.error(
+        `Image failed to load for product ${id}: ${proxiedImageUrl}`,
+      );
+    }
+  }, [imageError, id, proxiedImageUrl]);
 
   const handleSelection = (next: 'like' | 'dislike') => {
     const newSelection = selection === next ? null : next;
     setSelection(newSelection);
     updateSelections(id, newSelection);
+    console.debug(`Selection updated for product ${id}: ${newSelection}`);
   };
+
+  const showImage = proxiedImageUrl && !imageError;
 
   return (
     <Pressable
-      onPress={() => onPress(id)}
+      onPress={() => {
+        console.debug(`Product ${id} pressed`);
+        onPress(id);
+      }}
       style={({ pressed }) => [style.card, pressed && style.pressed]}
       accessibilityRole="button"
     >
       {/* IMAGE */}
-      {normalizedImageUrl && (
+      {showImage ? (
         <View style={style.imageWrap}>
           <Image
             style={style.image}
-            source={{ uri: normalizedImageUrl }}
+            source={{ uri: proxiedImageUrl }}
             resizeMode="contain"
+            onError={e => {
+              setImageError(true);
+              console.error(
+                `Image loading error for product ${id}: ${proxiedImageUrl}`,
+                e?.nativeEvent,
+              );
+            }}
+            onLoadStart={() => {
+              console.debug(
+                `Image loading started for product ${id}: ${proxiedImageUrl}`,
+              );
+            }}
+            onLoad={() => {
+              console.debug(
+                `Image successfully loaded for product ${id}: ${proxiedImageUrl}`,
+              );
+            }}
           />
+        </View>
+      ) : (
+        <View
+          style={[
+            style.imageWrap,
+            { justifyContent: 'center', alignItems: 'center' },
+          ]}
+        >
+          <Text style={{ color: 'black', fontSize: 16, textAlign: 'center' }}>
+            Image not available
+          </Text>
         </View>
       )}
 
@@ -124,6 +176,8 @@ export function ProductCard({
               { fontSize: 10, marginTop: 2, opacity: 0.7 },
             ]}
             numberOfLines={1}
+            onPress={() => Linking.openURL(product_url)}
+            accessibilityRole="link"
           >
             {product_url}
           </Text>

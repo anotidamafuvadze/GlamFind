@@ -19,11 +19,7 @@ type CarouselItemProps = {
 export default function CarouselItem({ imgSource, style }: CarouselItemProps) {
   return (
     <View style={style}>
-      <Image
-        source={imgSource}
-        resizeMode="cover"
-        style={style.image}
-      />
+      <Image source={imgSource} resizeMode="cover" style={style.image} />
     </View>
   );
 }

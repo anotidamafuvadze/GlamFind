@@ -58,30 +58,13 @@ export default function useHomeStyles() {
         alignItems: "center",
       } as ViewStyle,
 
-      // ======================= SETTINGS BUTTON =======================
-      settingsButton: {
-        container: {
-          position: "absolute",
-          top: layouts.HOME.SETTINGS_BUTTON_TOP,
-          left: layouts.HOME.SETTINGS_BUTTON_LEFT,
-          alignItems: "center",
-        } as ViewStyle,
-
-        image: {
-          width: layouts.HOME.SETTINGS_BUTTON_IMAGE_WIDTH,
-          height: layouts.HOME.SETTINGS_BUTTON_IMAGE_HEIGHT,
-        } as ImageStyle,
-
-        opacity: layouts.HOME.SETTINGS_BUTTON_PRESSED_OPACITY,
-      },
-
       // ======================= LIKES BUTTON =======================
       likesButton: {
         activeOpacity: layouts.HOME.LIKES_BUTTON_ACTIVE_OPACITY,
 
         container: {
           alignItems: "center",
-          marginRight: layouts.HOME.LIKES_BUTTON_MARGIN_RIGHT,
+          marginRight: layouts.HOME.LIKES_BUTTON_MARGIN_RIGHT, 
         } as ViewStyle,
 
         button: {
@@ -90,16 +73,6 @@ export default function useHomeStyles() {
           justifyContent: "center",
           alignItems: "center",
           zIndex: layouts.HOME.LIKES_BUTTON_ZINDEX,
-        } as ViewStyle,
-
-        glow: {
-          position: "absolute",
-          top: layouts.HOME.LIKES_BUTTON_GLOW_TOP,
-          right: layouts.HOME.LIKES_BUTTON_GLOW_RIGHT,
-          width: layouts.HOME.LIKES_BUTTON_GLOW_WIDTH,
-          height: layouts.HOME.LIKES_BUTTON_GLOW_HEIGHT,
-          opacity: layouts.HOME.LIKES_BUTTON_GLOW_OPACITY,
-          zIndex: layouts.HOME.LIKES_BUTTON_GLOW_ZINDEX,
         } as ViewStyle,
 
         text: {

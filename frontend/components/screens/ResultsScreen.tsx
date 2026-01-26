@@ -63,12 +63,9 @@ export function ResultsScreen({
   const [baseQuery, setBaseQuery] = useState(initialQuery);
   const [searchQuery, setSearchQuery] = useState('');
   const [refinedProducts, setRefinedProducts] = useState<Product[]>(() => {
-    console.log('[FRONTEND] Initial products:', products);
     return products;
   });
   React.useEffect(() => {
-    console.log('[FRONTEND] ResultsScreen initial products:', products);
-    console.log('[FRONTEND] ResultsScreen refinedProducts:', refinedProducts);
   }, [products, refinedProducts]);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 

@@ -1,9 +1,5 @@
 import React from 'react';
-import { 
-  Pressable, 
-  Image, 
-  ImageStyle, 
-  ViewStyle } from 'react-native';
+import { Pressable, Image, ImageStyle, ViewStyle } from 'react-native';
 
 // Constants
 import images from '../../../constants/images';
@@ -14,17 +10,14 @@ type BackButtonProps = {
     button: ViewStyle;
     pressed: ViewStyle;
     icon: ImageStyle;
-  };    
+  };
 };
 
 /**
  * BackButton component
  * - Reusable navigation button for returning to the previous screen
  */
-export function BackButton({
-  onPress,
-  style,
-}: BackButtonProps) {
+export function BackButton({ onPress, style }: BackButtonProps) {
   return (
     <Pressable
       onPress={onPress}

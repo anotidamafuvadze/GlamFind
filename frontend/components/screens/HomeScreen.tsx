@@ -11,7 +11,6 @@ import images from '../../constants/images';
 import SearchBar from '../ui/general/SearchBar';
 import AutoplayCarousel from '../ui/carousel/AutoplayCarousel';
 import PopularQueries from '../ui/home/PopularQueries';
-import SettingsButton from '../ui/home/SettingsButton';
 import LikesButton from '../ui/home/LikesButton';
 import SignInButton from '../ui/home/SignInButton';
 
@@ -22,6 +21,7 @@ type HomeScreenProps = {
   onSignInPress: () => void;
   popularQueries: string[];
   isSearchLoading?: boolean;
+  displayName?: string | null;
 };
 
 /**
@@ -34,6 +34,7 @@ type HomeScreenProps = {
  * @param onSignInPress - Callback function triggered when sign in button is pressed
  * @param popularQueries - Array of popular search queries to display
  * @param isSearchLoading - Whether a search request is currently in flight
+ * @param displayName - Optional display name for personalized greeting
  * @returns React component for the home screen
  */
 
@@ -44,6 +45,7 @@ export function HomeScreen({
   onSignInPress,
   popularQueries,
   isSearchLoading = false,
+  displayName,
 }: HomeScreenProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const styles = useHomeStyles();
@@ -55,12 +57,6 @@ export function HomeScreen({
       style={styles.background}
     >
       {/* Header Buttons */}
-      <SettingsButton
-        iconSource={images.icons.settings}
-        onPress={onSettingsPress}
-        style={styles.settingsButton}
-      />
-
       <View style={styles.headerActions}>
         <LikesButton
           iconSource={images.icons.likes}
@@ -76,7 +72,11 @@ export function HomeScreen({
 
       {/* Main Content */}
       <View style={styles.content}>
-        <Text style={styles.title}>What are you{'\n'}looking for?</Text>
+        <Text style={styles.title}>
+          {displayName
+            ? `Hello ${displayName}, what can I help you find?`
+            : 'What are you\nlooking for?'}
+        </Text>
 
         <SearchBar
           value={searchQuery}

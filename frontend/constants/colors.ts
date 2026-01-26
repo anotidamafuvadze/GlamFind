@@ -57,7 +57,7 @@ const colors = {
     HEADER_BORDER: "rgba(213, 178, 171, 0.1)",
 
     BACK_BTN_BG: "rgba(255,255,255,0.70)",
-    BACK_BTN_BORDER: "rgba(0, 0, 0, 0.3)",
+    BACK_BTN_BORDER: "rgba(0, 0, 0, 1)",
 
     CARD_BG: "rgba(255, 255, 255, 1)",
     CARD_BORDER: "rgba(200,161,154,0.90)",
@@ -77,6 +77,64 @@ const colors = {
     ACTION_BUTTON_BG: "rgba(255,255,255,0.92)",
     ACTION_BUTTON_BORDER: "rgba(200,161,154,0.5)",
     ACTION_BUTTON_BORDER_SELECTED: "rgba(200,161,154,0.9)",
+  },
+
+  // ======================= SIGN IN SCREEN =======================
+  SIGNIN: {
+    TITLE: "rgb(28, 27, 26)",
+    BACK_BUTTON_BG: "rgba(255,255,255,0.70)",
+    BACK_BUTTON_BORDER: "rgba(0, 0, 0, 1)",
+    BACK_ICON_TINT: "#1F2937",
+    SUBTITLE: "black",
+    CARD_BG: "rgba(255, 255, 255, 1)",
+    CARD_TITLE: "#1F2937",
+    INPUT_BORDER: "#ffffff",
+    INPUT_TEXT: "#000000",
+    ERROR_TEXT: "#DC2626",
+    ERROR_BG: "#FEF2F2",
+    BUTTON_BORDER: "black",
+    BUTTON_TEXT: "#000000",
+    FOOTER_TEXT: "#374151",
+    INPUT_BG: "rgba(250, 243, 224, 0.8)",
+    BUTTON_BG: "rgba(250, 243, 224, 0.8)",
+    LINK: "#000000",
+  },
+
+  // ======================= REGISTER SCREEN =======================
+  REGISTER: {
+    INPUT_BG: "rgba(250, 243, 224, 0.8)",
+    TITLE: "rgb(28, 27, 26)",
+    BACK_BUTTON_BG: "rgba(255,255,255,0.70)",
+    BACK_BUTTON_BORDER: "rgba(0, 0, 0, 1)",
+    BACK_ICON_TINT: "#1F2937",
+    SUBTITLE: "black",
+    CARD_BG: "rgba(255, 255, 255, 1)",
+    CARD_TITLE: "#1F2937",
+    INPUT_BORDER: "#ffffff",
+    INPUT_TEXT: "#000000",
+    ERROR_TEXT: "#DC2626",
+    ERROR_BG: "#FEF2F2",
+    BUTTON_BORDER: "black",
+    BUTTON_TEXT: "#000000",
+    FOOTER_TEXT: "#374151",
+    LINK: "#000000",
+    BUTTON_BG: "rgba(250, 243, 224, 0.8)",
+  },
+
+  // ======================= LIKES SCREEN =======================
+  LIKES_SCREEN: {
+    BACKGROUND: "rgba(255, 255, 255, 1)",
+    HEADER_BG: "rgba(255, 255, 255, 0.55)",
+    HEADER_BORDER: "rgba(213, 178, 171, 0.1)",
+    TITLE: "rgba(25, 24, 23, 1)",
+    BACK_BTN_BG: "rgba(255, 255, 255, 0.7)",
+    BACK_BTN_BORDER: "rgba(0, 0, 0, 1)",
+    CARD_BG: "rgba(255, 255, 255, 1)",
+    CARD_BORDER: "rgba(200, 161, 154, 0.1)",
+    IMAGE_BG: "rgba(246, 241, 240, 1)",
+    ACTION_BUTTON_BG: "rgba(255, 255, 255, 0.92)",
+    ACTION_BUTTON_BORDER: "rgba(200, 161, 154, 0.5)",
+    ACTION_BUTTON_BORDER_SELECTED: "rgba(200, 161, 154, 0.9)",
   },
 };
 

@@ -15,10 +15,11 @@ export function useSignIn() {
     setLoading(true);
 
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
       if (signInError) {
         if (signInError.message.toLowerCase().includes('invalid')) {
@@ -29,7 +30,25 @@ export function useSignIn() {
         return;
       }
 
-      router.push('/home');
+      const user = signInData?.user;
+      console.log('User signed in:', user);
+
+      if (user) {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+          setError('Failed to fetch profile. Please try again.');
+          return;
+        }
+
+        console.log('User profile:', profile);
+        router.push('/home');
+      }
     } catch (err) {
       console.error('Sign-in error:', err);
       setError('Unexpected error. Please try again.');

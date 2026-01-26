@@ -62,6 +62,8 @@ export default function useResultsStyles() {
           fontFamily: fonts.family.primary,
           fontSize: fonts.size.results.title,
           fontWeight: fonts.weight.normal,
+          textAlign: "center",
+          marginRight: 35,
         } as TextStyle,
 
         subtitle: {

@@ -4,12 +4,12 @@ import {
   Text,
   TextInput,
   ImageBackground,
-  StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import images from '../../constants/images';
 import BackButton from '../ui/general/BackButton';
+import useRegisterStyles from '../../styles/registerScreenStyles';
 
 type RegisterScreenProps = {
   name: string;
@@ -38,6 +38,8 @@ export default function RegisterScreen({
   goToSignIn,
   goBack,
 }: RegisterScreenProps) {
+  const styles = useRegisterStyles();
+
   return (
     <ImageBackground
       source={images.backgrounds.signInScreen}
@@ -70,7 +72,7 @@ export default function RegisterScreen({
             placeholder="Name"
             autoCapitalize="words"
             style={styles.input}
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor="#000000"
           />
           <TextInput
             value={email}
@@ -80,7 +82,7 @@ export default function RegisterScreen({
             keyboardType="email-address"
             textContentType="emailAddress"
             style={styles.input}
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor="#000000"
           />
           <TextInput
             value={password}
@@ -89,7 +91,7 @@ export default function RegisterScreen({
             secureTextEntry
             textContentType="password"
             style={styles.input}
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor="#000000"
           />
 
           {!!error && <Text style={styles.error}>{error}</Text>}
@@ -100,7 +102,7 @@ export default function RegisterScreen({
             disabled={loading}
           >
             {loading ? (
-              <ActivityIndicator color="#fff" />
+              <ActivityIndicator color="#000" />
             ) : (
               <Text style={styles.buttonText}>Register</Text>
             )}
@@ -117,98 +119,3 @@ export default function RegisterScreen({
     </ImageBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  bg: { flex: 1 },
-  safe: { flex: 1 },
-  flex: { flex: 1 },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 48,
-    left: 16,
-    zIndex: 10,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    borderRadius: 24,
-    padding: 6,
-  },
-  backButtonPressed: {
-    opacity: 0.7,
-  },
-  backIcon: {
-    width: 28,
-    height: 28,
-    tintColor: '#1F2937',
-  },
-  headerBlock: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: '800',
-    color: '#fff',
-    textShadowColor: 'rgba(0,0,0,0.35)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 6,
-  },
-  subtitle: {
-    marginTop: 8,
-    fontSize: 18,
-    color: 'rgba(255,255,255,0.9)',
-    textShadowColor: 'rgba(0,0,0,0.25)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-  },
-  card: {
-    width: '100%',
-    maxWidth: 420,
-    backgroundColor: 'rgba(255,255,255,0.92)',
-    borderRadius: 16,
-    padding: 20,
-  },
-  cardTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
-    color: '#1F2937',
-  },
-  spacer: { height: 12 },
-  input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    backgroundColor: '#FFFFFF',
-    marginTop: 12,
-    color: '#111827',
-  },
-  error: {
-    marginTop: 12,
-    color: '#DC2626',
-    backgroundColor: '#FEF2F2',
-    padding: 10,
-    borderRadius: 8,
-    textAlign: 'center',
-  },
-  button: {
-    marginTop: 16,
-    backgroundColor: '#EC4899',
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  buttonText: { color: '#fff', fontWeight: '700', fontSize: 16 },
-  footerText: {
-    marginTop: 16,
-    textAlign: 'center',
-    color: '#374151',
-  },
-  link: { color: '#EC4899', fontWeight: '600' },
-});
