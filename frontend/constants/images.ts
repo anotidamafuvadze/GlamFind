@@ -12,6 +12,7 @@ const images = {
     homeScreen: require("../assets/images/backgrounds/home-screen-background.png"),
     resultsScreen: require("../assets/images/backgrounds/results-screen-background.png"),
     signInScreen: require("../assets/images/backgrounds/sign-in-screen-background.png"),
+    likesScreen: require("../assets/images/backgrounds/likes-screen-background.png"),
   },
 
   // ======================= ICONS =======================

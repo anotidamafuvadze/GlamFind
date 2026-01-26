@@ -100,6 +100,8 @@ export default function useSignInStyles() {
         backgroundColor: colors.SIGNIN.INPUT_BG,
         marginTop: layouts.SIGNIN.INPUT_MARGIN_TOP,
         color: colors.SIGNIN.INPUT_TEXT,
+        marginRight: 20,
+        marginLeft: 20,
       } as TextStyle,
 
       // ======================= ERROR =======================

@@ -38,13 +38,13 @@ export function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
 
       {/* Main Content */}
       <View style={styles.content}>
-        <Text style={styles.appName}>GlamFind</Text>
+        <Text style={styles.appName}>Luxe Find</Text>
         <Text style={styles.appTagline}>Beauty, intelligently curated.</Text>
 
         <Button
           title="Discover Your Glam"
           onPress={onGetStarted}
-          accessibilityLabel="Begin using GlamFind app"
+          accessibilityLabel="Begin using Luxe Find app"
           containerStyle={styles.buttonWrapper.button}
           textStyle={styles.buttonWrapper.text}
         />

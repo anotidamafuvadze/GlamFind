@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import { StyleSheet, View } from 'react-native';
 import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 export default function ScreensLayout() {
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+  }, []);
   function noAnimation(): NativeStackNavigationOptions {
     return { animation: 'none' };
   }

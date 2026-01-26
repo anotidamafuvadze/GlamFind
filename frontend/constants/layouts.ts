@@ -262,14 +262,15 @@ export default function useLayouts() {
         INPUT_BORDER_RADIUS: 999 * scaleWidth,
 
         // Footer search button
-        SEARCH_BUTTON_SIZE: 44 * scaleWidth,
-        SEARCH_BUTTON_ICON_SIZE: 45 * scaleWidth,
+        SEARCH_BUTTON_SIZE: 50 * scaleWidth,
+        SEARCH_BUTTON_ICON_SIZE: 40 * scaleWidth,
         SEARCH_BUTTON_ICON_TOP: 2 * scaleHeight,
         SEARCH_BUTTON_ICON_LEFT: 1 * scaleWidth,
         SEARCH_BUTTON_SHADOW_OFFSET_HEIGHT: 6 * scaleHeight,
         SEARCH_BUTTON_SHADOW_RADIUS: 10 * scaleHeight,
         SEARCH_BUTTON_SHADOW_OPACITY: 0.22,
         SEARCH_BUTTON_ELEVATION: 3,
+        SEARCH_BUTTON_BORDER_WIDTH: 1,
 
         // Pressed state
         PRESSED_SCALE: 0.98,
@@ -292,11 +293,11 @@ export default function useLayouts() {
         HEADER_MARGIN_BOTTOM: 24 * scaleHeight,
         CARD_WIDTH: "100%",
         CARD_MAX_WIDTH: 420 * scaleWidth,
-        CARD_RADIUS: 25 * scaleWidth,
+        CARD_RADIUS: 40 * scaleWidth,
         CARD_PADDING: 20 * scaleWidth,
         SPACER_HEIGHT: 12 * scaleHeight,
         INPUT_HEIGHT: 48 * scaleHeight,
-        INPUT_RADIUS: 20 * scaleWidth,
+        INPUT_RADIUS: 25 * scaleWidth,
         INPUT_PADDING_HORIZONTAL: 14 * scaleWidth,
         INPUT_MARGIN_TOP: 12 * scaleHeight,
         ERROR_MARGIN_TOP: 12 * scaleHeight,
@@ -335,11 +336,11 @@ export default function useLayouts() {
         SUBTITLE_SHADOW_RADIUS: 3, // Keep as is
         CARD_WIDTH: "100%", // Match SIGNIN
         CARD_MAX_WIDTH: 420 * scaleWidth, // Match SIGNIN
-        CARD_RADIUS: 25 * scaleWidth, // Match SIGNIN
+        CARD_RADIUS: 45 * scaleWidth, // Match SIGNIN
         CARD_PADDING: 20 * scaleWidth, // Match SIGNIN
         SPACER_HEIGHT: 12 * scaleHeight, // Match SIGNIN
         INPUT_HEIGHT: 48 * scaleHeight, // Match SIGNIN
-        INPUT_RADIUS: 20 * scaleWidth, // Match SIGNIN
+        INPUT_RADIUS: 25 * scaleWidth, // Match SIGNIN
         INPUT_PADDING_HORIZONTAL: 14 * scaleWidth, // Match SIGNIN
         INPUT_MARGIN_TOP: 12 * scaleHeight, // Match SIGNIN
         ERROR_MARGIN_TOP: 12 * scaleHeight, // Match SIGNIN

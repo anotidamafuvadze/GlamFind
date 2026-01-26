@@ -8,25 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		173C12B8978650B0D7046175 /* libPods-GlamApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EB02E8192EFDB7780932100 /* libPods-GlamApp.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		9552ACB9A4C3969040D1DB1E /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72188A57FABB0449BE7A5903 /* ExpoModulesProvider.swift */; };
+		6047B25FFC747A57205F9C28 /* libPods-GlamApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D81A38D28EE222ACE62A3B06 /* libPods-GlamApp.a */; };
+		8D6A38D4F4AEE18AC41AE806 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70099FFAE390714E88A142B /* ExpoModulesProvider.swift */; };
+		B61AA0EDD3FDE954A0502476 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BAD5421F9658E5D31E4D728A /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		CC7DA3AF71EE551CD7405328 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 68EA0CBFA2ECED0559A2C80D /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0AB7008F585D80B8B5CDF00B /* Pods-GlamApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlamApp.debug.xcconfig"; path = "Target Support Files/Pods-GlamApp/Pods-GlamApp.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* GlamApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GlamApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = GlamApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = GlamApp/Info.plist; sourceTree = "<group>"; };
-		4894F7D4263A51FFC434A8B7 /* Pods-GlamApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlamApp.release.xcconfig"; path = "Target Support Files/Pods-GlamApp/Pods-GlamApp.release.xcconfig"; sourceTree = "<group>"; };
-		68EA0CBFA2ECED0559A2C80D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = GlamApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		6EB02E8192EFDB7780932100 /* libPods-GlamApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GlamApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		72188A57FABB0449BE7A5903 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-GlamApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		3E2DC04A3FBDDDC195648D73 /* Pods-GlamApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlamApp.release.xcconfig"; path = "Target Support Files/Pods-GlamApp/Pods-GlamApp.release.xcconfig"; sourceTree = "<group>"; };
+		759DC5D7722BD991B03BC7B4 /* Pods-GlamApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlamApp.debug.xcconfig"; path = "Target Support Files/Pods-GlamApp/Pods-GlamApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = GlamApp/SplashScreen.storyboard; sourceTree = "<group>"; };
+		BAD5421F9658E5D31E4D728A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = GlamApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		D81A38D28EE222ACE62A3B06 /* libPods-GlamApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GlamApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E70099FFAE390714E88A142B /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-GlamApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = GlamApp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* GlamApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "GlamApp-Bridging-Header.h"; path = "GlamApp/GlamApp-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				173C12B8978650B0D7046175 /* libPods-GlamApp.a in Frameworks */,
+				6047B25FFC747A57205F9C28 /* libPods-GlamApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,7 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				68EA0CBFA2ECED0559A2C80D /* PrivacyInfo.xcprivacy */,
+				BAD5421F9658E5D31E4D728A /* PrivacyInfo.xcprivacy */,
 			);
 			name = GlamApp;
 			sourceTree = "<group>";
@@ -62,24 +62,16 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				6EB02E8192EFDB7780932100 /* libPods-GlamApp.a */,
+				D81A38D28EE222ACE62A3B06 /* libPods-GlamApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		582C7D7238E031ABDD0F08A8 /* ExpoModulesProviders */ = {
+		36E799E5E8A068A5A94DEB64 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9BA57EA4DF1192C90D1CAE0F /* GlamApp */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
-		7194F03BC45CD11161DBE9B3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0AB7008F585D80B8B5CDF00B /* Pods-GlamApp.debug.xcconfig */,
-				4894F7D4263A51FFC434A8B7 /* Pods-GlamApp.release.xcconfig */,
+				759DC5D7722BD991B03BC7B4 /* Pods-GlamApp.debug.xcconfig */,
+				3E2DC04A3FBDDDC195648D73 /* Pods-GlamApp.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -99,8 +91,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				7194F03BC45CD11161DBE9B3 /* Pods */,
-				582C7D7238E031ABDD0F08A8 /* ExpoModulesProviders */,
+				36E799E5E8A068A5A94DEB64 /* Pods */,
+				D04CE69688DA851BFCD0F0DF /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,10 +107,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9BA57EA4DF1192C90D1CAE0F /* GlamApp */ = {
+		92627356E9F33E48D972A2BF /* GlamApp */ = {
 			isa = PBXGroup;
 			children = (
-				72188A57FABB0449BE7A5903 /* ExpoModulesProvider.swift */,
+				E70099FFAE390714E88A142B /* ExpoModulesProvider.swift */,
 			);
 			name = GlamApp;
 			sourceTree = "<group>";
@@ -132,6 +124,14 @@
 			path = GlamApp/Supporting;
 			sourceTree = "<group>";
 		};
+		D04CE69688DA851BFCD0F0DF /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				92627356E9F33E48D972A2BF /* GlamApp */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "GlamApp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				32800967F1B024F00E696811 /* [Expo] Configure project */,
+				C8DB1294ABFD2B25F94EF541 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				FEC21B5B9CBC952C1EB04555 /* [CP] Embed Pods Frameworks */,
+				802687C803CE6CBAE1E7B177 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				CC7DA3AF71EE551CD7405328 /* PrivacyInfo.xcprivacy in Resources */,
+				B61AA0EDD3FDE954A0502476 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,25 +239,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		32800967F1B024F00E696811 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-GlamApp/expo-configure-project.sh\"\n";
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -333,7 +314,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GlamApp/Pods-GlamApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FEC21B5B9CBC952C1EB04555 /* [CP] Embed Pods Frameworks */ = {
+		802687C803CE6CBAE1E7B177 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -351,6 +332,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GlamApp/Pods-GlamApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C8DB1294ABFD2B25F94EF541 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-GlamApp/expo-configure-project.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -359,7 +359,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				9552ACB9A4C3969040D1DB1E /* ExpoModulesProvider.swift in Sources */,
+				8D6A38D4F4AEE18AC41AE806 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +368,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0AB7008F585D80B8B5CDF00B /* Pods-GlamApp.debug.xcconfig */;
+			baseConfigurationReference = 759DC5D7722BD991B03BC7B4 /* Pods-GlamApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -404,7 +404,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4894F7D4263A51FFC434A8B7 /* Pods-GlamApp.release.xcconfig */;
+			baseConfigurationReference = 3E2DC04A3FBDDDC195648D73 /* Pods-GlamApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

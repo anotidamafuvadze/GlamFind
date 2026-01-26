@@ -39,7 +39,7 @@ export default function LikesScreen({
 
   return (
     <ImageBackground
-      source={images.backgrounds.resultsScreen}
+      source={images.backgrounds.likesScreen}
       resizeMode="cover"
       style={styles.background}
     >

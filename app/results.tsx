@@ -25,10 +25,8 @@ export default function ResultsRoute() {
           : String(raw);
 
       const arr = JSON.parse(sanitized) as Product[];
-      console.log('[FRONTEND] Parsed products for ResultsScreen:', arr);
       return arr;
     } catch (err) {
-      console.error('[FRONTEND] Error parsing products param:', err, products);
       return [];
     }
   }, [products]);

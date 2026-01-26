@@ -44,6 +44,5 @@ Create a refined search query:"""
         return refined_query
         
     except Exception as e:
-        # print(f"Error refining query with OpenAI: {e}")
         # Fallback to simple concatenation if API fails
         return f"{original_query} {new_query}"

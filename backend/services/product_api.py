@@ -410,14 +410,11 @@ def get_product_from_apis(
     - DO NOT “download to validate” images (prevents throttling/timeouts)
     """
     search_query = f"{brand} {product_name} {product_type}".strip()
-    # print(f"[DEBUG] get_product_from_apis: search_query='{search_query}'")
 
     for engine_config in SEARCH_ENGINES:
         try:
-            # print(f"[DEBUG] Trying search engine: {engine_config['name']}")
             fetch_func = engine_config["fetch_func"]
             result = fetch_func(search_query, max_results)
-            # print(f"[DEBUG] Result from {engine_config['name']}: {result}")
             if not result:
                 continue
 
@@ -426,26 +423,14 @@ def get_product_from_apis(
 
             # Require a product_url (click-through UX + og:image extraction)
             if not product_url:
-                # print(f"[DEBUG] Skipping result from {engine_config['name']} due to missing product_url")
                 continue
 
             best_image = resolve_best_image(product_url, thumb)
             result["image_url"] = best_image
-            # print(f"[DEBUG] Final enrichment result: {result}")
-
-            # Allow image-less results if none are available (client can show placeholder)
-            # If you want to REQUIRE images, change this to:
-            # if _has_valid_thumbnail(result): return result
             return result
 
         except Exception as e:
-            # print(f"[PRODUCT_API] {engine_config['name']} search failed: {e}")
             continue
 
-    # print("[DEBUG] No enrichment found from any search engine.")
     return None
 
-
-def _has_valid_thumbnail(enrichment: Dict[str, Any]) -> bool:
-    image_url = enrichment.get("image_url")
-    return isinstance(image_url, str) and len(image_url.strip()) > 0

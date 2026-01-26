@@ -57,7 +57,6 @@ export default function LikesRoute() {
 
   const handleProductClick = useMemo(
     () => (productId: string) => {
-      console.log('Product clicked:', productId);
       // TODO: Navigate to product details or external link
     },
     [],

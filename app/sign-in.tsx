@@ -31,7 +31,6 @@ export function useSignIn() {
       }
 
       const user = signInData?.user;
-      console.log('User signed in:', user);
 
       if (user) {
         const { data: profile, error: profileError } = await supabase
@@ -41,12 +40,10 @@ export function useSignIn() {
           .single();
 
         if (profileError) {
-          console.error('Error fetching profile:', profileError);
           setError('Failed to fetch profile. Please try again.');
           return;
         }
 
-        console.log('User profile:', profile);
         router.push('/home');
       }
     } catch (err) {

@@ -22,12 +22,14 @@ type ProductCardProps = {
   price: string;
   rating: number;
   rating_count: number;
-          return proxied;
+  source_name: string;
   explanation: string;
 
   onPress: (productId: string) => void;
   updateSelections: (
-            return;
+    productId: string,
+    selection: 'like' | 'dislike' | null,
+  ) => void;
 
   style: {
     card: ViewStyle;
@@ -35,6 +37,7 @@ type ProductCardProps = {
     imageWrap: ViewStyle;
     image: ImageStyle;
     content: ViewStyle;
+    brand: TextStyle;
     name: TextStyle;
     rationale: TextStyle;
     actionsRow: ViewStyle;
@@ -42,6 +45,7 @@ type ProductCardProps = {
       button: ViewStyle;
       selected: ViewStyle;
       text: TextStyle;
+      selectedText: TextStyle;
     };
   };
 };
@@ -56,10 +60,20 @@ function toProxiedImageUrl(upstreamUrl: string): string {
   if (
     trimmed.includes('/api/image-proxy?url=') ||
     trimmed.includes('/image-proxy?url=')
+  ) {
+    return trimmed;
+  }
+
   // ✅ FIX 2: your FastAPI mounts the router under /api
   return `${IMAGE_PROXY_BASE_URL}/api/image-proxy?url=${encodeURIComponent(
+    trimmed,
+  )}`;
+}
 
 export function ProductCard({
+  id,
+  image_url,
+  brand,
   name,
   product_url,
   price,

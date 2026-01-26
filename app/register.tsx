@@ -16,15 +16,12 @@ export function useRegister() {
     setLoading(true);
 
     try {
-      console.log('Attempting to sign up with:', { email, password, name });
-
       const { data: signUpData, error: signUpError } =
         await supabase.auth.signUp({
           email,
           password,
         });
 
-      console.log('Sign-up response:', { signUpData, signUpError });
 
       if (signUpError) {
         if (signUpError.message.includes('duplicate key value')) {
@@ -35,13 +32,11 @@ export function useRegister() {
           setError('Password is too weak. Please use at least 6 characters.');
         } else {
           setError('An unexpected error occurred. Please try again.');
-          console.log('Sign-up error details:', signUpError);
         }
         return;
       }
 
       const user = signUpData?.user;
-      console.log('User created:', user);
 
       if (user) {
         const { error: profileError } = await supabase

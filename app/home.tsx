@@ -53,7 +53,6 @@ export default function HomeRoute() {
       setIsSearchLoading(true);
       const response = await fetchRecommendations(trimmed);
       const products: Product[] = response.products ?? [];
-      console.log('[FRONTEND] Products from API:', products);
       router.push({
         pathname: 'results',
         params: { q: trimmed, products: JSON.stringify(products) },

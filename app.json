@@ -1,6 +1,6 @@
 {
-  "name": "GlamApp",
-  "displayName": "GlamApp",
+  "name": "LuxeFind",
+  "displayName": "LuxeFind",
   "plugins": [
     "expo-router",
     "expo-font",

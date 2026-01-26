@@ -256,7 +256,7 @@ export default function useResultsStyles() {
 
           selected: {
             opacity: layouts.RESULTS.ACTION_BUTTON_SELECTED_OPACITY,
-            backgroundColor: colors.DUSTY_ROSE,
+            backgroundColor: colors.RESULTS_EXTRA.ACTION_BUTTON_SELECTED_BG,
             borderColor: colors.RESULTS_EXTRA.ACTION_BUTTON_BORDER_SELECTED,
           } as ViewStyle,
 
@@ -314,12 +314,9 @@ export default function useResultsStyles() {
           borderRadius: layouts.RESULTS.ACTION_BUTTON_BORDER_RADIUS,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: colors.DUSTY_ROSE,
-          shadowColor: colors.DUSTY_ROSE,
-          shadowOffset: { width: layouts.ZERO, height: layouts.RESULTS.SEARCH_BUTTON_SHADOW_OFFSET_HEIGHT },
-          shadowOpacity: layouts.RESULTS.SEARCH_BUTTON_SHADOW_OPACITY,
-          shadowRadius: layouts.RESULTS.SEARCH_BUTTON_SHADOW_RADIUS,
-          elevation: layouts.RESULTS.SEARCH_BUTTON_ELEVATION,
+          backgroundColor: colors.RESULTS.SEARCH_BUTTON_BG,
+          borderWidth: layouts.RESULTS.SEARCH_BUTTON_BORDER_WIDTH,
+          borderColor: colors.RESULTS.SEARCH_BUTTON_BORDER,
         } as ViewStyle,
 
         icon: {

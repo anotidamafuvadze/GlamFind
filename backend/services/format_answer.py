@@ -142,18 +142,6 @@ def format_recommendation_response(query: str, enriched_products: List[Dict[str,
         rating = _pick_num(product.get("rating"), enrichment.get("rating"), float, 0.0)
         rating_count = _pick_num(product.get("rating_count"), enrichment.get("rating_count"), int, 0)
 
-        # --- Enforce URL sanity (optional but strongly recommended) ---
-        # if product_url and not _is_valid_http_url(product_url):
-        #     print(f"[FORMAT] Product {product.get('id')} has invalid product_url; blanking: {product_url[:120]}")
-        #     product_url = ""
-
-        # if image_url and not _is_rn_renderable_image_url(image_url):
-        #     print(
-        #         f"[FORMAT] Product {product.get('id')} ({product.get('brand')} {product.get('name')}): "
-        #         f"image_url not RN-renderable; blanking: {image_url[:120]}"
-        #     )
-        #     image_url = ""
-
         # Prefer the UUID id if present, else fallback to external_id
         id_val = product.get("id") or product.get("external_id") or ""
         formatted = {
@@ -171,7 +159,6 @@ def format_recommendation_response(query: str, enriched_products: List[Dict[str,
             "explanation": explanation,
         }
 
-        # print(f"[DEBUG] Product {product.get('id')} image_url: '{image_url}'")
         formatted_products.append(formatted)
 
     formatted_products.sort(key=_sort_key)
