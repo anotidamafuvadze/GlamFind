@@ -1,30 +1,13 @@
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import useResultsStyles from "../../styles/resultsScreenStyles";
+import images from "../../constants/images";
+import BackButton from "../ui/general/BackButton";
+import SearchBar from "../ui/general/SearchBar";
+import ProductList from "../ui/results/ProductList";
+import { Product } from "../../types/products";
 
-// Styles
-import useResultsStyles from '../../styles/resultsScreenStyles';
-
-// Constants
-import images from '../../constants/images';
-
-// UI Components
-import BackButton from '../ui/general/BackButton';
-import SearchBar from '../ui/general/SearchBar';
-import ProductList from '../ui/results/ProductList';
-
-// Mock data
-import {
-  MOCK_REFINED_EXPLANATION,
-  MOCK_REFINED_PRODUCTS,
-} from '../../mock/mockData';
-
-// Types
-import { Product } from '../../types/products';
-type ProductSelection = 'like' | 'dislike' | null;
-type APIResponse = {
-  query: string;
-  products: Product[];
-};
+type ProductSelection = "like" | "dislike" | null;
 
 type ResultsScreenProps = {
   initialQuery: string;
@@ -39,7 +22,6 @@ type ResultsScreenProps = {
   handleRefinedSearch: (query: string) => void;
 };
 
-// TODO: get rid of explanation param for product card
 /**
  * ResultsScreen component
  * - Displays AI-curated product results
@@ -47,12 +29,16 @@ type ResultsScreenProps = {
  *
  * @param initialQuery - The original search query that triggered these results
  * @param onBack - Callback function triggered when back button is pressed
- * @param onProductClick - Callback function triggered when a product is clicked
  * @param products - Array of product data to display
  * @param updateSelections - Function to update user's like/dislike selections
+ * @param error - Error message to display (if any)
+ * @param setError - Function to update error state
+ * @param searchQuery - Current refinement search query
+ * @param setSearchQuery - Function to update refinement search query
+ * @param isSearchLoading - Whether refined search is currently loading
+ * @param handleRefinedSearch - Callback function for refined search submission
  * @returns React component for the results screen
  */
-
 export function ResultsScreen({
   initialQuery,
   onBack,
@@ -67,22 +53,18 @@ export function ResultsScreen({
 }: ResultsScreenProps) {
   const styles = useResultsStyles();
 
-  // Remove local state for baseQuery, searchQuery, refinedProducts, isSearchLoading
-  // Use products directly as listData
-  const listData = products;
-
   // Error display
   const renderError = () =>
     error ? (
       <View
         style={{
-          backgroundColor: '#ffcccc',
+          backgroundColor: "#ffcccc",
           padding: 8,
           margin: 8,
           borderRadius: 6,
         }}
       >
-        <Text style={{ color: '#a00', textAlign: 'center' }}>{error}</Text>
+        <Text style={{ color: "#a00", textAlign: "center" }}>{error}</Text>
       </View>
     ) : null;
 
@@ -93,6 +75,7 @@ export function ResultsScreen({
       style={StyleSheet.absoluteFill}
     >
       {renderError()}
+
       {/* Header */}
       <View style={styles.header.container}>
         <BackButton onPress={onBack} style={styles.backButton} />
@@ -101,7 +84,7 @@ export function ResultsScreen({
 
       {/* Product Results */}
       <ProductList
-        products={listData}
+        products={products}
         updateSelections={updateSelections}
         style={styles.products}
         cardStyle={styles.productCard}

@@ -1,15 +1,10 @@
-import React from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import React from "react";
+import { View, Text, ImageBackground } from "react-native";
 
-// Styles
-import useWelcomeStyles from '../../styles/welcomeScreenStyles';
-
-// Constants
-import images from '../../constants/images';
-
-// UI Components
-import Button from '../ui/general/Button';
-import Glow from '../ui/general/Glow';
+import useWelcomeStyles from "../../styles/welcomeScreenStyles";
+import images from "../../constants/images";
+import Button from "../ui/general/Button";
+import Glow from "../ui/general/Glow";
 
 type WelcomeScreenProps = {
   onGetStarted: () => void;
@@ -22,7 +17,6 @@ type WelcomeScreenProps = {
  * @param onGetStarted - Callback function triggered when user taps "Get Started"
  * @returns React component for the welcome screen
  */
-
 export function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
   const styles = useWelcomeStyles();
 

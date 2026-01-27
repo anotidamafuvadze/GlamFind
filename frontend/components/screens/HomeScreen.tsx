@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
-
-// Styles
 import useHomeStyles from '../../styles/homeScreenStyles';
-
-// Constants
 import images from '../../constants/images';
-
-// UI Components
 import SearchBar from '../ui/general/SearchBar';
 import AutoplayCarousel from '../ui/carousel/AutoplayCarousel';
 import PopularQueries from '../ui/home/PopularQueries';

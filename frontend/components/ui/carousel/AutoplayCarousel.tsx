@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { View, ScrollView, ViewStyle, ImageStyle } from 'react-native';
-
-// Local imports
 import { cardDetails } from './CarouselConfig';
 import CarouselItem from './CarouselItem';
 

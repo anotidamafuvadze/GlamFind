@@ -1,7 +1,5 @@
 import React from 'react';
 import { Pressable, Image, ImageStyle, ViewStyle } from 'react-native';
-
-// Constants
 import images from '../../../constants/images';
 
 type BackButtonProps = {

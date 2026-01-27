@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { ImageBackground, Text, View } from 'react-native';
-import images from '../../constants/images';
-import BackButton from '../ui/general/BackButton';
-import ProductList from '../ui/results/ProductList';
-import { Product } from '../../types/products';
-import useLikesStyles from '../../styles/likesScreenStyles';
+import React, { useMemo } from "react";
+import { ImageBackground, Text, View } from "react-native";
+import images from "../../constants/images";
+import { Product } from "../../types/products";
+import useLikesStyles from "../../styles/likesScreenStyles";
+import BackButton from "../ui/general/BackButton";
+import ProductList from "../ui/results/ProductList";
 
 type LikesScreenProps = {
   likedProducts: Product[];
@@ -12,12 +12,24 @@ type LikesScreenProps = {
   isLoggedIn: boolean;
   updateSelections: (
     productId: string,
-    selection: 'like' | 'dislike' | null,
+    selection: "like" | "dislike" | null,
   ) => void;
   goBack: () => void;
   error: string;
 };
 
+/**
+ * LikesScreen component
+ * - Displays user's liked/favorited products
+ *
+ * @param likedProducts - Array of liked product objects
+ * @param isLoading - Whether data is currently loading
+ * @param isLoggedIn - Whether user is authenticated
+ * @param updateSelections - Callback function for product like/dislike actions
+ * @param goBack - Callback function to navigate back
+ * @param error - Error message to display (if any)
+ * @returns React component for the likes screen
+ */
 export default function LikesScreen({
   likedProducts,
   isLoading,
@@ -34,13 +46,13 @@ export default function LikesScreen({
     error ? (
       <View
         style={{
-          backgroundColor: '#ffcccc',
+          backgroundColor: "#ffcccc",
           padding: 8,
           margin: 8,
           borderRadius: 6,
         }}
       >
-        <Text style={{ color: '#a00', textAlign: 'center' }}>{error}</Text>
+        <Text style={{ color: "#a00", textAlign: "center" }}>{error}</Text>
       </View>
     ) : null;
 
@@ -59,6 +71,7 @@ export default function LikesScreen({
       style={styles.background}
     >
       {renderError()}
+
       {/* Header */}
       <View style={styles.headerContainer}>
         <BackButton
@@ -77,8 +90,8 @@ export default function LikesScreen({
         <View style={styles.emptyStateContainer}>
           <Text style={styles.emptyStateText}>
             {isLoggedIn
-              ? 'No products favorited yet. Start exploring and like your favorites!'
-              : 'Please sign in or sign up to view your liked products.'}
+              ? "No products favorited yet. Start exploring and like your favorites!"
+              : "Please sign in or sign up to view your liked products."}
           </Text>
         </View>
       ) : (

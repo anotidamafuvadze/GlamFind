@@ -7,7 +7,6 @@ import {
   TextStyle,
   ImageStyle,
 } from 'react-native';
-import Glow from '../general/Glow';
 import Button from '../general/Button';
 
 type LikesButtonProps = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,10 +6,10 @@ import {
   ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
-import images from '../../constants/images';
-import BackButton from '../ui/general/BackButton';
-import useRegisterStyles from '../../styles/registerScreenStyles';
+} from "react-native";
+import images from "../../constants/images";
+import useRegisterStyles from "../../styles/registerScreenStyles";
+import BackButton from "../ui/general/BackButton";
 
 type RegisterScreenProps = {
   name: string;
@@ -25,6 +25,23 @@ type RegisterScreenProps = {
   goBack: () => void;
 };
 
+/**
+ * RegisterScreen component
+ * - User registration and account creation screen
+ *
+ * @param name - Full name input value
+ * @param setName - Function to update name value
+ * @param email - Email input value
+ * @param setEmail - Function to update email value
+ * @param password - Password input value
+ * @param setPassword - Function to update password value
+ * @param error - Error message to display (if any)
+ * @param loading - Whether registration is in progress
+ * @param handleSubmit - Callback function for registration submission
+ * @param goToSignIn - Callback function to navigate to sign-in screen
+ * @param goBack - Callback function to navigate back
+ * @returns React component for the registration screen
+ */
 export default function RegisterScreen({
   name,
   setName,
@@ -47,6 +64,7 @@ export default function RegisterScreen({
       resizeMode="cover"
     >
       <View style={styles.content}>
+        {/* Back button */}
         <BackButton
           onPress={goBack}
           style={{
@@ -55,6 +73,8 @@ export default function RegisterScreen({
             icon: styles.backIcon,
           }}
         />
+
+        {/* Header section */}
         <View style={styles.headerBlock}>
           <Text style={styles.title}>GLAM QUERY</Text>
           <Text style={styles.subtitle}>
@@ -62,10 +82,12 @@ export default function RegisterScreen({
           </Text>
         </View>
 
+        {/* Registration form */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Create Account</Text>
           <View style={styles.spacer} />
 
+          {/* Name input */}
           <TextInput
             value={name}
             onChangeText={setName}
@@ -74,6 +96,8 @@ export default function RegisterScreen({
             style={styles.input}
             placeholderTextColor="#000000"
           />
+
+          {/* Email input */}
           <TextInput
             value={email}
             onChangeText={setEmail}
@@ -84,6 +108,8 @@ export default function RegisterScreen({
             style={styles.input}
             placeholderTextColor="#000000"
           />
+
+          {/* Password input */}
           <TextInput
             value={password}
             onChangeText={setPassword}
@@ -94,8 +120,10 @@ export default function RegisterScreen({
             placeholderTextColor="#000000"
           />
 
+          {/* Error message */}
           {!!error && <Text style={styles.error}>{error}</Text>}
 
+          {/* Submit button */}
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit}
@@ -108,8 +136,9 @@ export default function RegisterScreen({
             )}
           </TouchableOpacity>
 
+          {/* Sign-in link */}
           <Text style={styles.footerText}>
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Text style={styles.link} onPress={goToSignIn}>
               Sign in
             </Text>

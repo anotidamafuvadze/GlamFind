@@ -6,17 +6,22 @@ import { HomeScreen } from "../frontend/components/screens/HomeScreen";
 import { supabase } from "../backend/services/supabase/supabaseClient";
 import { fetchRecommendations } from "../frontend/api/client";
 
-// TODO: polish
 type RecommendationsResponse = {
   query: string;
   products: Product[];
 };
 
+/**
+ * useHome
+ * - Custom hook for home screen logic
+ * - Manages user authentication, search, and popular queries
+ */
 export function useHome() {
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [displayName, setDisplayName] = useState<string | null>(null);
 
+  // Fetch user profile data
   useEffect(() => {
     const fetchUserProfile = async () => {
       const {
@@ -40,13 +45,13 @@ export function useHome() {
     fetchUserProfile();
   }, []);
 
+  // Handle search query submission
   const handleSearch = useCallback(async (rawQuery: string) => {
     const trimmed = rawQuery.trim();
     if (!trimmed) return;
 
     try {
       setIsSearchLoading(true);
-
       const response = (await fetchRecommendations(trimmed)) as RecommendationsResponse;
       const products: Product[] = response.products ?? [];
 
@@ -61,6 +66,7 @@ export function useHome() {
     }
   }, []);
 
+  // Fetch popular search queries (temporary mock implementation)
   const fetchPopularQueries = useCallback(async (): Promise<string[]> => {
     return [
       "Lipstick for dry lips",
@@ -69,6 +75,7 @@ export function useHome() {
     ];
   }, []);
 
+  // Load popular queries on component mount
   useEffect(() => {
     let cancelled = false;
 
@@ -99,6 +106,11 @@ export function useHome() {
   };
 }
 
+/**
+ * HomeRoute
+ * - Main home screen route that handles user authentication, search functionality,
+ *   and popular queries display
+ */
 export default function HomeRoute() {
   const homeProps = useHome();
   return <HomeScreen {...homeProps} />;

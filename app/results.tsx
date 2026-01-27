@@ -11,8 +11,11 @@ type RefinedRecommendationsResponse = {
   products: Product[];
 };
 
-// TODO: polish
-
+/**
+ * useResults
+ * - Custom hook for results screen logic
+ * - Handles refined searches and product interactions
+ */
 export function useResults() {
   const [error, setError] = useState<string>("");
   const [baseQuery, setBaseQuery] = useState<string>("");
@@ -27,6 +30,7 @@ export function useResults() {
 
   const initialQuery = (q ?? "").toString();
 
+  // Parse and sanitize product data from search params
   const parsedProducts: Product[] = useMemo(() => {
     try {
       const raw = products ?? "[]";
@@ -41,11 +45,13 @@ export function useResults() {
     }
   }, [products]);
 
+  // Initialize state with search params
   useEffect(() => {
     setBaseQuery(initialQuery);
     setRefinedProducts(parsedProducts);
   }, [initialQuery, parsedProducts]);
 
+  // Handle refined search with additional query
   const handleRefinedSearch = useCallback(
     async (rawQuery: string) => {
       const trimmedQuery = rawQuery.trim();
@@ -55,7 +61,10 @@ export function useResults() {
       setIsSearchLoading(true);
 
       try {
-        const response = (await fetchRefinedRecommendations(trimmedQuery, baseQuery)) as RefinedRecommendationsResponse;
+        const response = (await fetchRefinedRecommendations(
+          trimmedQuery,
+          baseQuery,
+        )) as RefinedRecommendationsResponse;
 
         setRefinedProducts(response.products ?? []);
         setBaseQuery(response.query);
@@ -66,9 +75,10 @@ export function useResults() {
         setIsSearchLoading(false);
       }
     },
-    [baseQuery]
+    [baseQuery],
   );
 
+  // Handle product like/dislike selection
   const handleProductSelection = useCallback(
     async (productId: string, selection: "like" | "dislike" | null) => {
       try {
@@ -104,9 +114,10 @@ export function useResults() {
         setError("Failed to update favorites. Please try again.");
       }
     },
-    []
+    [],
   );
 
+  // Navigate back to home screen
   const onBack = () => {
     router.replace("home");
   };
@@ -125,6 +136,11 @@ export function useResults() {
   };
 }
 
+/**
+ * ResultsRoute
+ * - Results screen route for displaying search results
+ * - Manages product interactions and refined searches
+ */
 export default function ResultsRoute() {
   const resultsProps = useResults();
   return <ResultsScreen {...resultsProps} />;

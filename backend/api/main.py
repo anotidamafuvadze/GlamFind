@@ -2,12 +2,10 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import List
-
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
 from services.vector_store import get_vector_store
 from services.retrieval import retrieve_top_products
 from services.enrichment import get_enriched_products
@@ -15,37 +13,50 @@ from services.format_answer import format_recommendation_response
 from services.refine_query import refine_query
 from services.image_proxy import router as image_proxy_router
 
-# TODO: polish
 # Load environment variables
 load_dotenv()
 
-# -----------------------------
-# Paths / Data
-# -----------------------------
+# Base paths for data and vector store
 BASE_DIR = Path(__file__).resolve().parents[1]
 CSV_DATA_PATH = BASE_DIR / "data" / "beautyProducts.csv"
 FAISS_INDEX_DIR = BASE_DIR / "vectorstores" / "faiss_beauty"
 
-# -----------------------------
-# App lifecycle
-# -----------------------------
+
+def _ensure_vector_store(app: FastAPI):
+    """
+    Lazily initialize vector store on first request.
+    Args:
+        app: FastAPI application instance
+    """
+    vector_store = getattr(app.state, "vector_store", None)
+    if vector_store is None:
+        try:
+            app.state.vector_store = get_vector_store(
+                csv_path=str(CSV_DATA_PATH),
+                faiss_dir=str(FAISS_INDEX_DIR),
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Vector store not ready: {e}",
+            )
+    return app.state.vector_store
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize and manage the vector store lifecycle."""
-    app.state.vector_store = get_vector_store(
-        csv_path=str(CSV_DATA_PATH),
-        faiss_dir=str(FAISS_INDEX_DIR),
-    )
+    """
+    Render-friendly startup with lazy initialization.
+    Args:
+        app: FastAPI application instance
+    """
+    app.state.vector_store = None
     yield
 
 
 app = FastAPI(title="Product RAG API", lifespan=lifespan)
 
-# -----------------------------
-# CORS (Render-friendly)
-# -----------------------------
-# Set CORS_ORIGINS to a comma-separated list, e.g.
-# CORS_ORIGINS=http://localhost:19006,http://localhost:8081,https://your-frontend-domain.com
+# CORS configuration
 cors_origins_raw = os.getenv("CORS_ORIGINS", "").strip()
 cors_allow_all = os.getenv("CORS_ALLOW_ALL", "false").lower() == "true"
 
@@ -59,21 +70,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# -----------------------------
-# Routes
-# -----------------------------
-# Mount image proxy route under /api
+# Mount image proxy route
 app.include_router(image_proxy_router, prefix="/api")
 
 
 @app.get("/health")
 def health():
+    """Health check endpoint for monitoring."""
     return {"ok": True}
 
 
-# -----------------------------
-# Request Models
-# -----------------------------
+# Request models
 class RecommendationsRequest(BaseModel):
     query: str
 
@@ -96,7 +103,7 @@ def recommend_products(payload: RecommendationsRequest):
         if not user_query:
             raise HTTPException(status_code=400, detail="Query cannot be empty")
 
-        vector_store = app.state.vector_store
+        vector_store = _ensure_vector_store(app)
         retrieved_products = retrieve_top_products(vector_store, user_query, 5)
         enriched_products = get_enriched_products(retrieved_products)
         return format_recommendation_response(user_query, enriched_products)
@@ -127,7 +134,7 @@ def refined_recommend_products(payload: RefinedRecommendationsRequest):
 
         user_query = refine_query(original_query, new_query)
 
-        vector_store = app.state.vector_store
+        vector_store = _ensure_vector_store(app)
         retrieved_products = retrieve_top_products(vector_store, user_query, 5)
         enriched_products = get_enriched_products(retrieved_products)
         return format_recommendation_response(user_query, enriched_products)

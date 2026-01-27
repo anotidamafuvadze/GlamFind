@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,10 +6,11 @@ import {
   ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
-import images from '../../constants/images';
-import BackButton from '../ui/general/BackButton';
-import useSignInStyles from '../../styles/signInScreenStyles';
+} from "react-native";
+
+import images from "../../constants/images";
+import useSignInStyles from "../../styles/signInScreenStyles";
+import BackButton from "../ui/general/BackButton";
 
 type SignInScreenProps = {
   email: string;
@@ -23,6 +24,21 @@ type SignInScreenProps = {
   goBack: () => void;
 };
 
+/**
+ * SignInScreen component
+ * - User authentication and sign-in screen
+ *
+ * @param email - Email input value
+ * @param setEmail - Function to update email value
+ * @param password - Password input value
+ * @param setPassword - Function to update password value
+ * @param error - Error message to display (if any)
+ * @param loading - Whether sign-in is in progress
+ * @param handleSubmit - Callback function for sign-in submission
+ * @param goToRegister - Callback function to navigate to registration screen
+ * @param goBack - Callback function to navigate back
+ * @returns React component for the sign-in screen
+ */
 export default function SignInScreen({
   email,
   setEmail,
@@ -43,7 +59,7 @@ export default function SignInScreen({
       resizeMode="cover"
     >
       <View style={styles.content}>
-        {/* Back button at the top */}
+        {/* Back button */}
         <BackButton
           onPress={goBack}
           style={{
@@ -52,6 +68,8 @@ export default function SignInScreen({
             icon: styles.backIcon,
           }}
         />
+
+        {/* Header section */}
         <View style={styles.headerBlock}>
           <Text style={styles.title}>GLAM QUERY</Text>
           <Text style={styles.subtitle}>
@@ -59,10 +77,12 @@ export default function SignInScreen({
           </Text>
         </View>
 
+        {/* Sign-in form */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Welcome back</Text>
           <View style={styles.spacer} />
 
+          {/* Email input */}
           <TextInput
             value={email}
             onChangeText={setEmail}
@@ -73,6 +93,8 @@ export default function SignInScreen({
             style={styles.input}
             placeholderTextColor="#000000"
           />
+
+          {/* Password input */}
           <TextInput
             value={password}
             onChangeText={setPassword}
@@ -83,8 +105,10 @@ export default function SignInScreen({
             placeholderTextColor="#000000"
           />
 
+          {/* Error message */}
           {!!error && <Text style={styles.error}>{error}</Text>}
 
+          {/* Submit button */}
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit}
@@ -97,8 +121,9 @@ export default function SignInScreen({
             )}
           </TouchableOpacity>
 
+          {/* Registration link */}
           <Text style={styles.footerText}>
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <Text style={styles.link} onPress={goToRegister}>
               Create one
             </Text>
