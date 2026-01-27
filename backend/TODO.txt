@@ -1,0 +1,13 @@
+TODO:
+
+6. Polish and understand every file 
+- Watch videos on fast api sqlite and postgresSQL
+7. Have servers and backend be running all the time when app is open (USE RENDER)
+uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+7. Update read me
+7. Go through all remaining TODOs
+8. MAKE SURE THERE ARE NO VISIBLE API KEYS IN GITHUB
+
+
+10. Publish
+
