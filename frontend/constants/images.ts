@@ -1,12 +1,13 @@
 /**
- * Image assets
- * - Central registry for static image imports
- * - Organized by usage category (backgrounds, icons, branding)
- * - Prefer referencing images from this file over inline requires
+ * images.ts
+ *
+ * Image assets registry for the application.
+ * Centralized collection of all static image imports.
+ * Organized by usage category for consistent reference.
  */
 
 const images = {
-  // ======================= BACKGROUNDS =======================
+  // ----------------------- BACKGROUNDS -----------------------
   backgrounds: {
     onboardingScreen: require("../assets/images/backgrounds/onboarding-screen-background.png"),
     homeScreen: require("../assets/images/backgrounds/home-screen-background.png"),
@@ -15,7 +16,7 @@ const images = {
     likesScreen: require("../assets/images/backgrounds/likes-screen-background.png"),
   },
 
-  // ======================= ICONS =======================
+  // ----------------------- ICONS -----------------------
   icons: {
     search: require("../assets/images/icons/search-icon.png"),
     back: require("../assets/images/icons/back-icon.png"),
@@ -24,10 +25,6 @@ const images = {
     settings: require("../assets/images/icons/settings-icon.png"),
   },
 
-  // ======================= BRANDING =======================
-  branding: {
-    // logo: require("../assets/images/branding/logo.png"),
-  },
 };
 
 export default images;

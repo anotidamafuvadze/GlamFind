@@ -1,10 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
-import { FlatList, ListRenderItem, View, ViewStyle, Text } from 'react-native';
+import React, { useCallback, useMemo } from "react";
+import {
+  FlatList,
+  ListRenderItem,
+  View,
+  ViewStyle,
+  Text,
+} from "react-native";
+import { ProductCard } from "./ProductCard";
+import { Product } from "../../../types/products";
 
-import { ProductCard } from './ProductCard';
-import { Product } from '../../../types/products';
-
-type ProductSelection = 'like' | 'dislike' | null;
+type ProductSelection = "like" | "dislike" | null;
 
 type ProductListProps = {
   products: Product[];
@@ -12,18 +17,27 @@ type ProductListProps = {
   style: {
     listContent: ViewStyle;
   };
-  cardStyle: React.ComponentProps<typeof ProductCard>['style'];
+  cardStyle: React.ComponentProps<typeof ProductCard>["style"];
 };
 
+// Performance optimization constants for FlatList
 const FOOTER_HEIGHT = 120;
 const CARD_SPACING = 40;
-
-// Fix A throttling props (this is the one that reduces concurrent image downloads)
 const INITIAL_NUM_TO_RENDER = 4;
 const MAX_TO_RENDER_PER_BATCH = 4;
 const UPDATE_CELLS_BATCHING_PERIOD = 50;
 const WINDOW_SIZE = 6;
 
+/**
+ * ProductList component
+ * - Optimized list display for product cards with performance considerations
+ *
+ * @param products - Array of product objects to display
+ * @param updateSelections - Callback function for product like/dislike actions
+ * @param style - Style object for list container
+ * @param cardStyle - Style object passed to individual ProductCard components
+ * @returns React component for product list display
+ */
 export default function ProductList({
   products,
   updateSelections,
@@ -57,6 +71,7 @@ export default function ProductList({
     [],
   );
 
+  // Empty state
   if (products.length === 0) {
     return (
       <View style={{ padding: 16 }}>

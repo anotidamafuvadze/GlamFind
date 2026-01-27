@@ -28,7 +28,6 @@ export function useLikes() {
         if (sessionError || !session?.user) {
           setLikedProducts([]);
           setIsLoggedIn(false);
-          setError(sessionError?.message || "Failed to get session");
           return;
         }
 

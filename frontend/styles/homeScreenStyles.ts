@@ -1,13 +1,11 @@
-
 import { useMemo } from "react";
-import { 
-  ImageStyle, 
-  TextInputProps, 
-  TextStyle, 
-  ViewStyle 
+import {
+  ImageStyle,
+  TextInputProps,
+  TextStyle,
+  ViewStyle,
 } from "react-native";
 
-// Constants
 import colors from "../constants/colors";
 import useFonts from "../constants/fonts";
 import useLayouts from "../constants/layouts";
@@ -23,12 +21,12 @@ export default function useHomeStyles() {
 
   const styles = useMemo(
     () => ({
-      // ======================= BACKGROUND =======================
+      // ----------------------- BACKGROUND -----------------------
       background: {
         flex: layouts.ONE,
       } as ViewStyle,
 
-      // ======================= CONTENT LAYOUT =======================
+      // ----------------------- CONTENT LAYOUT -----------------------
       content: {
         flex: layouts.ONE,
         justifyContent: "space-between",
@@ -36,7 +34,7 @@ export default function useHomeStyles() {
         paddingTop: layouts.HOME.PADDING_TOP,
       } as ViewStyle,
 
-      // ======================= TITLE =======================
+      // ----------------------- HEADER -----------------------
       title: {
         alignItems: "center",
         color: colors.LUXURY_BLACK,
@@ -49,7 +47,6 @@ export default function useHomeStyles() {
         textAlign: "center",
       } as TextStyle,
 
-      // ======================= HEADER ACTIONS =======================
       headerActions: {
         position: "absolute",
         top: layouts.HOME.HEADER_ACTIONS_TOP,
@@ -58,13 +55,13 @@ export default function useHomeStyles() {
         alignItems: "center",
       } as ViewStyle,
 
-      // ======================= LIKES BUTTON =======================
+      // ----------------------- LIKES BUTTON -----------------------
       likesButton: {
         activeOpacity: layouts.HOME.LIKES_BUTTON_ACTIVE_OPACITY,
 
         container: {
           alignItems: "center",
-          marginRight: layouts.HOME.LIKES_BUTTON_MARGIN_RIGHT, 
+          marginRight: layouts.HOME.LIKES_BUTTON_MARGIN_RIGHT,
         } as ViewStyle,
 
         button: {
@@ -88,7 +85,7 @@ export default function useHomeStyles() {
         } as ImageStyle,
       },
 
-      // ======================= SIGN IN BUTTON =======================
+      // ----------------------- SIGN IN BUTTON -----------------------
       signInButton: {
         activeOpacity: layouts.HOME.SIGNIN_BUTTON_ACTIVE_OPACITY,
 
@@ -117,7 +114,7 @@ export default function useHomeStyles() {
         } as ImageStyle,
       },
 
-      // ======================= SEARCH BAR =======================
+      // ----------------------- SEARCH BAR -----------------------
       searchBar: {
         container: {
           position: "relative",
@@ -169,14 +166,6 @@ export default function useHomeStyles() {
           borderColor: colors.HOME.SEARCH_BUTTON_BORDER,
           borderRadius: layouts.HOME.INPUT_RADIUS,
           borderWidth: layouts.HOME.SEARCH_BUTTON_BORDER_WIDTH,
-          shadowColor: colors.ROSE_GOLD,
-          shadowOffset: {
-            width: layouts.HOME.SEARCH_BUTTON_SHADOW_OFFSET_WIDTH,
-            height: layouts.HOME.SEARCH_BUTTON_SHADOW_OFFSET_HEIGHT,
-          },
-          shadowOpacity: layouts.HOME.SEARCH_BUTTON_SHADOW_OPACITY,
-          shadowRadius: layouts.HOME.SEARCH_BUTTON_SHADOW_RADIUS,
-          elevation: layouts.HOME.SEARCH_BUTTON_ELEVATION,
         } as ViewStyle,
 
         pressed: {
@@ -193,7 +182,7 @@ export default function useHomeStyles() {
         } as ImageStyle,
       },
 
-      // ======================= POPULAR QUERIES =======================
+      // ----------------------- POPULAR QUERIES -----------------------
       popularQueries: {
         container: {
           width: "100%",
@@ -237,7 +226,7 @@ export default function useHomeStyles() {
         } as TextStyle,
       },
 
-      // ======================= CAROUSEL =======================
+      // ----------------------- CAROUSEL -----------------------
       carousel: {
         speed: layouts.HOME.CAROUSEL_SPEED,
 
@@ -271,7 +260,7 @@ export default function useHomeStyles() {
         },
       },
     }),
-    [layouts, fonts]
+    [layouts, fonts],
   );
 
   return styles;

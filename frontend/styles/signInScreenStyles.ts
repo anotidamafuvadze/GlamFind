@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ViewStyle, TextStyle, ImageStyle } from "react-native";
+
 import colors from "../constants/colors";
 import useFonts from "../constants/fonts";
 import useLayouts from "../constants/layouts";
@@ -14,12 +15,12 @@ export default function useSignInStyles() {
 
   const styles = useMemo(
     () => ({
-      // ======================= BACKGROUND =======================
+      // ----------------------- BACKGROUND -----------------------
       bg: { flex: layouts.ONE } as ViewStyle,
       safe: { flex: layouts.ONE } as ViewStyle,
       flex: { flex: layouts.ONE } as ViewStyle,
 
-      // ======================= CONTENT =======================
+      // ----------------------- CONTENT LAYOUT -----------------------
       content: {
         flex: layouts.ONE,
         paddingHorizontal: layouts.SIGNIN.CONTENT_PADDING_HORIZONTAL,
@@ -27,7 +28,7 @@ export default function useSignInStyles() {
         justifyContent: "center",
       } as ViewStyle,
 
-      // ======================= BACK BUTTON =======================
+      // ----------------------- BACK BUTTON -----------------------
       backButton: {
         position: "absolute",
         top: layouts.SIGNIN.BACK_BUTTON_TOP,
@@ -41,20 +42,23 @@ export default function useSignInStyles() {
         borderWidth: layouts.RESULTS.BACK_BUTTON_BORDER_WIDTH,
         borderColor: colors.SIGNIN.BACK_BUTTON_BORDER,
       } as ViewStyle,
+
       backButtonPressed: {
         opacity: layouts.SIGNIN.BACK_BUTTON_PRESSED_OPACITY,
       } as ViewStyle,
+
       backIcon: {
         width: layouts.SIGNIN.BACK_ICON_WIDTH,
         height: layouts.SIGNIN.BACK_ICON_HEIGHT,
         tintColor: colors.SIGNIN.BACK_ICON_TINT,
       } as ImageStyle,
 
-      // ======================= HEADER =======================
+      // ----------------------- HEADER -----------------------
       headerBlock: {
         alignItems: "center",
         marginBottom: layouts.SIGNIN.HEADER_MARGIN_BOTTOM,
       } as ViewStyle,
+
       title: {
         fontSize: fonts.size.signIn.title,
         fontWeight: fonts.weight.light,
@@ -64,6 +68,7 @@ export default function useSignInStyles() {
         marginBottom: layouts.SIGNIN.APP_NAME_MARGIN_BOTTOM,
         textAlign: "center",
       } as TextStyle,
+
       subtitle: {
         fontSize: fonts.size.signIn.subtitle,
         fontFamily: fonts.family.secondary,
@@ -71,7 +76,7 @@ export default function useSignInStyles() {
         letterSpacing: layouts.LETTER_SPACING_TAGLINE,
       } as TextStyle,
 
-      // ======================= CARD =======================
+      // ----------------------- CARD -----------------------
       card: {
         width: layouts.SIGNIN.CARD_WIDTH,
         maxWidth: layouts.SIGNIN.CARD_MAX_WIDTH,
@@ -80,6 +85,7 @@ export default function useSignInStyles() {
         borderWidth: layouts.BORDER_WIDTH,
         padding: layouts.SIGNIN.CARD_PADDING,
       } as ViewStyle,
+
       cardTitle: {
         fontSize: fonts.size.signIn.cardTitle,
         fontWeight: fonts.weight.light,
@@ -87,10 +93,10 @@ export default function useSignInStyles() {
         color: colors.SIGNIN.CARD_TITLE,
       } as TextStyle,
 
-      // ======================= SPACER =======================
+      // ----------------------- SPACER -----------------------
       spacer: { height: layouts.SIGNIN.SPACER_HEIGHT } as ViewStyle,
 
-      // ======================= INPUT =======================
+      // ----------------------- INPUT -----------------------
       input: {
         height: layouts.SIGNIN.INPUT_HEIGHT,
         borderWidth: layouts.BORDER_WIDTH,
@@ -104,7 +110,7 @@ export default function useSignInStyles() {
         marginLeft: 20,
       } as TextStyle,
 
-      // ======================= ERROR =======================
+      // ----------------------- ERROR -----------------------
       error: {
         marginTop: layouts.SIGNIN.ERROR_MARGIN_TOP,
         color: colors.SIGNIN.ERROR_TEXT,
@@ -114,7 +120,7 @@ export default function useSignInStyles() {
         textAlign: "center",
       } as TextStyle,
 
-      // ======================= BUTTON =======================
+      // ----------------------- BUTTON -----------------------
       button: {
         marginTop: layouts.SIGNIN.BUTTON_MARGIN_TOP,
         backgroundColor: colors.SIGNIN.BUTTON_BG,
@@ -127,24 +133,26 @@ export default function useSignInStyles() {
         maxWidth: layouts.SIGNIN.BUTTON_MAX_WIDTH,
         alignSelf: "center",
       } as ViewStyle,
+
       buttonText: {
         fontSize: fonts.size.signIn.buttonText,
         fontWeight: fonts.weight.light,
         color: colors.SIGNIN.BUTTON_TEXT,
       } as TextStyle,
 
-      // ======================= FOOTER =======================
+      // ----------------------- FOOTER -----------------------
       footerText: {
         marginTop: layouts.SIGNIN.FOOTER_MARGIN_TOP,
         textAlign: "center",
         color: colors.SIGNIN.FOOTER_TEXT,
       } as TextStyle,
+
       link: {
         color: colors.SIGNIN.LINK,
         fontWeight: fonts.weight.semiBold,
       } as TextStyle,
     }),
-    [layouts, fonts]
+    [layouts, fonts],
   );
 
   return styles;

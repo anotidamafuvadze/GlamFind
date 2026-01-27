@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ViewStyle, TextStyle, ImageStyle } from "react-native";
+
 import colors from "../constants/colors";
 import useFonts from "../constants/fonts";
 import useLayouts from "../constants/layouts";
@@ -14,12 +15,12 @@ export default function useRegisterStyles() {
 
   const styles = useMemo(
     () => ({
-      // ======================= BACKGROUND =======================
+      // ----------------------- BACKGROUND -----------------------
       bg: { flex: layouts.ONE } as ViewStyle,
       safe: { flex: layouts.ONE } as ViewStyle,
       flex: { flex: layouts.ONE } as ViewStyle,
 
-      // ======================= CONTENT =======================
+      // ----------------------- CONTENT LAYOUT -----------------------
       content: {
         flex: layouts.ONE,
         paddingHorizontal: layouts.REGISTER.CONTENT_PADDING_HORIZONTAL,
@@ -27,7 +28,7 @@ export default function useRegisterStyles() {
         justifyContent: "center",
       } as ViewStyle,
 
-      // ======================= BACK BUTTON =======================
+      // ----------------------- BACK BUTTON -----------------------
       backButton: {
         position: "absolute",
         top: layouts.REGISTER.BACK_BUTTON_TOP,
@@ -42,20 +43,23 @@ export default function useRegisterStyles() {
         borderWidth: layouts.REGISTER.BACK_BUTTON_BORDER_WIDTH,
         borderColor: colors.REGISTER.BACK_BUTTON_BORDER,
       } as ViewStyle,
+
       backButtonPressed: {
         opacity: layouts.REGISTER.BACK_BUTTON_PRESSED_OPACITY,
       } as ViewStyle,
+
       backIcon: {
         width: layouts.REGISTER.BACK_ICON_WIDTH,
         height: layouts.REGISTER.BACK_ICON_HEIGHT,
         tintColor: colors.REGISTER.BACK_ICON_TINT,
       } as ImageStyle,
 
-      // ======================= HEADER =======================
+      // ----------------------- HEADER -----------------------
       headerBlock: {
         alignItems: "center",
         marginBottom: layouts.REGISTER.HEADER_MARGIN_BOTTOM,
       } as ViewStyle,
+
       title: {
         fontSize: fonts.size.register.title,
         fontWeight: fonts.weight.light,
@@ -63,8 +67,8 @@ export default function useRegisterStyles() {
         letterSpacing: layouts.LETTER_SPACING_TIGHT,
         marginBottom: layouts.REGISTER.APP_NAME_MARGIN_BOTTOM,
         textAlign: "center",
-    
       } as TextStyle,
+
       subtitle: {
         fontSize: fonts.size.register.subtitle,
         fontFamily: fonts.family.secondary,
@@ -72,7 +76,7 @@ export default function useRegisterStyles() {
         letterSpacing: layouts.LETTER_SPACING_TAGLINE,
       } as TextStyle,
 
-      // ======================= CARD =======================
+      // ----------------------- CARD -----------------------
       card: {
         width: layouts.REGISTER.CARD_WIDTH,
         maxWidth: layouts.REGISTER.CARD_MAX_WIDTH,
@@ -81,6 +85,7 @@ export default function useRegisterStyles() {
         padding: layouts.REGISTER.CARD_PADDING,
         borderWidth: layouts.BORDER_WIDTH,
       } as ViewStyle,
+
       cardTitle: {
         fontSize: fonts.size.register.cardTitle,
         fontWeight: fonts.weight.light,
@@ -88,10 +93,10 @@ export default function useRegisterStyles() {
         color: colors.REGISTER.CARD_TITLE,
       } as TextStyle,
 
-      // ======================= SPACER =======================
+      // ----------------------- SPACER -----------------------
       spacer: { height: layouts.REGISTER.SPACER_HEIGHT } as ViewStyle,
 
-      // ======================= INPUT =======================
+      // ----------------------- INPUT -----------------------
       input: {
         height: layouts.REGISTER.INPUT_HEIGHT,
         borderWidth: layouts.BORDER_WIDTH,
@@ -103,11 +108,11 @@ export default function useRegisterStyles() {
         color: colors.REGISTER.INPUT_TEXT,
         alignContent: "center",
         justifyContent: "center",
-        marginRight: layouts.REGISTER.MARGIN_RIGHT_LEFT, 
+        marginRight: layouts.REGISTER.MARGIN_RIGHT_LEFT,
         marginLeft: layouts.REGISTER.MARGIN_RIGHT_LEFT,
       } as TextStyle,
 
-      // ======================= ERROR =======================
+      // ----------------------- ERROR -----------------------
       error: {
         marginTop: layouts.REGISTER.ERROR_MARGIN_TOP,
         color: colors.REGISTER.ERROR_TEXT,
@@ -117,7 +122,7 @@ export default function useRegisterStyles() {
         textAlign: "center",
       } as TextStyle,
 
-      // ======================= BUTTON =======================
+      // ----------------------- BUTTON -----------------------
       button: {
         marginTop: layouts.REGISTER.BUTTON_MARGIN_TOP,
         backgroundColor: colors.REGISTER.BUTTON_BG,
@@ -131,24 +136,26 @@ export default function useRegisterStyles() {
         marginLeft: layouts.REGISTER.MARGIN_RIGHT_LEFT,
         alignItems: "center",
       } as ViewStyle,
+
       buttonText: {
         color: colors.REGISTER.BUTTON_TEXT,
         fontWeight: fonts.weight.light,
         fontSize: fonts.size.register.buttonText,
       } as TextStyle,
 
-      // ======================= FOOTER =======================
+      // ----------------------- FOOTER -----------------------
       footerText: {
         marginTop: layouts.REGISTER.FOOTER_MARGIN_TOP,
         textAlign: "center",
         color: colors.REGISTER.FOOTER_TEXT,
       } as TextStyle,
+
       link: {
         color: colors.REGISTER.LINK,
         fontWeight: fonts.weight.semiBold,
       } as TextStyle,
     }),
-    [layouts, fonts]
+    [layouts, fonts],
   );
 
   return styles;

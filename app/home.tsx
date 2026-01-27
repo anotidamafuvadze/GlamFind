@@ -66,7 +66,7 @@ export function useHome() {
     }
   }, []);
 
-  // Fetch popular search queries (temporary mock implementation)
+  // Fetch popular search queries
   const fetchPopularQueries = useCallback(async (): Promise<string[]> => {
     return [
       "Lipstick for dry lips",

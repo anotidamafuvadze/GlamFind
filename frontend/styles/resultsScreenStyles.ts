@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import {
   ImageStyle,
@@ -8,7 +7,6 @@ import {
   ViewStyle,
 } from "react-native";
 
-// Constants
 import colors from "../constants/colors";
 import useFonts from "../constants/fonts";
 import useLayouts from "../constants/layouts";
@@ -17,14 +15,13 @@ import useLayouts from "../constants/layouts";
  * useResultsStyles hook
  * - Defines Results screen styles
  */
-
 export default function useResultsStyles() {
   const layouts = useLayouts();
   const fonts = useFonts();
 
   const styles = useMemo(
     () => ({
-      // ======================= FLEX LAYOUTS =======================
+      // ----------------------- FLEX LAYOUTS -----------------------
       flex: {
         flex: layouts.ONE,
       } as ViewStyle,
@@ -33,7 +30,7 @@ export default function useResultsStyles() {
         flex: layouts.ONE,
       } as ViewStyle,
 
-      // ======================= BACKGROUND =======================
+      // ----------------------- BACKGROUND -----------------------
       background: {
         position: "absolute",
         top: layouts.ZERO,
@@ -42,7 +39,7 @@ export default function useResultsStyles() {
         left: layouts.ZERO,
       } as ViewStyle,
 
-      // ======================= HEADER =======================
+      // ----------------------- HEADER -----------------------
       header: {
         container: {
           flexDirection: "row",
@@ -76,7 +73,7 @@ export default function useResultsStyles() {
         } as TextStyle,
       },
 
-      // ======================= HEADER BUTTONS =======================
+      // ----------------------- BACK BUTTON -----------------------
       backButton: {
         button: {
           top: layouts.RESULTS.BACK_BUTTON_TOP,
@@ -100,85 +97,16 @@ export default function useResultsStyles() {
         } as ImageStyle,
       },
 
-      // ======================= PRODUCTS LIST =======================
+      // ----------------------- PRODUCTS LIST -----------------------
       products: {
         listContent: {
           paddingHorizontal: layouts.RESULTS.LIST_PADDING_HORIZONTAL,
           paddingTop: layouts.RESULTS.LIST_PADDING_TOP,
           paddingBottom: layouts.ZERO,
         } as ViewStyle,
-
-        label: {
-          color: colors.RESULTS.TITLE,
-          fontFamily: fonts.family.secondary,
-          fontSize: fonts.size.results.rationale,
-          letterSpacing: layouts.LETTER_SPACING_CAPS,
-          marginBottom: layouts.RESULTS.LABEL_MARGIN_BOTTOM,
-          textTransform: "uppercase",
-        } as TextStyle,
-
-        row: {
-          marginBottom: layouts.RESULTS.ROW_MARGIN_BOTTOM,
-        } as ViewStyle,
-
-        explanation: {
-          card: {
-            flex: layouts.ONE,
-            flexDirection: "row",
-            alignItems: "flex-start",
-            gap: layouts.RESULTS.GAP_SMALL,
-            marginBottom: layouts.RESULTS.EXPLANATION_CARD_MARGIN_BOTTOM,
-            padding: layouts.RESULTS.EXPLANATION_CARD_PADDING,
-            paddingBottom: layouts.RESULTS.EXPLANATION_CARD_PADDING_BOTTOM,
-            backgroundColor: colors.RESULTS.CARD_BG,
-            borderRadius: layouts.RESULTS.EXPLANATION_CARD_BORDER_RADIUS,
-            borderWidth: layouts.RESULTS.CARD_BORDER_WIDTH,
-            borderColor: colors.RESULTS.CARD_BORDER,
-            shadowColor: colors.BLACK,
-            shadowOffset: { width: layouts.ZERO, height: layouts.RESULTS.EXPLANATION_CARD_SHADOW_OFFSET_HEIGHT },
-            shadowOpacity: layouts.RESULTS.EXPLANATION_CARD_SHADOW_OPACITY,
-            shadowRadius: layouts.RESULTS.EXPLANATION_CARD_SHADOW_RADIUS,
-            elevation: layouts.RESULTS.EXPLANATION_CARD_ELEVATION,
-          } as ViewStyle,
-
-          aiBadge: {
-            width: layouts.RESULTS.AI_BADGE_SIZE,
-            height: layouts.RESULTS.AI_BADGE_SIZE,
-            borderRadius: layouts.ROUNDED_MAX,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: colors.DUSTY_ROSE,
-          } as ViewStyle,
-
-          aiBadgeText: {
-            color: colors.WHITE,
-            fontSize: fonts.size.results.aiBadgeText,
-            fontWeight: fonts.weight.bold,
-            letterSpacing: layouts.RESULTS.AI_BADGE_LETTER_SPACING,
-          } as TextStyle,
-
-          textWrapper: {
-            flex: layouts.ONE,
-          } as ViewStyle,
-
-          title: {
-            marginBottom: layouts.RESULTS.EXPLANATION_TITLE_MARGIN_BOTTOM,
-            color: colors.RESULTS.TITLE,
-            fontFamily: fonts.family.secondary,
-            fontSize: fonts.size.results.explanationTitle,
-            fontWeight: fonts.weight.semiBold,
-          } as TextStyle,
-
-          body: {
-            color: colors.SOFT_GREY,
-            fontFamily: fonts.family.secondary,
-            fontSize: fonts.size.results.explanationBody,
-            lineHeight: layouts.RESULTS.EXPLANATION_BODY_LINE_HEIGHT,
-          } as TextStyle,
-        },
       },
 
-      // ======================= PRODUCT CARD =======================
+      // ----------------------- PRODUCT CARD -----------------------
       productCard: {
         card: {
           backgroundColor: colors.WHITE,
@@ -187,7 +115,10 @@ export default function useResultsStyles() {
           borderWidth: layouts.RESULTS.CARD_BORDER_WIDTH,
           borderColor: colors.RESULTS_EXTRA.CARD_BORDER_LIGHT,
           shadowColor: colors.BLACK,
-          shadowOffset: { width: layouts.ZERO, height: layouts.RESULTS.CARD_SHADOW_OFFSET_HEIGHT },
+          shadowOffset: {
+            width: layouts.ZERO,
+            height: layouts.RESULTS.CARD_SHADOW_OFFSET_HEIGHT,
+          },
           shadowOpacity: layouts.RESULTS.CARD_SHADOW_OPACITY,
           shadowRadius: layouts.RESULTS.CARD_SHADOW_RADIUS,
           elevation: layouts.RESULTS.CARD_ELEVATION,
@@ -270,7 +201,7 @@ export default function useResultsStyles() {
         },
       },
 
-      // ======================= FOOTER SEARCH BAR =======================
+      // ----------------------- FOOTER SEARCH BAR -----------------------
       searchBar: {
         container: {
           flexDirection: "row",
@@ -333,7 +264,7 @@ export default function useResultsStyles() {
         } as ViewStyle,
       },
     }),
-    [layouts, fonts]
+    [layouts, fonts],
   );
 
   return styles;

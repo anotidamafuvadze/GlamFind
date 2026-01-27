@@ -3,7 +3,7 @@ import { useWindowDimensions } from "react-native";
 
 /**
  * useFonts hook
- * - Centralizes typography constants
+ * - Centralizes typography constants with responsive scaling
  */
 
 export default function useFonts() {
@@ -33,7 +33,7 @@ export default function useFonts() {
 
       // ======================= FONT SIZES =======================
       size: {
-        // ----------------------- WELCOME -----------------------
+        // ----------------------- WELCOME SCREEN -----------------------
         welcome: {
           title: 65 * scale + (isTablet ? 6 : 0),
           tagline: 20 * scale,
@@ -41,7 +41,7 @@ export default function useFonts() {
           bottomText: 13 * scale,
         },
 
-        // ------------------------ HOME -------------------------
+        // ----------------------- HOME SCREEN -----------------------
         home: {
           title: 50 * scale,
           lineHeight: 55 * scale,
@@ -55,13 +55,10 @@ export default function useFonts() {
           bottomText: 11 * scale,
         },
 
-        // ----------------------- RESULTS -----------------------
+        // ----------------------- RESULTS SCREEN -----------------------
         results: {
           title: 28 * scale,
           subtitle: 12 * scale,
-          explanationTitle: 18 * scale,
-          explanationBody: 14 * scale,
-          aiBadgeText: 18 * scale,
           brand: 10 * scale,
           name: 16 * scale,
           rationale: 13 * scale,
@@ -71,7 +68,7 @@ export default function useFonts() {
           small: 12 * scale,
         },
 
-        // ----------------------- SIGN IN -----------------------
+        // ----------------------- SIGN IN SCREEN -----------------------
         signIn: {
           title: 52 * scale,
           subtitle: 20 * scale,
@@ -79,7 +76,7 @@ export default function useFonts() {
           buttonText: 18 * scale,
         },
 
-        // ----------------------- REGISTER -----------------------
+        // ----------------------- REGISTER SCREEN -----------------------
         register: {
           title: 48 * scale,
           subtitle: 18 * scale,
@@ -98,9 +95,9 @@ export default function useFonts() {
         },
       },
 
-      // ======================= SHADOWS =======================
+      // ======================= SHADOW STYLES =======================
       shadow: {
-        // ------------------- PRESET SHADOWS -------------------
+        // ----------------------- PRESET SHADOWS -----------------------
         onboardingButton: {
           color: "rgba(255, 255, 255, 0.7)",
           opacity: 0.7,
@@ -113,7 +110,7 @@ export default function useFonts() {
           radius: 0,
         },
 
-        // ------------------- SHADOW OFFSETS -------------------
+        // ----------------------- SHADOW OFFSETS -----------------------
         offset: {
           splash: { width: 0, height: 1 },
           onboardingButton: { width: 0, height: 10 },

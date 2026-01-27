@@ -50,6 +50,7 @@ export default function LikesScreen({
           padding: 8,
           margin: 8,
           borderRadius: 6,
+          top: 50,
         }}
       >
         <Text style={{ color: "#a00", textAlign: "center" }}>{error}</Text>

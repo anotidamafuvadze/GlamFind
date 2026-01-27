@@ -1,3 +1,9 @@
+/**
+ * Product interface
+ * - Represents a product entity in the application
+ * - Used across search results, favorites, and product displays
+ */
+
 export interface Product {
   id: string;
   name: string;

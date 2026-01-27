@@ -10,7 +10,9 @@ const LOCAL_FALLBACK_URL =
     : "http://localhost:8000";
 
 // Base API URL with trailing slash cleanup
-export const API_BASE_URL = (ENV_API_URL ?? LOCAL_FALLBACK_URL).replace(/\/+$/, "");
+//export const API_BASE_URL = (ENV_API_URL ?? LOCAL_FALLBACK_URL).replace(/\/+$/, "");
+export const API_BASE_URL = "https://luxefind.onrender.com";
+
 
 /**
  * Generic JSON request helper for API calls

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Pressable,
   Text,
@@ -9,7 +9,6 @@ import {
   Image,
   Linking,
 } from "react-native";
-
 import { LikeButton } from "./LikeButton";
 import { DislikeButton } from "./DislikeButton";
 import { API_BASE_URL } from "../../../api/client"
@@ -48,6 +47,7 @@ type ProductCardProps = {
   };
 };
 
+// Convert upstream image URL to proxied URL
 function toProxiedImageUrl(upstreamUrl: string): string {
   const trimmed = (upstreamUrl || "").trim();
   if (!trimmed) return "";

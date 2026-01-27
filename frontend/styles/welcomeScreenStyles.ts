@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { TextStyle, ViewStyle } from "react-native";
 
-// Constants
 import colors from "../constants/colors";
 import useFonts from "../constants/fonts";
 import useLayouts from "../constants/layouts";
@@ -10,19 +9,18 @@ import useLayouts from "../constants/layouts";
  * useWelcomeStyles hook
  * - Defines styles for the Welcome screen
  */
-
 export default function useWelcomeStyles() {
   const layouts = useLayouts();
   const fonts = useFonts();
 
   const styles = useMemo(
     () => ({
-      // ======================= BACKGROUND =======================
+      // ----------------------- BACKGROUND -----------------------
       background: {
         flex: layouts.ONE,
       } as ViewStyle,
 
-      // ======================= CONTENT LAYOUT =======================
+      // ----------------------- CONTENT LAYOUT -----------------------
       content: {
         flex: layouts.ONE,
         alignItems: "center",
@@ -30,7 +28,7 @@ export default function useWelcomeStyles() {
         paddingHorizontal: layouts.WELCOME.PADDING_HORIZONTAL,
       } as ViewStyle,
 
-      // ======================= GLOW ACCENTS =======================
+      // ----------------------- GLOW ACCENTS -----------------------
       glowTopRight: {
         width: layouts.WELCOME.GLOW_TOP_RIGHT_SIZE,
         height: layouts.WELCOME.GLOW_TOP_RIGHT_SIZE,
@@ -47,7 +45,7 @@ export default function useWelcomeStyles() {
         opacity: layouts.WELCOME.GLOW_OPACITY,
       } as ViewStyle,
 
-      // ======================= PRIMARY TEXT =======================
+      // ----------------------- PRIMARY TEXT -----------------------
       appName: {
         color: colors.WELCOME.TITLE,
         fontFamily: fonts.family.primary,
@@ -67,7 +65,7 @@ export default function useWelcomeStyles() {
         textAlign: "center",
       } as TextStyle,
 
-      // ======================= FOOTER TEXT =======================
+      // ----------------------- FOOTER TEXT -----------------------
       bottomTextWrapper: {
         position: "absolute",
         bottom: layouts.WELCOME.BOTTOM_TEXT_BOTTOM,
@@ -83,7 +81,7 @@ export default function useWelcomeStyles() {
         textAlign: "center",
       } as TextStyle,
 
-      // ======================= PRIMARY ACTION =======================
+      // ----------------------- PRIMARY ACTION -----------------------
       buttonWrapper: {
         button: {
           alignItems: "center",
@@ -104,7 +102,7 @@ export default function useWelcomeStyles() {
         } as TextStyle,
       },
     }),
-    [layouts, fonts]
+    [layouts, fonts],
   );
 
   return styles;

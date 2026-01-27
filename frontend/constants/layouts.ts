@@ -3,13 +3,13 @@ import { useWindowDimensions } from "react-native";
 
 /**
  * useLayouts hook
- * - Centralizes responsive layout constants 
+ * - Centralizes responsive layout constants with consistent scaling
  */
 
 export default function useLayouts() {
   const { width, height } = useWindowDimensions();
 
-  // ======================= RESPONSIVE SCALING =======================
+  // ----------------------- RESPONSIVE SCALING -----------------------
   const BASE_WIDTH = 428;
   const BASE_HEIGHT = 926;
 
@@ -21,26 +21,26 @@ export default function useLayouts() {
 
   return useMemo(
     () => ({
-      // ======================= DEVICE FLAGS =======================
+      // ----------------------- DEVICE FLAGS -----------------------
       IS_TABLET: isTablet,
       IS_PORTRAIT: isPortrait,
 
-      // ======================= SCALE FACTORS =======================
+      // ----------------------- SCALE FACTORS -----------------------
       SCALE_WIDTH: scaleWidth,
       SCALE_HEIGHT: scaleHeight,
 
-      // ======================= COMMON VALUES =======================
+      // ----------------------- COMMON VALUES -----------------------
       ZERO: 0,
       ONE: 1,
       BORDER_WIDTH: 1,
       ROUNDED_MAX: 999 * scaleWidth,
 
-      // ======================= LETTER SPACING =======================
+      // ----------------------- LETTER SPACING -----------------------
       LETTER_SPACING_TIGHT: -1,
       LETTER_SPACING_TAGLINE: 0.6,
       LETTER_SPACING_CAPS: 2,
 
-      // ======================= WELCOME SCREEN =======================
+      // ----------------------- WELCOME SCREEN -----------------------
       WELCOME: {
         // Layout
         PADDING_HORIZONTAL: 24 * scaleWidth,
@@ -68,7 +68,7 @@ export default function useLayouts() {
         BUTTON_BORDER_WIDTH: 1,
       },
 
-      // ======================= HOME SCREEN =======================
+      // ----------------------- HOME SCREEN -----------------------
       HOME: {
         // Layout
         WIDTH: "100%",
@@ -83,7 +83,7 @@ export default function useLayouts() {
         HEADER_ACTIONS_TOP: 65 * scaleHeight,
         HEADER_ACTIONS_RIGHT: -2 * scaleWidth,
 
-        // Likes & sign-in buttons
+        // Likes button
         LIKES_BUTTON_ACTIVE_OPACITY: 0.8,
         LIKES_BUTTON_MARGIN_RIGHT: -10 * scaleWidth,
         LIKES_BUTTON_WIDTH: 90 * scaleWidth,
@@ -97,6 +97,7 @@ export default function useLayouts() {
         LIKES_BUTTON_GLOW_ZINDEX: 1,
         LIKES_BUTTON_TEXT_MARGIN_TOP: -15 * scaleHeight,
 
+        // Sign in button
         SIGNIN_BUTTON_ACTIVE_OPACITY: 0.8,
         SIGNIN_BUTTON_WIDTH: 90 * scaleWidth,
         SIGNIN_BUTTON_HEIGHT: 90 * scaleHeight,
@@ -170,7 +171,7 @@ export default function useLayouts() {
         BOTTOM_TEXT_OPACITY: 0.8,
       },
 
-      // ======================= RESULTS SCREEN =======================
+      // ----------------------- RESULTS SCREEN -----------------------
       RESULTS: {
         // Layout
         PADDING_HORIZONTAL: 24 * scaleWidth,
@@ -277,10 +278,16 @@ export default function useLayouts() {
         PRESSED_OPACITY: 0.95,
       },
 
-      // ======================= SIGN IN SCREEN =======================
+      // ----------------------- SIGN IN SCREEN -----------------------
       SIGNIN: {
-        APP_NAME_MARGIN_BOTTOM: 10 * scaleHeight,
+        // Layout
         CONTENT_PADDING_HORIZONTAL: 24 * scaleWidth,
+        CARD_WIDTH: "100%",
+        CARD_MAX_WIDTH: 420 * scaleWidth,
+        CARD_RADIUS: 40 * scaleWidth,
+        CARD_PADDING: 20 * scaleWidth,
+
+        // Back button
         BACK_BUTTON_SIZE: 60 * scaleWidth,
         BACK_BUTTON_TOP: 100 * scaleHeight,
         BACK_BUTTON_RADIUS: 999 * scaleWidth,
@@ -290,103 +297,133 @@ export default function useLayouts() {
         BACK_ICON_WIDTH: 50 * scaleWidth,
         BACK_ICON_HEIGHT: 50 * scaleHeight,
         BACK_BUTTON_PRESSED_OPACITY: 0.6,
+
+        // Typography spacing
+        APP_NAME_MARGIN_BOTTOM: 10 * scaleHeight,
         HEADER_MARGIN_BOTTOM: 24 * scaleHeight,
-        CARD_WIDTH: "100%",
-        CARD_MAX_WIDTH: 420 * scaleWidth,
-        CARD_RADIUS: 40 * scaleWidth,
-        CARD_PADDING: 20 * scaleWidth,
         SPACER_HEIGHT: 12 * scaleHeight,
+        SUBTITLE_MARGIN_TOP: 8 * scaleHeight,
+
+        // Input fields
         INPUT_HEIGHT: 48 * scaleHeight,
         INPUT_RADIUS: 25 * scaleWidth,
         INPUT_PADDING_HORIZONTAL: 14 * scaleWidth,
         INPUT_MARGIN_TOP: 12 * scaleHeight,
+
+        // Error handling
         ERROR_MARGIN_TOP: 12 * scaleHeight,
         ERROR_PADDING: 10 * scaleWidth,
         ERROR_RADIUS: 8 * scaleWidth,
+
+        // Action button
         BUTTON_MARGIN_TOP: 25 * scaleHeight,
         BUTTON_PADDING_HORIZONTAL: 70 * scaleWidth,
         BUTTON_PADDING_VERTICAL: 14 * scaleHeight,
         BUTTON_RADIUS: 30 * scaleWidth,
         BUTTON_MAX_WIDTH: 500 * scaleWidth,
+
+        // Footer
         FOOTER_MARGIN_TOP: 25 * scaleHeight,
       },
 
-      // ======================= REGISTER SCREEN =======================
+      // ----------------------- REGISTER SCREEN -----------------------
       REGISTER: {
-        BUTTON_PADDING_HORIZONTAL: 70 * scaleWidth,
-        BUTTON_PADDING_VERTICAL: 14 * scaleHeight,
-        BUTTON_MAX_WIDTH: 500 * scaleWidth,
-        APP_NAME_MARGIN_BOTTOM: 10 * scaleHeight,
-        BACK_BUTTON_BORDER_WIDTH: 1,
+        // Layout
         CONTENT_PADDING_HORIZONTAL: 24 * scaleWidth,
+        CARD_WIDTH: "100%",
+        CARD_MAX_WIDTH: 420 * scaleWidth,
+        CARD_RADIUS: 45 * scaleWidth,
+        CARD_PADDING: 20 * scaleWidth,
+        MARGIN_RIGHT_LEFT: 10 * scaleWidth,
+
+        // Back button
         BACK_BUTTON_SIZE: 60 * scaleWidth,
         BACK_BUTTON_TOP: 100 * scaleHeight,
         BACK_BUTTON_RADIUS: 999 * scaleWidth,
         BACK_BUTTON_PADDING: 30 * scaleWidth,
         BACK_BUTTON_ZINDEX: 10,
         BACK_BUTTON_MARGIN_LEFT: 20 * scaleWidth,
+        BACK_BUTTON_BORDER_WIDTH: 1,
         BACK_ICON_WIDTH: 50 * scaleWidth,
         BACK_ICON_HEIGHT: 50 * scaleHeight,
         BACK_BUTTON_PRESSED_OPACITY: 0.6,
-        HEADER_MARGIN_BOTTOM: 24 * scaleHeight, // Match SIGNIN
-        TITLE_SHADOW_OFFSET: { width: 0, height: 2 }, // Keep as is
-        TITLE_SHADOW_RADIUS: 6, // Keep as is
-        SUBTITLE_MARGIN_TOP: 8 * scaleHeight, // Keep as is
-        SUBTITLE_SHADOW_OFFSET: { width: 0, height: 1 }, // Keep as is
-        SUBTITLE_SHADOW_RADIUS: 3, // Keep as is
-        CARD_WIDTH: "100%", // Match SIGNIN
-        CARD_MAX_WIDTH: 420 * scaleWidth, // Match SIGNIN
-        CARD_RADIUS: 45 * scaleWidth, // Match SIGNIN
-        CARD_PADDING: 20 * scaleWidth, // Match SIGNIN
-        SPACER_HEIGHT: 12 * scaleHeight, // Match SIGNIN
-        INPUT_HEIGHT: 48 * scaleHeight, // Match SIGNIN
-        INPUT_RADIUS: 25 * scaleWidth, // Match SIGNIN
-        INPUT_PADDING_HORIZONTAL: 14 * scaleWidth, // Match SIGNIN
-        INPUT_MARGIN_TOP: 12 * scaleHeight, // Match SIGNIN
-        ERROR_MARGIN_TOP: 12 * scaleHeight, // Match SIGNIN
-        ERROR_PADDING: 10 * scaleWidth, // Match SIGNIN
-        ERROR_RADIUS: 8 * scaleWidth, // Match SIGNIN
-        BUTTON_MARGIN_TOP: 25 * scaleHeight, // Match SIGNIN
-        BUTTON_RADIUS: 30 * scaleWidth, // Match SIGNIN
-        FOOTER_MARGIN_TOP: 25 * scaleHeight, // Match SIGNIN
-        MARGIN_RIGHT_LEFT: 10 * scaleWidth,
+
+        // Typography spacing
+        APP_NAME_MARGIN_BOTTOM: 10 * scaleHeight,
+        HEADER_MARGIN_BOTTOM: 24 * scaleHeight,
+        SPACER_HEIGHT: 12 * scaleHeight,
+        SUBTITLE_MARGIN_TOP: 8 * scaleHeight,
+
+        // Input fields
+        INPUT_HEIGHT: 48 * scaleHeight,
+        INPUT_RADIUS: 25 * scaleWidth,
+        INPUT_PADDING_HORIZONTAL: 14 * scaleWidth,
+        INPUT_MARGIN_TOP: 12 * scaleHeight,
+
+        // Error handling
+        ERROR_MARGIN_TOP: 12 * scaleHeight,
+        ERROR_PADDING: 10 * scaleWidth,
+        ERROR_RADIUS: 8 * scaleWidth,
+
+        // Action button
+        BUTTON_MARGIN_TOP: 25 * scaleHeight,
+        BUTTON_PADDING_HORIZONTAL: 70 * scaleWidth,
+        BUTTON_PADDING_VERTICAL: 14 * scaleHeight,
+        BUTTON_RADIUS: 30 * scaleWidth,
+        BUTTON_MAX_WIDTH: 500 * scaleWidth,
+
+        // Footer
+        FOOTER_MARGIN_TOP: 25 * scaleHeight,
       },
 
-      // ======================= LIKES SCREEN =======================
-      likesScreen: {
-        paddingHorizontal: 16 * scaleWidth,
-        headerPaddingVertical: 46 * scaleWidth,
-        headerTitleTop: 23 * scaleWidth,
-        backButtonLeft: 16 * scaleWidth,
-        backButtonSize: 48 * scaleWidth,
-        backButtonRadius: 25 * scaleWidth,
-        backButtonBorderWidth: 0.7 * scaleWidth,
-        backButtonMarginTop: 42 * scaleWidth,
-        backButtonIconSize: 35 * scaleWidth,
-        listPaddingHorizontal: 24 * scaleWidth,
-        listPaddingTop: 20 * scaleWidth,
-        listPaddingBottom: 0,
-        cardBorderRadius: 24 * scaleWidth,
-        cardBorderWidth: 1 * scaleWidth,
-        cardShadowOffset: { width: 0, height: 10 * scaleWidth },
-        cardShadowOpacity: 0.08,
-        cardShadowRadius: 18 * scaleWidth,
-        cardElevation: 4,
-        cardPressedScale: 0.99,
-        cardPressedOpacity: 0.96,
-        imageAspectRatio: 1,
-        contentPaddingHorizontal: 20 * scaleWidth,
-        contentPaddingVertical: 18 * scaleWidth,
-        brandMarginBottom: 8 * scaleWidth,
-        brandLetterSpacing: 2 * scaleWidth,
-        nameMarginBottom: 10 * scaleWidth,
-        rationaleLineHeight: 18 * scaleWidth,
-        actionsRowMarginTop: 12 * scaleWidth,
-        actionButtonSize: 44 * scaleWidth,
-        actionButtonRadius: 22 * scaleWidth,
-        actionButtonMarginRight: 12 * scaleWidth,
-        actionButtonBorderWidth: 1 * scaleWidth,
-        actionButtonPressedOpacity: 0.7,
+      // ----------------------- LIKES SCREEN -----------------------
+      LIKES_SCREEN: {
+        // Layout
+        PADDING_HORIZONTAL: 16 * scaleWidth,
+        LIST_PADDING_HORIZONTAL: 24 * scaleWidth,
+        LIST_PADDING_TOP: 20 * scaleWidth,
+        LIST_PADDING_BOTTOM: 0,
+
+        // Header
+        HEADER_PADDING_VERTICAL: 46 * scaleWidth,
+        HEADER_TITLE_TOP: 23 * scaleWidth,
+
+        // Back button
+        BACK_BUTTON_LEFT: 16 * scaleWidth,
+        BACK_BUTTON_SIZE: 48 * scaleWidth,
+        BACK_BUTTON_RADIUS: 25 * scaleWidth,
+        BACK_BUTTON_BORDER_WIDTH: 0.7 * scaleWidth,
+        BACK_BUTTON_MARGIN_TOP: 42 * scaleWidth,
+        BACK_BUTTON_ICON_SIZE: 35 * scaleWidth,
+
+        // Product card
+        CARD_BORDER_RADIUS: 24 * scaleWidth,
+        CARD_BORDER_WIDTH: 1 * scaleWidth,
+        CARD_SHADOW_OFFSET: { width: 0, height: 10 * scaleWidth },
+        CARD_SHADOW_OPACITY: 0.08,
+        CARD_SHADOW_RADIUS: 18 * scaleWidth,
+        CARD_ELEVATION: 4,
+        CARD_PRESSED_SCALE: 0.99,
+        CARD_PRESSED_OPACITY: 0.96,
+
+        // Product imagery
+        IMAGE_ASPECT_RATIO: 1,
+
+        // Card content
+        CONTENT_PADDING_HORIZONTAL: 20 * scaleWidth,
+        CONTENT_PADDING_VERTICAL: 18 * scaleWidth,
+        BRAND_MARGIN_BOTTOM: 8 * scaleWidth,
+        BRAND_LETTER_SPACING: 2 * scaleWidth,
+        NAME_MARGIN_BOTTOM: 10 * scaleWidth,
+        RATIONALE_LINE_HEIGHT: 18 * scaleWidth,
+
+        // Card actions
+        ACTIONS_ROW_MARGIN_TOP: 12 * scaleWidth,
+        ACTION_BUTTON_SIZE: 44 * scaleWidth,
+        ACTION_BUTTON_RADIUS: 22 * scaleWidth,
+        ACTION_BUTTON_MARGIN_RIGHT: 12 * scaleWidth,
+        ACTION_BUTTON_BORDER_WIDTH: 1 * scaleWidth,
+        ACTION_BUTTON_PRESSED_OPACITY: 0.7,
       },
     }),
     [scaleWidth, scaleHeight, isTablet, isPortrait]
