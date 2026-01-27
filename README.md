@@ -1,99 +1,149 @@
-// TODO: Adjust Read Me
+# LuxeFind (iOS)
 
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+## Overview
 
-# Getting Started
+**LuxeFind** is an iOS application that enables **AI-powered product discovery** using **semantic search** rather than keyword filtering. Users can search naturally (e.g., *“hydrating lipstick for dry skin”*), and LuxeFind retrieves the most relevant beauty products using vector embeddings and similarity search.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+The app integrates **LangChain embeddings**, **FAISS vector indexing**, and a **PostgreSQL-backed metadata store** to support fast, accurate retrieval across ~10,000 real-world beauty products.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### Semantic Search
 
-```sh
-# Using npm
-npm start
+* Natural-language queries powered by dense embeddings.
+* Results ranked by semantic similarity instead of keyword matching.
+* Supports nuanced, intent-based product discovery.
 
-# OR using Yarn
-yarn start
+### AI-Powered Retrieval Pipeline
+
+* Product data transformed into embedding-ready documents.
+* FAISS vector index enables low-latency similarity search.
+* Indices are persisted locally to avoid recomputation.
+
+### Product Enrichment
+
+* Automated pipeline retrieves:
+
+  * Live prices
+  * Ratings and review counts
+  * Product images
+  * Retailer links
+* Keeps results accurate and up to date.
+
+### User Accounts & Favorites
+
+* Secure authentication via Supabase.
+* Users can save and manage favorite products.
+* Favorites persist across sessions and devices.
+
+### Performance & Caching
+
+* Local FAISS index minimizes query latency.
+* Cached product metadata reduces API calls.
+* Designed for scalable, cost-efficient retrieval.
+
+---
+
+## Tech Stack
+
+### Frameworks
+
+* React Native (Expo)
+* TypeScript
+
+### Backend & Data
+
+* Python
+* LangChain
+* FAISS (vector similarity search)
+* PostgreSQL (Supabase)
+
+### AI & Search
+
+* OpenAI embeddings
+* Vector-based semantic search
+* Hybrid structured + unstructured querying
+
+### Storage & Auth
+
+* Supabase Auth
+* Supabase PostgreSQL
+* Local embedding and query caching
+
+---
+
+## Architecture & Data Flow
+
+### Data Ingestion
+
+* Product data is loaded from structured CSV sources.
+* Each product is converted into a document containing:
+
+  * Name
+  * Brand
+  * Description
+  * Price
+  * Ratings
+  * Metadata
+
+### Embedding & Indexing
+
+* Documents are embedded using an LLM embedding model.
+* Vectors are stored in a FAISS index.
+* Index is persisted locally for fast reuse.
+
+```text
+CSV → Document → Embedding → FAISS Index
 ```
 
-## Step 2: Build and run your app
+### Query Flow
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+1. User submits a natural-language query.
+2. Query is embedded.
+3. FAISS retrieves the most similar vectors.
+4. Matching products are joined with PostgreSQL metadata.
+5. Ranked results are returned to the app.
 
-### Android
+### Enrichment Layer
 
-```sh
-# Using npm
-npm run android
+* Background jobs retrieve:
 
-# OR using Yarn
-yarn android
-```
+  * Prices
+  * Ratings
+  * Images
+* Results are cached to minimize repeated API calls.
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## Database Design
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### Products Table
 
-```sh
-bundle install
-```
+* `id`
+* `name`
+* `brand`
+* `price`
+* `rating`
+* `image_url`
+* `source`
+* `external_id`
 
-Then, and every time you update your native dependencies, run:
+### Favorites Table
 
-```sh
-bundle exec pod install
-```
+* `user_id`
+* `product_id`
+* `created_at`
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+Supports secure, user-scoped access using Supabase Row Level Security (RLS).
 
-```sh
-# Using npm
-npm run ios
+---
 
-# OR using Yarn
-yarn ios
-```
+## How the App Works
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+* **Start:** App loads the FAISS index and product metadata.
+* **Search:** User enters a natural-language query.
+* **Retrieve:** Semantic search returns relevant products.
+* **Explore:** Users view details and save favorites.
+* **Persist:** Favorites and preferences are stored securely.
