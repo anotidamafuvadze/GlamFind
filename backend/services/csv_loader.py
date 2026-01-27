@@ -17,7 +17,6 @@ def get_documents(csv_path: str) -> list[Document]:
     
     # Convert each row to a Document
     for _, row in df.iterrows():
-        # Create combined text representation for embedding/search
         document_text = (
             f"Brand: {row.get('Brand', '')}\n"
             f"Name: {row.get('Name', '')}\n"

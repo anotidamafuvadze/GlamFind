@@ -1,94 +1,131 @@
-import React, { useCallback, useMemo } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
 
-// Types
-import type { Product } from '../frontend/types/products';
+import type { Product } from "../frontend/types/products";
+import { ResultsScreen } from "../frontend/components/screens/ResultsScreen";
+import { supabase } from "../backend/services/supabase/supabaseClient";
+import { fetchRefinedRecommendations } from "../frontend/api/client";
 
-// Screens
-import { ResultsScreen } from '../frontend/components/screens/ResultsScreen';
-import { supabase } from '../backend/services/supabase/supabaseClient';
+type RefinedRecommendationsResponse = {
+  query: string;
+  products: Product[];
+};
 
-export default function ResultsRoute() {
+// TODO: polish
+
+export function useResults() {
+  const [error, setError] = useState<string>("");
+  const [baseQuery, setBaseQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [refinedProducts, setRefinedProducts] = useState<Product[]>([]);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+
   const { q, products } = useLocalSearchParams<{
     q?: string;
     products?: string;
   }>();
 
-  const initialQuery = (q ?? '').toString();
+  const initialQuery = (q ?? "").toString();
 
   const parsedProducts: Product[] = useMemo(() => {
     try {
-      const raw = products ?? '[]';
+      const raw = products ?? "[]";
       const sanitized =
-        typeof raw === 'string'
-          ? raw.replace(/[\u0000-\u001F]/g, '')
+        typeof raw === "string"
+          ? raw.replace(/[\u0000-\u001F]/g, "")
           : String(raw);
 
-      const arr = JSON.parse(sanitized) as Product[];
-      return arr;
-    } catch (err) {
+      return JSON.parse(sanitized) as Product[];
+    } catch {
       return [];
     }
   }, [products]);
 
-  const handleProductSelection = useCallback(
-    async (productId: string, selection: 'like' | 'dislike' | null) => {
+  useEffect(() => {
+    setBaseQuery(initialQuery);
+    setRefinedProducts(parsedProducts);
+  }, [initialQuery, parsedProducts]);
+
+  const handleRefinedSearch = useCallback(
+    async (rawQuery: string) => {
+      const trimmedQuery = rawQuery.trim();
+      if (!trimmedQuery) return;
+
+      setError("");
+      setIsSearchLoading(true);
+
       try {
-        // Get current user
+        const response = (await fetchRefinedRecommendations(trimmedQuery, baseQuery)) as RefinedRecommendationsResponse;
+
+        setRefinedProducts(response.products ?? []);
+        setBaseQuery(response.query);
+        setSearchQuery("");
+      } catch (e) {
+        setError((e as any)?.message || "Search failed");
+      } finally {
+        setIsSearchLoading(false);
+      }
+    },
+    [baseQuery]
+  );
+
+  const handleProductSelection = useCallback(
+    async (productId: string, selection: "like" | "dislike" | null) => {
+      try {
         const {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession();
 
-        if (sessionError || !session?.user) {
-          console.error('User not authenticated', sessionError);
-          return;
-        }
+        if (sessionError || !session?.user) return;
 
         const userId = session.user.id;
 
-        if (selection === 'like') {
+        if (selection === "like") {
           const { error: insertError } = await supabase
-            .from('user_favorites')
+            .from("user_favorites")
             .insert([{ user_id: userId, product_id: productId }]);
 
-          if (
-            insertError &&
-            !insertError.message.toLowerCase().includes('duplicate')
-          ) {
-            console.error('Error adding favorite:', insertError);
+          if (insertError) {
+            setError("Failed to update favorites. Please try again.");
           }
-        } else if (selection === 'dislike') {
-          // Remove from favorites
+        } else if (selection === "dislike") {
           const { error: deleteError } = await supabase
-            .from('user_favorites')
+            .from("user_favorites")
             .delete()
-            .eq('user_id', userId)
-            .eq('product_id', productId);
+            .eq("user_id", userId)
+            .eq("product_id", productId);
 
           if (deleteError) {
-            console.error('Error removing favorite:', deleteError);
+            setError("Failed to update favorites. Please try again.");
           }
         }
-      } catch (err) {
-        console.error('Favorite selection error:', err);
+      } catch {
+        setError("Failed to update favorites. Please try again.");
       }
     },
-    [],
+    []
   );
 
-  const handleProductClick = useCallback((productId: string) => {
-    void productId;
-    // TODO: Open detail view or external link
-  }, []);
+  const onBack = () => {
+    router.replace("home");
+  };
 
-  return (
-    <ResultsScreen
-      initialQuery={initialQuery}
-      products={parsedProducts}
-      onBack={() => router.replace('home')}
-      onProductClick={handleProductClick}
-      updateSelections={handleProductSelection}
-    />
-  );
+  return {
+    initialQuery: baseQuery,
+    products: refinedProducts,
+    onBack,
+    updateSelections: handleProductSelection,
+    error,
+    setError,
+    searchQuery,
+    setSearchQuery,
+    isSearchLoading,
+    handleRefinedSearch,
+  };
+}
+
+export default function ResultsRoute() {
+  const resultsProps = useResults();
+  return <ResultsScreen {...resultsProps} />;
 }

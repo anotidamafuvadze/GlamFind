@@ -16,40 +16,10 @@ def _is_valid_http_url(url: str) -> bool:
         return False
 
 
-def _is_rn_renderable_image_url(url: str) -> bool:
-    """
-    Heuristic for React Native <Image source={{ uri }} /> compatibility
-    for *remote* images coming from APIs.
-    """
-    # if not url or not isinstance(url, str):
-    #     return False
-
-    # u = url.strip()
-    # if not u:
-    #     return False
-
-    # lowered = u.lower()
-    # if lowered in ("null", "none", "undefined"):
-    #     return False
-
-    # # No whitespace/newlines
-    # if any(c.isspace() for c in u):
-    #     return False
-
-    # # Prefer https for mobile reliability
-    # if not _is_valid_http_url(u):
-    #     return False
-    # if urlparse(u).scheme != "https":
-    #     return False
-
-    return True
-
 
 def _has_meaningful_enrichment(p: Dict[str, Any]) -> bool:
     """True if *any* useful enrichment exists (not just empty strings/zeros)."""
     if _is_valid_http_url(p.get("product_url", "")):
-        return True
-    if _is_rn_renderable_image_url(p.get("image_url", "")):
         return True
 
     if (p.get("price") or "").strip():
@@ -78,18 +48,16 @@ def _sort_key(p: Dict[str, Any]) -> tuple:
     C) no image, but meaningful enrichment
     D) no meaningful enrichment
     """
-    has_img = _is_rn_renderable_image_url(p.get("image_url", ""))
+
     has_url = _is_valid_http_url(p.get("product_url", ""))
     meaningful = _has_meaningful_enrichment(p)
 
-    if has_img and has_url:
+    if has_url:
         group = 0
-    elif has_img:
-        group = 1
     elif meaningful:
-        group = 2
+        group = 1
     else:
-        group = 3
+        group = 2
 
     rating_count = int(p.get("rating_count") or 0)
     rating = float(p.get("rating") or 0.0)

@@ -1,10 +1,16 @@
+# enrichment.py
+
 from typing import Any, Dict, List, Optional
+import traceback
+
 from langchain_core.documents import Document
-from services.product_api import get_product_from_apis
+from services.product_api import fetch_product_enrichment
 from services.supabase_enrichment_cache import SupabaseEnrichmentCache
 
-# TODO: Reset cache
-def get_enriched_products(products: List[Document], user_query: str = "") -> List[Dict[str, Any]]:
+
+def get_enriched_products(
+    products: List[Document], 
+) -> List[Dict[str, Any]]:
     """Enrich product documents with external data and caching using Supabase products table."""
     enriched_products: List[Dict[str, Any]] = []
     cache = SupabaseEnrichmentCache()
@@ -34,25 +40,27 @@ def get_enriched_products(products: List[Document], user_query: str = "") -> Lis
             "enrichment": None,
         }
 
+        # Skip API call if missing required fields
         has_required_fields = all([brand, name, product_type, description])
         if not has_required_fields:
             cache.set(product_external_id, product_data)
             enriched_products.append(product_data)
             continue
 
+        # Fetch enrichment data from external APIs
         try:
-            raw_enrichment = get_product_from_apis(brand, name, product_type, max_results=3)
+            raw_enrichment = fetch_product_enrichment(brand, name, product_type, max_results=3)
             validated = _validate_enrichment_data(raw_enrichment)
             product_data["enrichment"] = validated
             cache.set(product_external_id, product_data)
             enriched_products.append(product_data)
         except Exception as error:
-            import traceback
             traceback.print_exc()
             cache.set(product_external_id, product_data)
             enriched_products.append(product_data)
 
     return enriched_products
+
 
 def _validate_enrichment_data(enrichment_data: Any) -> Optional[Dict[str, Any]]:
     """Clean and validate enrichment data.
@@ -67,8 +75,6 @@ def _validate_enrichment_data(enrichment_data: Any) -> Optional[Dict[str, Any]]:
         return None
     if not isinstance(enrichment_data, dict):
         return None
-    
-    # If completely empty, return None
     if not enrichment_data:
         return None
 
@@ -90,7 +96,6 @@ def _validate_enrichment_data(enrichment_data: Any) -> Optional[Dict[str, Any]]:
         if field in enrichment_data
     }
     
-    # If no enrichment fields were found, return None
     if not cleaned_data:
         return None
 
@@ -118,7 +123,7 @@ def _validate_enrichment_data(enrichment_data: Any) -> Optional[Dict[str, Any]]:
         except (ValueError, TypeError):
             cleaned_data.pop("rating_count", None)
     
-    # Clean up empty string values (convert to None for consistency)
+    # Clean up empty string values
     for key in list(cleaned_data.keys()):
         value = cleaned_data[key]
         if isinstance(value, str) and not value.strip():

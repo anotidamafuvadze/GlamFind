@@ -25,7 +25,6 @@ type ProductCardProps = {
   source_name: string;
   explanation: string;
 
-  onPress: (productId: string) => void;
   updateSelections: (
     productId: string,
     selection: 'like' | 'dislike' | null,
@@ -81,7 +80,6 @@ export function ProductCard({
   rating_count,
   source_name,
   explanation,
-  onPress,
   updateSelections,
   style,
 }: ProductCardProps) {
@@ -115,7 +113,6 @@ export function ProductCard({
     <Pressable
       onPress={() => {
         console.debug(`Product ${id} pressed`);
-        onPress(id);
       }}
       style={({ pressed }) => [style.card, pressed && style.pressed]}
       accessibilityRole="button"

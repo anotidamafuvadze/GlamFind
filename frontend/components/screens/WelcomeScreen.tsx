@@ -42,7 +42,7 @@ export function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
         <Text style={styles.appTagline}>Beauty, intelligently curated.</Text>
 
         <Button
-          title="Discover Your Glam"
+          title="Discover Your Products"
           onPress={onGetStarted}
           accessibilityLabel="Begin using Luxe Find app"
           containerStyle={styles.buttonWrapper.button}

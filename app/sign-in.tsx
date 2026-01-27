@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { router } from 'expo-router';
+import React, { useState } from "react";
+import { router } from "expo-router";
+import { supabase } from "../backend/services/supabase/supabaseClient";
+import SignInScreen from "../frontend/components/screens/SignInScreen";
 
-import { supabase } from '../backend/services/supabase/supabaseClient';
-import SignInScreen from '../frontend/components/screens/SignInScreen';
-
+/**
+ * useSignIn
+ * - Custom hook for user authentication
+ * - Manages sign-in form state and Supabase authentication
+ */
 export function useSignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Handle sign-in form submission
   const handleSubmit = async () => {
     setError(null);
     setLoading(true);
@@ -22,10 +27,10 @@ export function useSignIn() {
         });
 
       if (signInError) {
-        if (signInError.message.toLowerCase().includes('invalid')) {
-          setError('Invalid email or password.');
+        if (signInError.message.toLowerCase().includes("invalid")) {
+          setError("Invalid email or password.");
         } else {
-          setError('Unable to sign in. Please try again.');
+          setError("Unable to sign in. Please try again.");
         }
         return;
       }
@@ -34,32 +39,33 @@ export function useSignIn() {
 
       if (user) {
         const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('full_name')
-          .eq('id', user.id)
+          .from("profiles")
+          .select("full_name")
+          .eq("id", user.id)
           .single();
 
         if (profileError) {
-          setError('Failed to fetch profile. Please try again.');
+          setError("Failed to fetch profile. Please try again.");
           return;
         }
 
-        router.push('/home');
+        router.push("/home");
       }
     } catch (err) {
-      console.error('Sign-in error:', err);
-      setError('Unexpected error. Please try again.');
+      setError("Unexpected error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Navigate to registration screen
   const goToRegister = () => {
-    router.push('/register');
+    router.push("/register");
   };
 
+  // Navigate back to home screen
   const goBack = () => {
-    router.push('/home');
+    router.push("/home");
   };
 
   return {
@@ -75,6 +81,11 @@ export function useSignIn() {
   };
 }
 
+/**
+ * SignInRoute
+ * - Sign-in screen route component
+ * - Handles user authentication flow
+ */
 export default function SignInRoute() {
   const signInProps = useSignIn();
   return <SignInScreen {...signInProps} />;

@@ -1,19 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { router } from 'expo-router';
+import React, { useCallback, useEffect, useState } from "react";
+import { router } from "expo-router";
 
-// API
-import { fetchRecommendations } from '../frontend/api/recommendations';
+import type { Product } from "../frontend/types/products";
+import { HomeScreen } from "../frontend/components/screens/HomeScreen";
+import { supabase } from "../backend/services/supabase/supabaseClient";
+import { fetchRecommendations } from "../frontend/api/client";
 
-// Types
-import type { Product } from '../frontend/types/products';
+// TODO: polish
+type RecommendationsResponse = {
+  query: string;
+  products: Product[];
+};
 
-// Screens
-import { HomeScreen } from '../frontend/components/screens/HomeScreen';
-
-// Supabase
-import { supabase } from '../backend/services/supabase/supabaseClient';
-
-export default function HomeRoute() {
+export function useHome() {
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [displayName, setDisplayName] = useState<string | null>(null);
@@ -24,21 +23,17 @@ export default function HomeRoute() {
         data: { user },
         error,
       } = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error fetching user:', error);
-        return;
-      }
-      if (user) {
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('full_name')
-          .eq('id', user.id)
-          .single();
-        if (profileError) {
-          console.error('Error fetching profile:', profileError);
-        } else {
-          setDisplayName(profile.full_name);
-        }
+
+      if (error || !user) return;
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .single();
+
+      if (!profileError) {
+        setDisplayName(profile?.full_name ?? null);
       }
     };
 
@@ -51,49 +46,60 @@ export default function HomeRoute() {
 
     try {
       setIsSearchLoading(true);
-      const response = await fetchRecommendations(trimmed);
+
+      const response = (await fetchRecommendations(trimmed)) as RecommendationsResponse;
       const products: Product[] = response.products ?? [];
+
       router.push({
-        pathname: 'results',
+        pathname: "results",
         params: { q: trimmed, products: JSON.stringify(products) },
       });
-    } catch (e) {
-      console.error('Search failed:', e);
+    } catch {
+      // TODO: show error to user
     } finally {
       setIsSearchLoading(false);
     }
   }, []);
 
   const fetchPopularQueries = useCallback(async (): Promise<string[]> => {
-    // TODO: Replace with real API call to fetch popular queries
     return [
-      'Lipstick for dry lips',
-      'Moisturizer for sensitive skin',
-      'Long-lasting foundation',
+      "Lipstick for dry lips",
+      "Moisturizer for sensitive skin",
+      "Long-lasting foundation",
     ];
   }, []);
 
   useEffect(() => {
     let cancelled = false;
+
     const loadPopularQueries = async () => {
       const queries = await fetchPopularQueries();
       if (!cancelled) setPopularQueries(queries);
     };
+
     loadPopularQueries();
+
     return () => {
       cancelled = true;
     };
   }, [fetchPopularQueries]);
 
-  return (
-    <HomeScreen
-      onSearch={handleSearch}
-      onLikesPress={() => router.push('likes')}
-      onSettingsPress={() => router.push('settings')}
-      onSignInPress={() => router.push('sign-in')}
-      popularQueries={popularQueries}
-      isSearchLoading={isSearchLoading}
-      displayName={displayName}
-    />
-  );
+  const onLikesPress = () => router.push("likes");
+  const onSettingsPress = () => router.push("settings");
+  const onSignInPress = () => router.push("sign-in");
+
+  return {
+    popularQueries,
+    isSearchLoading,
+    displayName,
+    onSearch: handleSearch,
+    onLikesPress,
+    onSettingsPress,
+    onSignInPress,
+  };
+}
+
+export default function HomeRoute() {
+  const homeProps = useHome();
+  return <HomeScreen {...homeProps} />;
 }

@@ -22,6 +22,7 @@ type HomeScreenProps = {
   popularQueries: string[];
   isSearchLoading?: boolean;
   displayName?: string | null;
+  error?: string | null;
 };
 
 /**
@@ -35,6 +36,7 @@ type HomeScreenProps = {
  * @param popularQueries - Array of popular search queries to display
  * @param isSearchLoading - Whether a search request is currently in flight
  * @param displayName - Optional display name for personalized greeting
+ * @param error - Optional error message to display
  * @returns React component for the home screen
  */
 
@@ -46,9 +48,25 @@ export function HomeScreen({
   popularQueries,
   isSearchLoading = false,
   displayName,
+  error,
 }: HomeScreenProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const styles = useHomeStyles();
+
+  // Error display
+  const renderError = () =>
+    error ? (
+      <View
+        style={{
+          backgroundColor: '#ffcccc',
+          padding: 8,
+          margin: 8,
+          borderRadius: 6,
+        }}
+      >
+        <Text style={{ color: '#a00', textAlign: 'center' }}>{error}</Text>
+      </View>
+    ) : null;
 
   return (
     <ImageBackground
@@ -56,6 +74,7 @@ export function HomeScreen({
       resizeMode="cover"
       style={styles.background}
     >
+      {renderError()}
       {/* Header Buttons */}
       <View style={styles.headerActions}>
         <LikesButton

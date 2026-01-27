@@ -10,24 +10,39 @@ type LikesScreenProps = {
   likedProducts: Product[];
   isLoading: boolean;
   isLoggedIn: boolean;
-  onProductClick: (productId: string) => void;
   updateSelections: (
     productId: string,
     selection: 'like' | 'dislike' | null,
   ) => void;
   goBack: () => void;
+  error: string;
 };
 
 export default function LikesScreen({
   likedProducts,
   isLoading,
   isLoggedIn,
-  onProductClick,
   updateSelections,
   goBack,
+  error,
 }: LikesScreenProps) {
   const listData = useMemo(() => likedProducts, [likedProducts]);
   const styles = useLikesStyles();
+
+  // Error display
+  const renderError = () =>
+    error ? (
+      <View
+        style={{
+          backgroundColor: '#ffcccc',
+          padding: 8,
+          margin: 8,
+          borderRadius: 6,
+        }}
+      >
+        <Text style={{ color: '#a00', textAlign: 'center' }}>{error}</Text>
+      </View>
+    ) : null;
 
   if (isLoading) {
     return (
@@ -43,6 +58,7 @@ export default function LikesScreen({
       resizeMode="cover"
       style={styles.background}
     >
+      {renderError()}
       {/* Header */}
       <View style={styles.headerContainer}>
         <BackButton
@@ -68,7 +84,6 @@ export default function LikesScreen({
       ) : (
         <ProductList
           products={listData}
-          onProductPress={onProductClick}
           updateSelections={updateSelections}
           style={{ listContent: styles.listContent }}
           cardStyle={{

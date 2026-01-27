@@ -8,7 +8,6 @@ type ProductSelection = 'like' | 'dislike' | null;
 
 type ProductListProps = {
   products: Product[];
-  onProductPress: (productId: string) => void;
   updateSelections: (productId: string, selection: ProductSelection) => void;
   style: {
     listContent: ViewStyle;
@@ -27,7 +26,6 @@ const WINDOW_SIZE = 6;
 
 export default function ProductList({
   products,
-  onProductPress,
   updateSelections,
   style,
   cardStyle,
@@ -47,12 +45,11 @@ export default function ProductList({
         rating_count={item.rating_count}
         source_name={item.source_name}
         explanation={item.explanation}
-        onPress={onProductPress}
         updateSelections={updateSelections}
         style={cardStyle}
       />
     ),
-    [onProductPress, updateSelections, cardStyle],
+    [updateSelections, cardStyle],
   );
 
   const listFooter = useMemo(

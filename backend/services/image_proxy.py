@@ -1,32 +1,18 @@
-from __future__ import annotations
-
 import ipaddress
 import logging
 import re
 from urllib.parse import unquote, urlparse
-
 import httpx
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 from starlette.responses import StreamingResponse
 
 router = APIRouter()
 
-# Logging
+# Logging configuration
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("image_proxy")
 
-# ---------------------------------------------------------------------
-# Allowlist
-# ---------------------------------------------------------------------
-# Your enrichment sources (per the code you shared) are primarily:
-# - Amazon (m.media-amazon.com + ssl-images)
-# - eBay (i.ebayimg.com + other *.ebayimg.com)
-# - Walmart (i5.walmartimages.com + sometimes other walmart cdn hosts)
-# - Google Shopping thumbnails (can vary, but often gstatic / googleusercontent)
-#
-# For safety: keep this tight. Add more only as you encounter them in logs.
-# ---------------------------------------------------------------------
-
+# Allowed image hosts (whitelist)
 ALLOWED_HOSTS = {
     # Amazon
     "m.media-amazon.com",
@@ -40,7 +26,7 @@ ALLOWED_HOSTS = {
     # eBay
     "i.ebayimg.com",
 
-    # Target / Ulta / Sephora (if you still use them)
+    # Target / Ulta / Sephora
     "target.scene7.com",
     "media.ulta.com",
     "www.sephora.com",
@@ -49,34 +35,34 @@ ALLOWED_HOSTS = {
     "static.zara.net",
 }
 
-# Allow subdomains for common CDNs used by these providers
+# Allowed host suffixes for CDN subdomains
 ALLOWED_HOST_SUFFIXES = {
     # Amazon
     ".media-amazon.com",
     ".ssl-images-amazon.com",
 
-    # eBay images (covers i.ebayimg.com and any other subdomain)
+    # eBay
     ".ebayimg.com",
 
-    # Walmart sometimes uses additional subdomains in the wild
+    # Walmart
     ".walmartimages.com",
 
-    # Google Shopping thumbnails can come from these (tight but practical)
+    # Google Shopping
     ".gstatic.com",
     ".googleusercontent.com",
 }
 
-# Only proxy images
+# Image content type prefixes
 IMAGE_CT_PREFIXES = ("image/",)
 
 # Safety limits
 MAX_BYTES = 10 * 1024 * 1024  # 10MB cap
 UPSTREAM_TIMEOUT_S = 12.0
 
-# Cache headers
-CACHE_CONTROL = "public, max-age=604800, s-maxage=604800, immutable"  # 7 days
+# Cache headers (7 days)
+CACHE_CONTROL = "public, max-age=604800, s-maxage=604800, immutable"
 
-# Optional heuristic (warning only)
+# Image extension pattern (for warning only)
 IMAGE_EXT_RE = re.compile(
     r"\.(jpg|jpeg|png|webp|gif|avif|svg|bmp|tiff)(\?|$)",
     re.IGNORECASE,
@@ -84,16 +70,18 @@ IMAGE_EXT_RE = re.compile(
 
 
 def _is_allowed_host(host: str) -> bool:
+    """Check if host is in allowed hosts or matches allowed suffixes."""
     host = host.lower().strip()
     if host in ALLOWED_HOSTS:
         return True
-    return any(host.endswith(suf) for suf in ALLOWED_HOST_SUFFIXES)
+    return any(host.endswith(suffix) for suffix in ALLOWED_HOST_SUFFIXES)
 
 
 def _is_private_or_local_ip(host: str) -> bool:
     """
     Prevent SSRF to private networks by blocking literal IP hosts.
-    Note: this does NOT DNS-resolve hostnames; it only blocks literal IPs.
+    
+    Note: Does not DNS-resolve hostnames, only blocks literal IP addresses.
     """
     try:
         ip = ipaddress.ip_address(host)
@@ -109,14 +97,15 @@ def _is_private_or_local_ip(host: str) -> bool:
 
 
 def _validate_url(raw_url: str) -> str:
+    """Validate and normalize incoming image URL."""
     if not raw_url or not isinstance(raw_url, str):
         raise HTTPException(status_code=400, detail="Missing url")
 
-    # url may already be percent-encoded from the client
+    # URL may already be percent-encoded from the client
     url = unquote(raw_url).strip()
     parsed = urlparse(url)
 
-    # require https only
+    # Require HTTPS only
     if parsed.scheme != "https":
         raise HTTPException(status_code=400, detail="Only https URLs are allowed")
 
@@ -130,7 +119,7 @@ def _validate_url(raw_url: str) -> str:
     if not _is_allowed_host(host):
         raise HTTPException(status_code=403, detail=f"Host not allowed: {host}")
 
-    # Optional warning only (do NOT block)
+    # Optional warning only (do not block)
     if parsed.path and not IMAGE_EXT_RE.search(parsed.path):
         logger.warning("URL path does not match image extensions: %s", parsed.path)
 
@@ -138,6 +127,7 @@ def _validate_url(raw_url: str) -> str:
 
 
 async def _stream_with_limit(resp: httpx.Response):
+    """Stream response with size limit enforcement."""
     total = 0
     async for chunk in resp.aiter_bytes():
         total += len(chunk)
@@ -147,6 +137,7 @@ async def _stream_with_limit(resp: httpx.Response):
 
 
 def _copy_cache_headers(upstream: httpx.Response, response_headers: dict) -> None:
+    """Copy caching headers from upstream response."""
     etag = upstream.headers.get("etag")
     last_modified = upstream.headers.get("last-modified")
 
@@ -165,8 +156,9 @@ async def image_proxy(
     url: str = Query(..., description="Upstream https image URL (percent-encoded ok)"),
 ):
     """
-    Mounted in main.py with prefix="/api"
-    => final path: /api/image-proxy?url=...
+    Image proxy endpoint mounted in main.py with prefix="/api".
+    
+    Final path: /api/image-proxy?url=...
     """
     upstream_url = _validate_url(url)
 
@@ -180,11 +172,11 @@ async def image_proxy(
         timeout=httpx.Timeout(UPSTREAM_TIMEOUT_S),
     ) as client:
         try:
-            # HEAD handling
+            # HEAD request handling
             if request.method == "HEAD":
                 upstream = await client.head(upstream_url, headers=forward_headers)
                 if upstream.status_code >= 400:
-                    # some servers don't support HEAD properly
+                    # Some servers don't support HEAD properly
                     upstream = await client.get(upstream_url, headers=forward_headers)
 
                 ct = (upstream.headers.get("content-type") or "").lower()
@@ -199,7 +191,7 @@ async def image_proxy(
 
                 return Response(status_code=200, headers=headers)
 
-            # GET handling (stream)
+            # GET request handling (streaming)
             upstream = await client.get(upstream_url, headers=forward_headers)
 
             if upstream.status_code == 304:

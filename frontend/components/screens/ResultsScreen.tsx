@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 // Styles
@@ -26,15 +26,17 @@ type APIResponse = {
   products: Product[];
 };
 
-// API
-import { fetchRefinedRecommendations } from '../../api/recommendations';
-
 type ResultsScreenProps = {
   initialQuery: string;
   onBack: () => void;
-  onProductClick: (productId: string) => void;
   products: Product[];
   updateSelections: (productId: string, selection: ProductSelection) => void;
+  error: string;
+  setError: (error: string) => void;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  isSearchLoading: boolean;
+  handleRefinedSearch: (query: string) => void;
 };
 
 // TODO: get rid of explanation param for product card
@@ -54,46 +56,35 @@ type ResultsScreenProps = {
 export function ResultsScreen({
   initialQuery,
   onBack,
-  onProductClick,
   products,
   updateSelections,
+  error,
+  setError,
+  searchQuery,
+  setSearchQuery,
+  isSearchLoading,
+  handleRefinedSearch,
 }: ResultsScreenProps) {
   const styles = useResultsStyles();
 
-  const [baseQuery, setBaseQuery] = useState(initialQuery);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [refinedProducts, setRefinedProducts] = useState<Product[]>(() => {
-    return products;
-  });
-  React.useEffect(() => {
-  }, [products, refinedProducts]);
-  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  // Remove local state for baseQuery, searchQuery, refinedProducts, isSearchLoading
+  // Use products directly as listData
+  const listData = products;
 
-  const listData = useMemo(() => refinedProducts, [refinedProducts]);
-
-  const handleRefinedSearch = useCallback(
-    async (rawQuery: string) => {
-      const trimmedQuery = rawQuery.trim();
-      if (!trimmedQuery) return;
-      setIsSearchLoading(true);
-
-      try {
-        const response: APIResponse = await fetchRefinedRecommendations(
-          trimmedQuery,
-          baseQuery,
-        );
-        setRefinedProducts(response.products ?? []);
-        setBaseQuery(response.query);
-        setSearchQuery('');
-      } catch (e) {
-        console.error('Search failed:', e);
-        // TODO: Show user-friendly error message
-      } finally {
-        setIsSearchLoading(false);
-      }
-    },
-    [baseQuery],
-  );
+  // Error display
+  const renderError = () =>
+    error ? (
+      <View
+        style={{
+          backgroundColor: '#ffcccc',
+          padding: 8,
+          margin: 8,
+          borderRadius: 6,
+        }}
+      >
+        <Text style={{ color: '#a00', textAlign: 'center' }}>{error}</Text>
+      </View>
+    ) : null;
 
   return (
     <ImageBackground
@@ -101,6 +92,7 @@ export function ResultsScreen({
       resizeMode="cover"
       style={StyleSheet.absoluteFill}
     >
+      {renderError()}
       {/* Header */}
       <View style={styles.header.container}>
         <BackButton onPress={onBack} style={styles.backButton} />
@@ -110,7 +102,6 @@ export function ResultsScreen({
       {/* Product Results */}
       <ProductList
         products={listData}
-        onProductPress={onProductClick}
         updateSelections={updateSelections}
         style={styles.products}
         cardStyle={styles.productCard}

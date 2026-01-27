@@ -9,7 +9,8 @@ def get_vector_store(
     faiss_dir: str,
     rebuild_index: bool = False,
 ) -> FAISS:
-    """Initialize or load a FAISS vector store from product data.
+    """
+    Initialize or load a FAISS vector store from product data.
     
     Args:
         csv_path: Path to CSV file containing product data
@@ -33,10 +34,10 @@ def get_vector_store(
             allow_dangerous_deserialization=True,
         )
     
-    # Build new index from CSV data
+    # Load product documents from CSV
     documents = get_documents(csv_path)
     
-    # Create and save vector store
+    # Create and save new vector store
     vector_store = FAISS.from_documents(
         documents=documents,
         embedding=embeddings,
